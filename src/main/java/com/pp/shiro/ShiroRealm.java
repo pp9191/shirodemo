@@ -1,0 +1,78 @@
+package com.pp.shiro;
+
+import org.apache.shiro.authc.AuthenticationException;
+import org.apache.shiro.authc.AuthenticationInfo;
+import org.apache.shiro.authc.AuthenticationToken;
+import org.apache.shiro.authc.SimpleAuthenticationInfo;
+import org.apache.shiro.authc.UnknownAccountException;
+import org.apache.shiro.authc.UsernamePasswordToken;
+import org.apache.shiro.authz.AuthorizationInfo;
+import org.apache.shiro.authz.SimpleAuthorizationInfo;
+import org.apache.shiro.realm.AuthorizingRealm;
+import org.apache.shiro.subject.PrincipalCollection;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
+import com.pp.entity.Permission;
+import com.pp.entity.Role;
+import com.pp.entity.User;
+import com.pp.service.PermissionService;
+import com.pp.service.RoleService;
+import com.pp.service.UserService;
+
+@Component
+public class ShiroRealm extends AuthorizingRealm {
+
+	@Autowired
+	private UserService userService;
+	
+	@Autowired
+	private RoleService roleService;
+	
+	@Autowired
+	private PermissionService permissionService;
+
+	/**
+	 * 授权(验证权限时候调用)
+	 */
+	@Override
+	protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principals) {
+		// 1. 从 PrincipalCollection 中来获取登录用户的信息
+		String account = (String) principals.getPrimaryPrincipal();
+		User user = userService.selectByAccount(account);
+		// 2.添加角色和权限
+		SimpleAuthorizationInfo simpleAuthorizationInfo = new SimpleAuthorizationInfo();
+		for (Role role : roleService.getRoles(user.getId())) {
+			// 2.1添加角色
+			simpleAuthorizationInfo.addRole(role.getRolename());
+			for (Permission permission : permissionService.getPermissions(role.getId())) {
+				// 2.1.1添加权限
+				simpleAuthorizationInfo.addStringPermission(permission.getUrlMapping());
+			}
+		}
+		return simpleAuthorizationInfo;
+	}
+
+	/**
+	 * 认证(登陆时候调用)
+	 */
+	@Override
+	protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken token) throws AuthenticationException {
+		// 1.获得登录账号
+		String account = (String) token.getPrincipal();
+		// 2.查询用户
+		User user = userService.selectByAccount(account);
+		// 3.如果用户为空抛出用户不存在异常
+		if (user == null) {
+			throw new UnknownAccountException("用户名或密码错误");
+		}
+
+		// 4. 根据用户的情况, 来构建 AuthenticationInfo 对象并返回. 通常使用的实现类为: SimpleAuthenticationInfo
+		// 4.1 principal: 认证的实体信息. 可以是 username, 也可以是数据表对应的用户的实体类对象.
+		// 4.2 credentials: 密码.
+		// 4.3 realmName: 当前 realm 对象的 name. 调用父类的 getName() 方法即可
+		SimpleAuthenticationInfo info = new SimpleAuthenticationInfo(user, user.getPassword(), this.getName());
+
+		return info;
+	}
+}
