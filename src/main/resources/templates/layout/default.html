@@ -1,21 +1,24 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
-	xmlns:layout="http://www.w3.org/1999/xhtml" >
+	xmlns:layout="http://www.w3.org/1999/xhtml"
+	xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
 </head>
 <body>
 	<div>
-		<p th:if="${session.curUser}">
-			<span th:text="'Hello, ' + ${session.curUser.account} + '!'"></span>&nbsp;&nbsp;
-			<a th:href="@{/userinfo/logout}">退出</a>
+		<p>
+			<shiro:authenticated>
+				<span>Hello,<shiro:principal property="account"/> </span>&nbsp;&nbsp;
+				<a th:href="@{/userinfo/logout}">退出</a> 
+			</shiro:authenticated>
+			<shiro:notAuthenticated>　
+				<a th:href="@{/userinfo/login}">登录</a>&nbsp;&nbsp; 
+				<a th:href="@{/userinfo/signup}">注册</a>
+			</shiro:notAuthenticated>
 		</p>
-		<p th:if="${session.curUser} == null">
-			<a th:href="@{/userinfo/login}">登录</a>&nbsp;&nbsp; <a
-				th:href="@{/userinfo/signup}">注册</a>
-		</p>
-	</div>	
+	</div>
 	<div layout:fragment="content"></div>
 </body>
 </html>

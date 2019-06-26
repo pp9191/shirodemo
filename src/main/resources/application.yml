@@ -6,7 +6,7 @@ server:
       context-path: null
 spring:
    datasource:
-      url: jdbc:mysql://192.168.0.198:3306/test
+      url: jdbc:mysql://10.7.129.254:3306/test
       username: root
       password: 123456
       driver-class-name: org.mariadb.jdbc.Driver
@@ -19,6 +19,10 @@ spring:
          max-lifetime: 1800000 #最大生命时间
          connection-timeout: 30000 #连接超时时间
          connection-test-query: SELECT 1
+   cache:
+      type: ehcache #指定缓存类型
+      ehcache:
+         config: classpath:ehcache.xml #缓存加载配置文件   
    thymeleaf:
       prefix: classpath:/templates/
       suffix: .html

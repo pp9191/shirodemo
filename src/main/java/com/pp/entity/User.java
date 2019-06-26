@@ -16,13 +16,13 @@ public class User {
     @Pattern(regexp="^\\w{6,20}$", message="密码由6到20位字母或数字组成")
     private String password;
 
-    @Length(min=4, max=20, message="姓名长度为4-20位字符")
+    @Length(min=1, max=20, message="昵称长度为1-20位字符")
     private String nickname;
 
     @Email
     private String email;
 
-    @Pattern(regexp="^1[3-9]\\d{6,20}$", message="手机号不符合规则")
+    @Pattern(regexp="^1[3-9]\\d{9}$", message="手机号不符合规则")
     private String phone;
 
     private String idcard;

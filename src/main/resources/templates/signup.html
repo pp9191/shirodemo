@@ -11,7 +11,7 @@
 		<p>账号:<input type="text" th:field="*{account}" /> <span th:if="${#fields.hasErrors('account')}" th:errors="*{account}"></span></p>
 		<p>密码:<input type="password" th:field="*{password}" /> <span th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></span></p>
 		
-		<p>姓名:<input type="text" th:field="*{nickname}"  /> <span th:if="${#fields.hasErrors('nickname')}" th:errors="*{nickname}"></span></p>
+		<p>昵称:<input type="text" th:field="*{nickname}"  /> <span th:if="${#fields.hasErrors('nickname')}" th:errors="*{nickname}"></span></p>
 		<p>手机号码:<input type="text" th:field="*{phone}" /> <span th:if="${#fields.hasErrors('phone')}" th:errors="*{phone}"></span></p>
 		<p>邮箱:<input type="text" th:field="*{email}" /> <span th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></span></p>
 		<p><input type="submit" value="提交" /></p>

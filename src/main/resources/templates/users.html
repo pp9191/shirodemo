@@ -22,7 +22,7 @@
 				<td th:text="${user.nickname}">rr</td>
 				<td th:text="${user.phone}">Mark</td>
 				<td th:text="${user.email}">Otto</td>
-				<td th:text="${user.createTime}"></td>
+				<td th:text="${#dates.format(user.createTime, 'yyyy-MM-dd')}"></td>
 				<td th:text="${user.status}"></td>
 			</tr>
 		</table>

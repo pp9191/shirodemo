@@ -20,15 +20,14 @@ import com.pp.service.PermissionService;
 import com.pp.service.RoleService;
 import com.pp.service.UserService;
 
-@Component
 public class ShiroRealm extends AuthorizingRealm {
 
 	@Autowired
 	private UserService userService;
-	
+
 	@Autowired
 	private RoleService roleService;
-	
+
 	@Autowired
 	private PermissionService permissionService;
 
@@ -66,12 +65,9 @@ public class ShiroRealm extends AuthorizingRealm {
 		if (user == null) {
 			throw new UnknownAccountException("用户名或密码错误");
 		}
-
-		// 4. 根据用户的情况, 来构建 AuthenticationInfo 对象并返回. 通常使用的实现类为: SimpleAuthenticationInfo
-		// 4.1 principal: 认证的实体信息. 可以是 username, 也可以是数据表对应的用户的实体类对象.
-		// 4.2 credentials: 密码.
-		// 4.3 realmName: 当前 realm 对象的 name. 调用父类的 getName() 方法即可
-		SimpleAuthenticationInfo info = new SimpleAuthenticationInfo(user, user.getPassword(), this.getName());
+		// 4. 根据用户的情况, 来构建 AuthenticationInfo 对象并返回. 通常使用的实现类为: SimpleAuthenticationInfo		
+		SimpleAuthenticationInfo info = new SimpleAuthenticationInfo(user, user.getPassword(),
+				ShiroUtils.getByteSource(user.getAccount()), this.getName());
 
 		return info;
 	}
