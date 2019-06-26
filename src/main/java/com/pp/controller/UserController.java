@@ -6,6 +6,7 @@ import javax.validation.Valid;
 
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.AuthenticationException;
+import org.apache.shiro.authc.ExcessiveAttemptsException;
 import org.apache.shiro.authc.LockedAccountException;
 import org.apache.shiro.authc.UnknownAccountException;
 import org.apache.shiro.authc.UsernamePasswordToken;
@@ -61,7 +62,7 @@ public class UserController {
 	}
 	
 	@RequestMapping(value="/login", method=RequestMethod.POST)
-	public String login(@ModelAttribute @Valid User user, BindingResult result) {
+	public String login(@ModelAttribute @Valid User user, BindingResult result, boolean rememberMe) {
 		System.out.println(user.getAccount() + " || " + user.getPassword());
 		if(result.hasErrors()) {
 			// 校验报错
@@ -71,14 +72,18 @@ public class UserController {
 		Subject subject = SecurityUtils.getSubject();
 		try{
 			// 调用安全认证框架的登录方法
-			subject.login(new UsernamePasswordToken(user.getAccount(), user.getPassword()));			
+			subject.login(new UsernamePasswordToken(user.getAccount(), user.getPassword(), rememberMe));			
 			return "redirect:/index";
 		}catch(UnknownAccountException | LockedAccountException ex){
-			System.out.println(ex.getMessage());
+			
 			FieldError error = new FieldError("user", "account", ex.getMessage());
 			result.addError(error);
+		}catch(ExcessiveAttemptsException ex){
+			
+			FieldError error = new FieldError("user", "account", "密码错误次数超过五次,请十分钟后登录!");
+			result.addError(error);
 		}catch(AuthenticationException ex){
-			System.out.println(ex.getMessage());
+			
 			FieldError error = new FieldError("user", "account", "账号或密码错误");
 			result.addError(error);
 		}

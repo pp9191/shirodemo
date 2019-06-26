@@ -8,7 +8,7 @@
 	<h1>注册</h1>
 	<form action="#" th:action="@{signup}" th:object="${user}" method="post">
 	
-		<p>账号:<input type="text" th:field="*{account}" /> <span th:if="${#fields.hasErrors('account')}" th:errors="*{account}"></span></p>
+		<p>用户名:<input type="text" th:field="*{account}" /> <span th:if="${#fields.hasErrors('account')}" th:errors="*{account}"></span></p>
 		<p>密码:<input type="password" th:field="*{password}" /> <span th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></span></p>
 		
 		<p>昵称:<input type="text" th:field="*{nickname}"  /> <span th:if="${#fields.hasErrors('nickname')}" th:errors="*{nickname}"></span></p>
