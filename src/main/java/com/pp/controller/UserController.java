@@ -6,6 +6,8 @@ import javax.validation.Valid;
 
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.AuthenticationException;
+import org.apache.shiro.authc.LockedAccountException;
+import org.apache.shiro.authc.UnknownAccountException;
 import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -70,14 +72,18 @@ public class UserController {
 		try{
 			// 调用安全认证框架的登录方法
 			subject.login(new UsernamePasswordToken(user.getAccount(), user.getPassword()));			
+			return "redirect:/index";
+		}catch(UnknownAccountException | LockedAccountException ex){
+			System.out.println(ex.getMessage());
+			FieldError error = new FieldError("user", "account", ex.getMessage());
+			result.addError(error);
 		}catch(AuthenticationException ex){
 			System.out.println(ex.getMessage());
 			FieldError error = new FieldError("user", "account", "账号或密码错误");
-			result.addError(error );
-			// 登陆失败
-			return "login";
+			result.addError(error);
 		}
-		return "redirect:/index";
+		// 登陆失败
+		return "login";
 	}
 	
 	@RequestMapping(value="/logout")

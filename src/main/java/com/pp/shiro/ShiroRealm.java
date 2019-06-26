@@ -3,6 +3,7 @@ package com.pp.shiro;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.AuthenticationInfo;
 import org.apache.shiro.authc.AuthenticationToken;
+import org.apache.shiro.authc.LockedAccountException;
 import org.apache.shiro.authc.SimpleAuthenticationInfo;
 import org.apache.shiro.authc.UnknownAccountException;
 import org.apache.shiro.authc.UsernamePasswordToken;
@@ -57,13 +58,17 @@ public class ShiroRealm extends AuthorizingRealm {
 	 */
 	@Override
 	protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken token) throws AuthenticationException {
-		// 1.获得登录账号
+		// 获得登录账号
 		String account = (String) token.getPrincipal();
-		// 2.查询用户
+		// 查询用户
 		User user = userService.selectByAccount(account);
-		// 3.如果用户为空抛出用户不存在异常
+		// 如果用户为空抛出用户不存在异常
 		if (user == null) {
-			throw new UnknownAccountException("用户名或密码错误");
+			throw new UnknownAccountException("用户名不存在");
+		}
+		// 如果账号锁定
+		if (user.getStatus() == 0) {
+			throw new LockedAccountException("账号已被锁定,请联系管理员");
 		}
 		// 4. 根据用户的情况, 来构建 AuthenticationInfo 对象并返回. 通常使用的实现类为: SimpleAuthenticationInfo		
 		SimpleAuthenticationInfo info = new SimpleAuthenticationInfo(user, user.getPassword(),
