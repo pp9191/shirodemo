@@ -67,7 +67,7 @@ public class ShiroRealm extends AuthorizingRealm {
 		if (user.getStatus() == 0) {
 			throw new LockedAccountException("账号已被锁定,请联系管理员");
 		}
-		// 4. 根据用户的情况, 来构建 AuthenticationInfo 对象并返回. 通常使用的实现类为: SimpleAuthenticationInfo		
+		// 根据用户的情况, 来构建 AuthenticationInfo 对象并返回. 通常使用的实现类为: SimpleAuthenticationInfo		
 		SimpleAuthenticationInfo info = new SimpleAuthenticationInfo(user, user.getPassword(),
 				ShiroUtils.getByteSource(user.getAccount()), this.getName());
 
