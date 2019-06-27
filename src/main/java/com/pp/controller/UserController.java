@@ -42,7 +42,7 @@ public class UserController {
 			// 校验报错
 			
 		} else if(userService.selectByAccount(user.getAccount()) != null) {
-			FieldError error = new FieldError("user", "account", "账号已存在");
+			FieldError error = new FieldError("user", "account", "用户名已存在");
 			result.addError(error);			
 		} else {
 			// 密码加密
@@ -80,11 +80,11 @@ public class UserController {
 			result.addError(error);
 		}catch(ExcessiveAttemptsException ex){
 			
-			FieldError error = new FieldError("user", "account", "密码错误次数超过五次,请十分钟后登录!");
+			FieldError error = new FieldError("user", "account", "密码错误次数超过五次，请十分钟后登录!");
 			result.addError(error);
 		}catch(AuthenticationException ex){
 			
-			FieldError error = new FieldError("user", "account", "账号或密码错误");
+			FieldError error = new FieldError("user", "account", "用户名或密码错误");
 			result.addError(error);
 		}
 		// 登陆失败
