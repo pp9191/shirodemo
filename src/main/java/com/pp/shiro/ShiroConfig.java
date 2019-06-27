@@ -53,7 +53,7 @@ public class ShiroConfig {
 	      return simpleCookie;
 	}
 
-	@Bean("cookieRememberMeManager")
+	@Bean("rememberMeManager")
 	public CookieRememberMeManager cookieRememberMeManager(SimpleCookie simpleCookie){
 	      
 	      CookieRememberMeManager cookieRememberMeManager = new CookieRememberMeManager();
@@ -73,12 +73,12 @@ public class ShiroConfig {
 
 	@Bean("securityManager")
 	public SecurityManager securityManager(ShiroRealm shiroRealm, EhCacheManager ehCacheManager, 
-			CookieRememberMeManager cookieRememberMeManager) {
+			CookieRememberMeManager rememberMeManager) {
 		DefaultWebSecurityManager securityManager = new DefaultWebSecurityManager();
 		// 注册自己的Realm
 		securityManager.setRealm(shiroRealm);
 		securityManager.setCacheManager(ehCacheManager);
-		securityManager.setRememberMeManager(cookieRememberMeManager);
+		securityManager.setRememberMeManager(rememberMeManager);
 		return securityManager;
 	}
 

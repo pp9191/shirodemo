@@ -1,5 +1,6 @@
 package com.pp.entity;
 
+import java.io.Serializable;
 import java.util.Date;
 
 import javax.validation.constraints.Email;
@@ -7,8 +8,11 @@ import javax.validation.constraints.Pattern;
 
 import org.hibernate.validator.constraints.Length;
 
-public class User {
-    private Long id;
+public class User implements Serializable{
+    
+	private static final long serialVersionUID = -766350950360187250L;
+
+	private Long id;
 
     @Length(min=4, max=20, message="账号长度为4-20位字符")
     private String account;
