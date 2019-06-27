@@ -13,7 +13,7 @@ public class HelloController {
 		return "index";
 	}
 	
-	@RequestMapping({"/403","/unauthorized"})
+	@RequestMapping("/403")
 	public String unauthorized() {
 		System.out.println("unauthorized");
 		

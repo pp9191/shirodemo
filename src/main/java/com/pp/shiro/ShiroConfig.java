@@ -94,7 +94,7 @@ public class ShiroConfig {
 		filterMap.put("/common/**", "anon"); // 可以匿名访问，公共静态资源
 		filterMap.put("/", "anon");
 		filterMap.put("/index", "anon");
-		filterMap.put("/unauthorized", "anon");
+		filterMap.put("/403", "anon");
 		filterMap.put("/userinfo/signup", "anon");
 		filterMap.put("/userinfo/logout", "logout");
 		// 这句话的意思是除了上面配置的路径，剩下的全部路径都需要认证通过才能访问，所以这句话要放在最后
