@@ -91,7 +91,7 @@ public class ShiroConfig {
 		// 设置拦截器
 		Map<String, String> filterMap = new LinkedHashMap<>();
 		// 配置不会被拦截的链接 顺序判断
-		filterMap.put("/static/**", "anon"); // 可以匿名访问
+		filterMap.put("/common/**", "anon"); // 可以匿名访问，公共静态资源
 		filterMap.put("/", "anon");
 		filterMap.put("/index", "anon");
 		filterMap.put("/unauthorized", "anon");
