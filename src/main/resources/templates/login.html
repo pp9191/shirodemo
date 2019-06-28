@@ -7,11 +7,11 @@
 
 <link th:href="@{/common/css/bootstrap.min.css}" rel="stylesheet" />
 <link th:href="@{/common/css/bootstrapValidator.min.css}" rel="stylesheet" />
-
+<link th:href="@{/common/css/jquery-confirm.min.css}" rel="stylesheet" />
 <script th:src="@{/common/js/jquery.min.js}" type="text/javascript"></script>
 <script th:src="@{/common/js/bootstrap.min.js}" type="text/javascript"></script>
 <script th:src="@{/common/js/bootstrapValidator.min.js}" type="text/javascript"></script>
-
+<script th:src="@{/common/js/jquery-confirm.min.js}" type="text/javascript"></script>
 </head>
 <body>
 	<div class="container">
@@ -22,12 +22,12 @@
 				<div class="form-group">
 					<label for="account">用户名：</label>
 					<input type="text" class="form-control" th:field="*{account}"  />
-					<span class="text-warning" th:if="${#fields.hasErrors('account')}" th:errors="*{account}"></span>
+					<span class="account-err hidden" th:if="${#fields.hasErrors('account')}" th:errors="*{account}"></span>
 				</div>
 				<div class="form-group">
 					<label for="password">密码：</label>
 					<input type="password" class="form-control" th:field="*{password}"  />
-					<span class="text-warning" th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></span>
+					<span class="password-err hidden" th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></span>
 				</div>
 				<div class="checkbox">
 					<label> 
@@ -44,7 +44,18 @@
 	
 	<script th:inline="javascript">
 		$(function() {
-			//console.log($('form'));
+			if($(".account-err").length){
+				$.alert({
+				    title: '提示',
+				    content: $(".account-err").text(),
+				});
+			} else if($(".password-err").length){
+				$.alert({
+				    title: '提示',
+				    content: $(".password-err").text(),
+				});
+			}
+			
 			$('form').bootstrapValidator({
 				message : 'This value is not valid',
 				feedbackIcons : {
