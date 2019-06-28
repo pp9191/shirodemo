@@ -5,7 +5,6 @@
 <title>Insert title here</title>
 
 <link th:href="@{/common/css/bootstrap.min.css}" rel="stylesheet" />
-<link th:href="@{/common/css/open-iconic-bootstrap.min.css}" rel="stylesheet" />
 <link th:href="@{/common/css/bootstrapValidator.min.css}" rel="stylesheet" />
 
 <script th:src="@{/common/js/jquery.min.js}" type="text/javascript"></script>
@@ -53,9 +52,9 @@
 			$('form').bootstrapValidator({
 				message : 'This value is not valid',
 				feedbackIcons : {
-					valid : 'oi oi-check text-success',
-					invalid : 'oi oi-x text-danger',
-					validating : 'oi oi-loop-circular'
+					valid : 'glyphicon glyphicon-ok',
+					invalid : 'glyphicon glyphicon-remove',
+					validating : 'glyphicon glyphicon-refresh'
 				},
 				fields : {
 					account : {
