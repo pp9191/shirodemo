@@ -26,7 +26,7 @@ public class User implements Serializable{
     @Email
     private String email;
 
-    @Pattern(regexp="^(1[3-9]\\d{9}$)|(\\s*)", message="手机号不符合规则")
+    @Pattern(regexp="^1[3-9]\\d{9}$", message="手机号不符合规则")
     private String phone;
 
     private String idcard;
