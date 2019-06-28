@@ -14,17 +14,26 @@
 	<nav class="navbar navbar-default" role="navigation">
 		<div class="container-fluid">
 			<div class="navbar-header">
-				<a class="navbar-brand" href="#">菜鸟教程</a>
+				<button type="button" class="navbar-toggle" data-toggle="collapse"
+	                data-target="#example-navbar-collapse">
+		            <span class="sr-only">切换导航</span>
+		            <span class="icon-bar"></span>
+		            <span class="icon-bar"></span>
+		            <span class="icon-bar"></span>
+		        </button>
+				<a class="navbar-brand" href="javacript:">bootstrap demo</a>
 			</div>
-			<div class="text-right">
-				<shiro:authenticated>
-					<span>Hello,<shiro:principal property="account" /></span>&nbsp;&nbsp;
-					<a th:href="@{/userinfo/logout}">退出</a>
-				</shiro:authenticated>
-				<shiro:notAuthenticated>
-					<a th:href="@{/userinfo/login}">登录</a>&nbsp;&nbsp; 
-					<a th:href="@{/userinfo/signup}">注册</a>
-				</shiro:notAuthenticated>
+			<div class="collapse navbar-collapse clearfix" id="example-navbar-collapse">
+				<ul class="nav navbar-nav pull-right">
+					<shiro:authenticated>
+		            <li><a>Hello,<shiro:principal property="account" /></a></li>
+					<li><a th:href="@{/userinfo/logout}">退出</a></li>
+					</shiro:authenticated>
+					<shiro:notAuthenticated>
+		            <li><a th:href="@{/userinfo/login}">登录</a></li>
+					<li><a th:href="@{/userinfo/signup}">注册</a></li>
+					</shiro:notAuthenticated>		            
+		        </ul>
 			</div>
 		</div>
 	</nav>
