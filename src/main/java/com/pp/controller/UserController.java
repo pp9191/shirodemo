@@ -80,13 +80,9 @@ public class UserController {
 			// 调用安全认证框架的登录方法
 			subject.login(new UsernamePasswordToken(user.getAccount(), user.getPassword(), rememberMe));			
 			return "redirect:/index";
-		}catch(UnknownAccountException | LockedAccountException ex){
-			
+		}catch(UnknownAccountException|LockedAccountException|ExcessiveAttemptsException ex){
+			// 用户名不存在 | 账号被锁 | 密码错误次数达到5次
 			FieldError error = new FieldError("user", "account", ex.getMessage());
-			result.addError(error);
-		}catch(ExcessiveAttemptsException ex){
-			
-			FieldError error = new FieldError("user", "account", "密码错误次数超过五次，请十分钟后登录!");
 			result.addError(error);
 		}catch(AuthenticationException ex){
 			

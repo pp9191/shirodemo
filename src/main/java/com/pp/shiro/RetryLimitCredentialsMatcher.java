@@ -31,7 +31,7 @@ public class RetryLimitCredentialsMatcher extends HashedCredentialsMatcher {
         
         // if retryCount++ > 5 throw ExcessiveAttemptsException
         if (retryCount.incrementAndGet() > errorTimes) {
-            throw new ExcessiveAttemptsException();
+            throw new ExcessiveAttemptsException("密码错误次数达到五次，请一个小时后再试！");
         }
 
         boolean matches = super.doCredentialsMatch(token, info);
