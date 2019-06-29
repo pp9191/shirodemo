@@ -21,7 +21,7 @@
 				<div class="form-group">
 					<label for="account">用户名：</label> 
 					<input type="text" class="form-control" th:field="*{account}" />
-					<span class="text-warning" th:if="${#fields.hasErrors('account')}"
+					<span class="account-err hidden" th:if="${#fields.hasErrors('account')}"
 						th:errors="*{account}"></span>
 				</div>
 				<div class="form-group">
@@ -60,7 +60,13 @@
 	
 	<script th:inline="javascript">
 		$(function() {
-			//console.log($('form'));
+			if($(".account-err").length){
+				$.alert({
+				    title: '提示',
+				    content: $(".account-err").text(),
+				});
+			}
+			
 			$('form').bootstrapValidator({
 				message : 'This value is not valid',
 				feedbackIcons : {
