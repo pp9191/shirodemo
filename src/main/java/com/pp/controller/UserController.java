@@ -10,6 +10,7 @@ import org.apache.shiro.authc.ExcessiveAttemptsException;
 import org.apache.shiro.authc.LockedAccountException;
 import org.apache.shiro.authc.UnknownAccountException;
 import org.apache.shiro.authc.UsernamePasswordToken;
+import org.apache.shiro.session.Session;
 import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -37,10 +38,15 @@ public class UserController {
 	}
 	
 	@RequestMapping(value="/signup", method=RequestMethod.POST)
-	public String signup(@ModelAttribute @Valid User user, BindingResult result) {	
+	public String signup(@ModelAttribute @Valid User user, BindingResult result, String codeNo) {
+		Session session = SecurityUtils.getSubject().getSession();
+		String vallidateCode = session.getAttribute("validateCode").toString();
 		if(result.hasErrors()) {
 			// 校验报错
 			
+		} else if(!codeNo.equals(vallidateCode)) {
+			FieldError error = new FieldError("user", "account", "验证码错误");
+			result.addError(error);			
 		} else if(userService.selectByAccount(user.getAccount()) != null) {
 			FieldError error = new FieldError("user", "account", "用户名已存在");
 			result.addError(error);			
