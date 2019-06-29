@@ -20,7 +20,7 @@ public class User implements Serializable{
     @Pattern(regexp="^\\w{6,20}$", message="密码由6到20位字母或数字组成")
     private String password;
 
-    @Length(min=1, max=20, message="昵称长度为1-20位字符")
+    @Length(max=20, message="昵称不能超过20位字符")
     private String nickname;
 
     @Email

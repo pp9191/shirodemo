@@ -96,8 +96,9 @@
 					nickname : {
 						message : '验证失败',
 						validators : {
-							notEmpty : {
-								message : '请输入昵称'
+							stringLength : {
+								max : 20,
+								message : '长度已超出范围'
 							}
 						}
 					},
