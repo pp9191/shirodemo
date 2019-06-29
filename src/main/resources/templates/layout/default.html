@@ -34,7 +34,7 @@
 		            <li class="dropdown">
 		            	<a href="#" class="dropdown-toggle" data-toggle="dropdown">Hello,<shiro:principal property="account" /></a>
 		            	<ul class="dropdown-menu">
-		                    <li><a href="#">个人中心</a></li>
+		                    <li><a th:href="@{/user/userinfo}">个人中心</a></li>
 							<li><a th:href="@{/user/logout}">退出</a></li>
 		                </ul>
 		            </li>
