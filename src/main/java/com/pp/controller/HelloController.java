@@ -43,8 +43,8 @@ public class HelloController {
         Graphics g = image.getGraphics();
         g.setColor(new Color(0xDCDBD2));
         g.fillRect(0, 0, width, height);
-        g.setColor(Color.black);
-        g.drawRect(0, 0, width - 1, height - 1);
+//        g.setColor(Color.black);
+//        g.drawRect(0, 0, width - 1, height - 1);
         Random rdm = new Random();
         String hash1 = Integer.toHexString(rdm.nextInt());
         System.out.println(hash1);

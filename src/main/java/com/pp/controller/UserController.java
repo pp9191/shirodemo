@@ -26,7 +26,7 @@ import com.pp.service.UserService;
 import com.pp.shiro.ShiroUtils;
 
 @Controller
-@RequestMapping("/userinfo")
+@RequestMapping("/user")
 public class UserController {
 	
 	@Autowired
@@ -86,7 +86,7 @@ public class UserController {
 			result.addError(error);
 		}catch(AuthenticationException ex){
 			
-			FieldError error = new FieldError("user", "account", "用户名或密码错误");
+			FieldError error = new FieldError("user", "account", "密码错误");
 			result.addError(error);
 		}
 		// 登陆失败
@@ -107,5 +107,12 @@ public class UserController {
 		List<User> users = userService.getUsers();
 		model.addAttribute("users", users);
 		return "users";
+	}
+	
+	@RequestMapping(value="/userinfo", method=RequestMethod.GET)
+	public String userinfo(Model model) {
+		Subject subject = SecurityUtils.getSubject();
+		model.addAttribute("user", subject.getPrincipal());
+		return "userinfo";
 	}
 }
