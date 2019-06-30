@@ -33,7 +33,7 @@ public class User implements Serializable{
     @Email
     private String email;
 
-    @Length(max=250, message="地址超出长度200位字符")
+    @Length(max=250, message="地址超出长度250位字符")
     private String address;
 
     private String headImg;
