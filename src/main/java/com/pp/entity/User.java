@@ -7,6 +7,7 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.Pattern;
 
 import org.hibernate.validator.constraints.Length;
+import org.springframework.format.annotation.DateTimeFormat;
 
 public class User implements Serializable{
 	
@@ -38,6 +39,7 @@ public class User implements Serializable{
 
     private String headImg;
 
+    @DateTimeFormat(pattern="yyyy-MM-dd")
     private Date createTime;
 
     @Length(max=200, message="签名超出长度200位字符")
