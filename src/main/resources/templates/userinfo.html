@@ -66,7 +66,7 @@
 		<div class="row">
 			<div class="col-xs-4 col-md-3 col-lg-2" id="myScrollspy">
 				<ul class="nav nav-pills nav-stacked" id="myNav">
-					<li class="active"><a href="#section-1">第一部分</a></li>
+					<li class="active"><a href="#section-1">个人信息</a></li>
 					<li><a href="#section-2">第二部分</a></li>
 					<li><a href="#section-3">第三部分</a></li>
 					<li><a href="#section-4">第四部分</a></li>
@@ -74,26 +74,56 @@
 				</ul>
 			</div>
 			<div class="col-xs-8 col-md-9 col-lg-10">
-				<h2 id="section-1">第一部分</h2>
-				<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam
-					eu sem tempor, varius quam at, luctus dui. Mauris magna metus,
-					dapibus nec turpis vel, semper malesuada ante. Vestibulum id metus
-					ac nisl bibendum scelerisque non non purus. Suspendisse varius nibh
-					non aliquet sagittis. In tincidunt orci sit amet elementum
-					vestibulum. Vivamus fermentum in arcu in aliquam. Quisque aliquam
-					porta odio in fringilla. Vivamus nisl leo, blandit at bibendum eu,
-					tristique eget risus. Integer aliquet quam ut elit suscipit, id
-					interdum neque porttitor. Integer faucibus ligula.</p>
-				<p>Vestibulum quis quam ut magna consequat faucibus.
-					Pellentesque eget nisi a mi suscipit tincidunt. Ut tempus dictum
-					risus. Pellentesque viverra sagittis quam at mattis. Suspendisse
-					potenti. Aliquam sit amet gravida nibh, facilisis gravida odio.
-					Phasellus auctor velit at lacus blandit, commodo iaculis justo
-					viverra. Etiam vitae est arcu. Mauris vel congue dolor. Aliquam
-					eget mi mi. Fusce quam tortor, commodo ac dui quis, bibendum
-					viverra erat. Maecenas mattis lectus enim, quis tincidunt dui
-					molestie euismod. Curabitur et diam tristique, accumsan nunc eu,
-					hendrerit tellus.</p>
+				<h4 id="section-2">个人信息</h4>
+				<form class="form-horizontal" role="form" th:object="${user}">
+					<div class="form-group">
+						<label for="firstname" class="col-sm-2 control-label">头像</label>
+						<div class="col-sm-10">
+							<img alt="" src=""/>
+						</div>
+					</div>
+					<div class="form-group">
+						<label for="lastname" class="col-sm-2 control-label">昵称</label>
+						<div class="col-sm-10">
+							<input type="text" class="form-control" th:field="*{nickname}">
+						</div>
+					</div>					
+					<div class="form-group">
+						<label for="lastname" class="col-sm-2 control-label">性别</label>
+						<div class="col-sm-10">
+							<label class="radio-inline">
+								<input type="radio" name="optionsRadiosinline" id="optionsRadios3" value="option1" checked>男
+							</label>
+							<label class="radio-inline">
+								<input type="radio" name="optionsRadiosinline" id="optionsRadios4"  value="option2"> 女
+							</label>
+						</div>
+					</div>
+					<div class="form-group">
+						<label for="lastname" class="col-sm-2 control-label">生日</label>
+						<div class="col-sm-10">
+							<input type="text" class="form-control" >
+						</div>
+					</div>
+					<div class="form-group">
+						<label for="lastname" class="col-sm-2 control-label">手机号码</label>
+						<div class="col-sm-10">
+							<input type="text" class="form-control" th:field="*{phone}">
+						</div>
+					</div>
+					<div class="form-group">
+						<label for="lastname" class="col-sm-2 control-label">邮箱</label>
+						<div class="col-sm-10">
+							<input type="text" class="form-control" th:field="*{email}">
+						</div>
+					</div>
+					<div class="form-group">
+						<label for="lastname" class="col-sm-2 control-label">住址</label>
+						<div class="col-sm-10">
+							<input type="text" class="form-control" >
+						</div>
+					</div>
+				</form>
 				<hr>
 				<h2 id="section-2">第二部分</h2>
 				<p>Nullam hendrerit justo non leo aliquet imperdiet. Etiam in

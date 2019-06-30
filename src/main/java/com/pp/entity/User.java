@@ -9,31 +9,39 @@ import javax.validation.constraints.Pattern;
 import org.hibernate.validator.constraints.Length;
 
 public class User implements Serializable{
-    
-	private static final long serialVersionUID = -766350950360187250L;
+	
+	private static final long serialVersionUID = 5663648787359429182L;
 
 	private Long id;
-
+    
     @Length(min=4, max=20, message="账号长度为4-20位字符")
     private String account;
 
     @Pattern(regexp="^\\w{6,20}$", message="密码由6到20位字母或数字组成")
     private String password;
 
-    @Length(max=20, message="昵称不能超过20位字符")
+    private Long status;
+
+    @Length(max=50, message="昵称超出长度50位字符")
     private String nickname;
 
-    @Email
-    private String email;
+    private Date birthday;
 
     @Pattern(regexp="^1[3-9]\\d{9}$", message="手机号不符合规则")
     private String phone;
 
-    private String idcard;
+    @Email
+    private String email;
+
+    @Length(max=250, message="地址超出长度200位字符")
+    private String address;
+
+    private String headImg;
 
     private Date createTime;
 
-    private Long status;
+    @Length(max=200, message="签名超出长度200位字符")
+    private String remark;
 
     public Long getId() {
         return id;
@@ -59,6 +67,14 @@ public class User implements Serializable{
         this.password = password == null ? null : password.trim();
     }
 
+    public Long getStatus() {
+        return status;
+    }
+
+    public void setStatus(Long status) {
+        this.status = status;
+    }
+
     public String getNickname() {
         return nickname;
     }
@@ -67,12 +83,12 @@ public class User implements Serializable{
         this.nickname = nickname == null ? null : nickname.trim();
     }
 
-    public String getEmail() {
-        return email;
+    public Date getBirthday() {
+        return birthday;
     }
 
-    public void setEmail(String email) {
-        this.email = email == null ? null : email.trim();
+    public void setBirthday(Date birthday) {
+        this.birthday = birthday;
     }
 
     public String getPhone() {
@@ -83,12 +99,28 @@ public class User implements Serializable{
         this.phone = phone == null ? null : phone.trim();
     }
 
-    public String getIdcard() {
-        return idcard;
+    public String getEmail() {
+        return email;
     }
 
-    public void setIdcard(String idcard) {
-        this.idcard = idcard == null ? null : idcard.trim();
+    public void setEmail(String email) {
+        this.email = email == null ? null : email.trim();
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address == null ? null : address.trim();
+    }
+
+    public String getHeadImg() {
+        return headImg;
+    }
+
+    public void setHeadImg(String headImg) {
+        this.headImg = headImg == null ? null : headImg.trim();
     }
 
     public Date getCreateTime() {
@@ -99,11 +131,11 @@ public class User implements Serializable{
         this.createTime = createTime;
     }
 
-    public Long getStatus() {
-        return status;
+    public String getRemark() {
+        return remark;
     }
 
-    public void setStatus(Long status) {
-        this.status = status;
+    public void setRemark(String remark) {
+        this.remark = remark == null ? null : remark.trim();
     }
 }
