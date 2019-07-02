@@ -57,6 +57,16 @@
 					top : 125
 				}
 			});
+			
+			$('#dp_birthday input').datepicker({
+		        language: 'zh-CN',
+		        weekStart: 1,
+		        todayBtn:  true,   //今日日期按钮
+				autoclose: true,   //自动关闭
+				todayHighlight: true,   //高亮今日日期
+				startDate: '1900-01-01',
+				endDate: new Date(),
+		    });
 		});
 		
 		var imgType = [".bmp", ".gif", ".png", ".jpg", ".jpeg"];
@@ -170,7 +180,7 @@
 					</div>
 					<div class="form-group">
 						<label for="birthday" class="col-sm-2 control-label">生日</label>
-						<div class="col-sm-10">
+						<div class="col-sm-10" id="dp_birthday">
 							<input type="text" class="form-control" th:field="*{birthday}">
 						</div>
 					</div>
