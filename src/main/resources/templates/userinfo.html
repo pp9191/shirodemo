@@ -133,12 +133,11 @@
 				<div class="row">
 					<div class="col-sm-offset-2">
 						<form id="form_setHead" th:action="@{'/user/setHead/'+${user.id}}" method="post" enctype="multipart/form-data">
-						<img id="img_head" th:src="@{'/common/headImg/'+${user.headImg}}"
-							class="img-circle" style="width:98px;height:98px;" 
-							onclick="$('#input_head').trigger('click');"/>
-						<a class="btn btn-default" onclick="setHeadImg()">上传头像</a>
-						<input type="file" name="file" id="input_head" style="width:0;height:0;"
-							onchange="checkHeadImg(this)">
+						<img id="img_head" th:src="@{'/common/headImg/'+${user.headImg}}" class="img-circle" 
+							style="width:100px; height:100px; cursor:pointer;"  onclick="$('#input_head').trigger('click');"/>
+						<a class="btn btn-default" onclick="setHeadImg()" style="margin-left:20px;">上传头像</a>
+						<input type="file" name="file" id="input_head" accept="image/*" 
+							style="width:0; height:0;" onchange="checkHeadImg(this)"/>
 						</form>
 					</div>
 				</div>
