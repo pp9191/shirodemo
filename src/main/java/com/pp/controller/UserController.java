@@ -191,14 +191,14 @@ public class UserController {
 	
 	@ResponseBody
 	@RequestMapping(value="/setUserinfo")
-	public Map<String, String> setUserinfo(User user) {
-		Map<String, String> result = new HashMap<String, String>();
-		int flag = userService.setUserinfo(user);
-		if(flag == 1) {			
-			result.put("result", "true");
-		}else {
+	public Map<String, Object> setUserinfo(@ModelAttribute @Valid User user, BindingResult bindResult) {
+		Map<String, Object> result = new HashMap<String, Object>();
+		if(bindResult.hasErrors()) {
 			result.put("result", "false");
+			result.put("errors", bindResult.getAllErrors());
 		}
+		userService.setUserinfo(user);
+		result.put("result", "true");
 		return result;
 	}
 }

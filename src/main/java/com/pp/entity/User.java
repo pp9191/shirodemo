@@ -28,6 +28,7 @@ public class User implements Serializable{
     
     private Integer gender;
 
+    @DateTimeFormat(pattern="yyyy-MM-dd")
     private Date birthday;
 
     @Pattern(regexp="^1[3-9]\\d{9}$", message="手机号不符合规则")
@@ -72,7 +73,7 @@ public class User implements Serializable{
     }
 
     public Integer getGender() {
-        return status;
+        return gender;
     }
 
     public void setGender(Integer gender) {
