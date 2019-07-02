@@ -180,7 +180,7 @@ public class UserController {
 				
 			} else {
 				result.put("result", "false");
-	        	result.put("message", "不支持的图片格式，仅支持一下格式图片：" + imgType.toString());
+	        	result.put("message", "不支持的图片格式，仅支持以下格式：" + imgType.toString());
 			}
         } else {
         	result.put("result", "false");

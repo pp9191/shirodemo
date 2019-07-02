@@ -7,6 +7,8 @@ import java.util.Date;
 import org.apache.shiro.crypto.hash.SimpleHash;
 import org.apache.shiro.util.ByteSource;
 
+import com.pp.entity.FileInfo;
+
 public class ShiroUtils {
 	
 	public static final String ALGORITHMNAME = "md5";
@@ -26,6 +28,16 @@ public class ShiroUtils {
 	public static String getDatePath(Date date) {
 		String dateStr = sdf.format(date);		
 		return File.separator.concat(dateStr.replace("-", File.separator));
+	}
+	
+	public static void deleteFile(FileInfo fileinfo) {
+		if(fileinfo != null) {
+			String pathname = fileinfo.getPath() + File.separator + fileinfo.getId() + "." + fileinfo.getType();
+			File file = new File(pathname);
+			if(file.exists()) {
+				file.delete();
+			}
+		}
 	}
 
 }
