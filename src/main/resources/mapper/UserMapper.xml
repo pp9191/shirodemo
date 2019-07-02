@@ -5,8 +5,9 @@
     <id column="id" property="id" jdbcType="BIGINT" />
     <result column="account" property="account" jdbcType="VARCHAR" />
     <result column="password" property="password" jdbcType="VARCHAR" />
-    <result column="status" property="status" jdbcType="BIGINT" />
+    <result column="status" property="status" jdbcType="INTEGER" />
     <result column="nickname" property="nickname" jdbcType="VARCHAR" />
+    <result column="gender" property="gender" jdbcType="INTEGER" />
     <result column="birthday" property="birthday" jdbcType="DATE" />
     <result column="phone" property="phone" jdbcType="VARCHAR" />
     <result column="email" property="email" jdbcType="VARCHAR" />
@@ -16,8 +17,8 @@
     <result column="remark" property="remark" jdbcType="VARCHAR" />
   </resultMap>
   <sql id="Base_Column_List" >
-    id, account, password, status, nickname, birthday, phone, email, address, head_img, 
-    create_time, remark
+    id, account, password, status, nickname, gender, birthday, phone, email, address, 
+    head_img, create_time, remark
   </sql>
   <select id="selectByAccount" resultMap="BaseResultMap" parameterType="string" >
     select 
@@ -43,15 +44,15 @@
   </delete>
   <insert id="insert" parameterType="com.pp.entity.User" >
     insert into t_user (id, account, password, 
-      status, nickname, birthday, 
-      phone, email, address, 
-      head_img, create_time, remark
-      )
+      status, nickname, gender, 
+      birthday, phone, email, 
+      address, head_img, create_time, 
+      remark)
     values (#{id,jdbcType=BIGINT}, #{account,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}, 
-      #{status,jdbcType=BIGINT}, #{nickname,jdbcType=VARCHAR}, #{birthday,jdbcType=DATE}, 
-      #{phone,jdbcType=VARCHAR}, #{email,jdbcType=VARCHAR}, #{address,jdbcType=VARCHAR}, 
-      #{headImg,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{remark,jdbcType=VARCHAR}
-      )
+      #{status,jdbcType=INTEGER}, #{nickname,jdbcType=VARCHAR}, #{gender,jdbcType=INTEGER}, 
+      #{birthday,jdbcType=DATE}, #{phone,jdbcType=VARCHAR}, #{email,jdbcType=VARCHAR}, 
+      #{address,jdbcType=VARCHAR}, #{headImg,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, 
+      #{remark,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.pp.entity.User" >
     insert into t_user
@@ -70,6 +71,9 @@
       </if>
       <if test="nickname != null" >
         nickname,
+      </if>
+      <if test="gender != null" >
+        gender,
       </if>
       <if test="birthday != null" >
         birthday,
@@ -104,10 +108,13 @@
         #{password,jdbcType=VARCHAR},
       </if>
       <if test="status != null" >
-        #{status,jdbcType=BIGINT},
+        #{status,jdbcType=INTEGER},
       </if>
       <if test="nickname != null" >
         #{nickname,jdbcType=VARCHAR},
+      </if>
+      <if test="gender != null" >
+        #{gender,jdbcType=INTEGER},
       </if>
       <if test="birthday != null" >
         #{birthday,jdbcType=DATE},
@@ -142,10 +149,13 @@
         password = #{password,jdbcType=VARCHAR},
       </if>
       <if test="status != null" >
-        status = #{status,jdbcType=BIGINT},
+        status = #{status,jdbcType=INTEGER},
       </if>
       <if test="nickname != null" >
         nickname = #{nickname,jdbcType=VARCHAR},
+      </if>
+      <if test="gender != null" >
+        gender = #{gender,jdbcType=INTEGER},
       </if>
       <if test="birthday != null" >
         birthday = #{birthday,jdbcType=DATE},
@@ -175,8 +185,9 @@
     update t_user
     set account = #{account,jdbcType=VARCHAR},
       password = #{password,jdbcType=VARCHAR},
-      status = #{status,jdbcType=BIGINT},
+      status = #{status,jdbcType=INTEGER},
       nickname = #{nickname,jdbcType=VARCHAR},
+      gender = #{gender,jdbcType=INTEGER},
       birthday = #{birthday,jdbcType=DATE},
       phone = #{phone,jdbcType=VARCHAR},
       email = #{email,jdbcType=VARCHAR},

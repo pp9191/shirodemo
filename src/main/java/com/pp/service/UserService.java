@@ -50,4 +50,8 @@ public class UserService {
 		fileMapper.insertSelective(fileinfo);
 		userMapper.updateByPrimaryKeySelective(user);
 	}
+
+	public Integer setUserinfo(User user) {
+		return userMapper.updateByPrimaryKeySelective(user);
+	}
 }

@@ -21,10 +21,12 @@ public class User implements Serializable{
     @Pattern(regexp="^\\w{6,20}$", message="密码由6到20位字母或数字组成")
     private String password;
 
-    private Long status;
+    private Integer status;
 
     @Length(max=50, message="昵称超出长度50位字符")
     private String nickname;
+    
+    private Integer gender;
 
     private Date birthday;
 
@@ -69,12 +71,12 @@ public class User implements Serializable{
         this.password = password == null ? null : password.trim();
     }
 
-    public Long getStatus() {
+    public Integer getGender() {
         return status;
     }
 
-    public void setStatus(Long status) {
-        this.status = status;
+    public void setGender(Integer gender) {
+        this.gender = gender;
     }
 
     public String getNickname() {
@@ -83,6 +85,14 @@ public class User implements Serializable{
 
     public void setNickname(String nickname) {
         this.nickname = nickname == null ? null : nickname.trim();
+    }
+    
+    public Integer getStatus() {
+        return status;
+    }
+
+    public void setStatus(Integer status) {
+        this.status = status;
     }
 
     public Date getBirthday() {

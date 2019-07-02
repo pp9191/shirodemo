@@ -186,7 +186,19 @@ public class UserController {
         	result.put("result", "false");
         	result.put("message", "请选择上传文件");
         }
+		return result;		
+	}
+	
+	@ResponseBody
+	@RequestMapping(value="/setUserinfo")
+	public Map<String, String> setUserinfo(User user) {
+		Map<String, String> result = new HashMap<String, String>();
+		int flag = userService.setUserinfo(user);
+		if(flag == 1) {			
+			result.put("result", "true");
+		}else {
+			result.put("result", "false");
+		}
 		return result;
-		
 	}
 }
