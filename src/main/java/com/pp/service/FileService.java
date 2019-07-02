@@ -3,18 +3,18 @@ package com.pp.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import com.pp.dao.FileMapper;
-import com.pp.entity.File;
+import com.pp.dao.FileInfoMapper;
+import com.pp.entity.FileInfo;
 
 @Repository("fileService")
 public class FileService {
 	
 	@Autowired
-	private FileMapper fileMapper;
-	
-	private Integer insert(File record) {
+	private FileInfoMapper fileMapper;
 		
-		return fileMapper.insertSelective(record);
+	public FileInfo getFileInfo(String id) {
+		
+		return fileMapper.selectByPrimaryKey(id);
 	}
 	
 }

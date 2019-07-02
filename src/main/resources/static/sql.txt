@@ -19,10 +19,10 @@ PRIMARY KEY (`id`)
 DROP TABLE IF EXISTS `t_role`;
 CREATE TABLE `t_role` (
 `id`  bigint(20) NOT NULL AUTO_INCREMENT ,
-`rolename`  varchar(32)  NOT NULL COMMENT '角色名称' ,
+`rolename`  varchar(36)  NOT NULL COMMENT '角色名称' ,
 `remark`  varchar(256)  NULL DEFAULT NULL COMMENT '角色说明' ,
 `create_time`  datetime NULL DEFAULT NULL ,
-`create_by`  varchar(32)  NULL DEFAULT NULL COMMENT '创建者(账号)',
+`create_by`  varchar(36)  NULL DEFAULT NULL COMMENT '创建者(账号)',
 PRIMARY KEY (`id`)
 )
 ;
@@ -35,7 +35,7 @@ CREATE TABLE `t_role_permission` (
 `role_id`  bigint(20) NOT NULL COMMENT '角色ID' ,
 `permssion_id`  bigint(20) NOT NULL COMMENT '权限ID' ,
 `create_time`  datetime NULL DEFAULT NULL ,
-`create_by`  varchar(32)  NULL DEFAULT NULL ,
+`create_by`  varchar(36)  NULL DEFAULT NULL ,
 PRIMARY KEY (`role_id`, `permssion_id`)
 )
 ;
@@ -47,13 +47,13 @@ DROP TABLE IF EXISTS `t_user`;
 CREATE TABLE `t_user` (
 `id`  bigint(20) NOT NULL AUTO_INCREMENT ,
 `account`  varchar(20) NOT NULL COMMENT '登录帐号' ,
-`password`  varchar(20) NOT NULL COMMENT '密码' ,
+`password`  varchar(32) NOT NULL COMMENT '密码' ,
 `status`  bigint(1) NULL DEFAULT 1 COMMENT '1:有效，0:禁止登录' ,
-`nickname`  varchar(100) NULL DEFAULT NULL COMMENT '用户昵称' ,
+`nickname`  varchar(36) NULL DEFAULT NULL COMMENT '用户昵称' ,
 `birthday`  date NULL DEFAULT NULL ,
 `phone`  varchar(11) NULL DEFAULT NULL COMMENT '手机号' ,
 `email`  varchar(36) NULL DEFAULT NULL COMMENT '邮箱' ,
-`address`  varchar(255) NULL DEFAULT NULL ,
+`address`  varchar(256) NULL DEFAULT NULL ,
 `head_img`  varchar(36) NULL DEFAULT NULL COMMENT '头像文件id' ,
 `create_time`  datetime NULL DEFAULT NULL COMMENT '创建时间' ,
 `remark`  varchar(255) NULL DEFAULT NULL ,
@@ -70,22 +70,22 @@ CREATE TABLE `t_user_role` (
 `user_id`  bigint(20) NOT NULL COMMENT '用户ID' ,
 `role_id`  bigint(20) NOT NULL COMMENT '角色ID' ,
 `create_time`  datetime NULL DEFAULT NULL ,
-`create_by`  varchar(32)  NULL DEFAULT NULL ,
+`create_by`  varchar(36)  NULL DEFAULT NULL ,
 PRIMARY KEY (`user_id`, `role_id`)
 )
 ;
 
 -- ----------------------------
--- Table structure for t_file
+-- Table structure for t_fileinfo
 -- ----------------------------
-DROP TABLE IF EXISTS `t_file`;
-CREATE TABLE `t_file` (
+DROP TABLE IF EXISTS `t_fileinfo`;
+CREATE TABLE `t_fileinfo` (
 `id`  varchar(36) NOT NULL COMMENT '主键（实际文件名）' ,
-`type`  varchar(10) NOT NULL DEFAULT '' COMMENT '文件类型（文件名后缀）' ,
-`path`  varchar(255) NOT NULL COMMENT '所在文件夹路径' ,
-`originalname`  varchar(100) NOT NULL COMMENT '原始文件名' ,
+`type`  varchar(10) NOT NULL COMMENT '文件类型（文件名后缀）' ,
+`path`  varchar(256) NOT NULL COMMENT '所在文件夹路径' ,
+`originalname`  varchar(256) NOT NULL COMMENT '原始文件名' ,
 `create_time`  datetime NULL DEFAULT NULL ,
-`create_by`  varchar(50) NULL DEFAULT NULL ,
+`create_by`  varchar(36) NULL DEFAULT NULL ,
 PRIMARY KEY (`id`)
 )
 ;

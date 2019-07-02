@@ -2,8 +2,8 @@ package com.pp.entity;
 
 import java.util.Date;
 
-public class File {
-    private Long id;
+public class FileInfo {
+    private String id;
 
     private String type;
 
@@ -15,12 +15,12 @@ public class File {
 
     private String createBy;
 
-    public Long getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setId(String id) {
+        this.id = id == null ? null : id.trim();
     }
 
     public String getType() {

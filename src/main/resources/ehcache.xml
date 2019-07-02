@@ -30,7 +30,7 @@
             timeToLiveSeconds="600"
             memoryStoreEvictionPolicy="LRU" />
 
-    <!-- 登录记录缓存 锁定10分钟 -->
+    <!-- 登录记录缓存 锁定60分钟 -->
     <cache name="passwordRetryCache"
            eternal="false"
            timeToIdleSeconds="3600"

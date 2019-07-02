@@ -1,6 +1,13 @@
 package com.pp.controller;
 
+import java.io.File;
+import java.io.IOException;
+import java.util.Arrays;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.UUID;
 
 import javax.validation.Valid;
 
@@ -13,14 +20,20 @@ import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.session.Session;
 import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 
+import com.pp.entity.FileInfo;
 import com.pp.entity.User;
 import com.pp.service.UserService;
 import com.pp.shiro.ShiroUtils;
@@ -31,6 +44,11 @@ public class UserController {
 	
 	@Autowired
 	private UserService userService;
+	
+	@Value("${server.naspath}")
+	private String basePath;
+	
+	private List<String> imgType = Arrays.asList("bmp", "gif", "png", "jpg", "jpeg");
 
 	@RequestMapping(value="/signup", method=RequestMethod.GET)
 	public String signup(User user) {		
@@ -53,6 +71,7 @@ public class UserController {
 		} else {
 			// 密码加密
 			user.setPassword(ShiroUtils.encryptPassword(user.getPassword(), user.getAccount()));
+			System.out.println(user.getPassword() + "|" + user.getPassword().length());
 			if(userService.addUser(user) == 1) {				
 				// 注册成功，跳转登录
 				return "login";
@@ -114,5 +133,60 @@ public class UserController {
 		Subject subject = SecurityUtils.getSubject();
 		model.addAttribute("user", subject.getPrincipal());
 		return "userinfo";
+	}
+	
+	@ResponseBody
+	@RequestMapping(value="/setHead/{userId}")
+	public Map<String, String> setHeadImg(@RequestParam("file") MultipartFile file, @PathVariable String userId) {
+		Map<String, String> result = new HashMap<String, String>();
+		
+		if (!file.isEmpty()) {
+			String fileName = file.getOriginalFilename();
+			String type = fileName.substring(fileName.lastIndexOf(".") + 1);
+			
+			if(imgType.contains(type)) {
+				Date date =  new Date();
+				String uuid = UUID.randomUUID().toString();
+				String filePath = basePath.concat(ShiroUtils.getDatePath(date));
+				String pathname = filePath.concat(File.separator).concat(uuid).concat(".").concat(type);
+				File dir = new File(filePath);
+				
+				if (!dir.exists()) {
+					dir.mkdirs();
+				}
+				
+				FileInfo fileinfo = new FileInfo();
+				fileinfo.setId(uuid);
+				fileinfo.setType(type);
+				fileinfo.setPath(filePath);
+				fileinfo.setOriginalname(fileName);
+				fileinfo.setCreateTime(date);
+				User curUser = (User) SecurityUtils.getSubject().getPrincipal();
+				fileinfo.setCreateBy(curUser.getAccount());
+				
+				File dest = new File(pathname); 
+				try { 
+					file.transferTo(dest);
+					userService.setHeadImg(userId, fileinfo);
+					// 更新subject信息
+					curUser.setHeadImg(uuid);
+					
+					result.put("result", "true");
+					result.put("headImg", uuid);
+				} catch (IOException e) { 
+					result.put("result", "false");
+					result.put("message", e.getMessage());
+				}		
+				
+			} else {
+				result.put("result", "false");
+	        	result.put("message", "不支持的图片格式，仅支持一下格式图片：" + imgType.toString());
+			}
+        } else {
+        	result.put("result", "false");
+        	result.put("message", "请选择上传文件");
+        }
+		return result;
+		
 	}
 }

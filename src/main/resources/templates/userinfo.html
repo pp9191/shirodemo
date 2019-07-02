@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
-	xmlns:layout="http://www.w3.org/1999/xhtml"
-	layout:decorator="layout/default">
+	xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
+	layout:decorate="layout/default">
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
@@ -51,13 +51,67 @@
 		}
 	</style> 
 	<script>
-		$(document).ready(function() {
+		$(function() {
 			$("#myNav").affix({
 				offset : {
 					top : 125
 				}
 			});
 		});
+		
+		var imgType = [".bmp", ".gif", ".png", ".jpg", ".jpeg"];
+		
+		function setHeadImg(){
+			if($("#input_head").val()){
+				$("#form_setHead").ajaxSubmit(function(data){
+					if(data.result == "false"){
+						$.alert({
+						    title: '提示',
+						    content: data.message
+						});
+					}else{
+						$.alert({
+						    title: '提示',
+						    content: "上传成功"
+						});
+						$("#input_head").val("");
+						
+						/* var src = $("#img_head").attr("src");
+						src = src.substr(0, src.lastIndexOf("/") + 1) + data.headImg;
+						$("#img_head").attr("src", src); */
+					}
+				});
+			}
+		}
+		
+		function checkHeadImg(obj){
+			if($(obj).val()){
+				var filename = $(obj).val();
+				var type = filename.substr(filename.lastIndexOf("."));
+				if(imgType.indexOf(type) == -1){
+					$.alert({
+					    title: '提示',
+					    content: "图片格式不被支持，仅支持以下图片格式：" + imgType.join("，")
+					});
+					$(obj).val("");
+				}else{
+					// 图片预览
+					bindAvatar(obj, document.getElementById("img_head"));
+				}
+			}
+		}
+		
+		function bindAvatar(el_input, el_img) {
+			
+			if(window.URL.createObjectURL){
+				el_img.src = window.URL.createObjectURL(el_input.files[0]);	
+			} else {
+				$.alert({
+				    title: '提示',
+				    content: "此浏览器不支持预览"
+				});
+			}
+		 }
 	</script>
 	<div class="container">
 		<!-- <div class="jumbotron">
@@ -66,28 +120,38 @@
 		<div class="row">
 			<div class="col-xs-4 col-md-3 col-lg-2" id="myScrollspy">
 				<ul class="nav nav-pills nav-stacked" id="myNav">
-					<li class="active"><a href="#section-1">个人信息</a></li>
-					<li><a href="#section-2">修改密码</a></li>
-					<li><a href="#section-3">第三部分</a></li>
+					<li class="active"><a href="#section-1">修改头像</a></li>
+					<li><a href="#section-2">个人信息</a></li>
+					<li><a href="#section-3">修改密码</a></li>
 					<li><a href="#section-4">第四部分</a></li>
 					<li><a href="#section-5">第五部分</a></li>
 				</ul>
 			</div>
 			<div class="col-xs-8 col-md-9 col-lg-10">
-				<h3 id="section-1">个人信息</h3>
-				<form class="form-horizontal" role="form" th:object="${user}">
-					<div class="form-group">
-						<label for="firstname" class="col-sm-2 control-label">头像</label>
-						<div class="col-sm-10">
-							<img alt="" src=""/>
-						</div>
+				<h3 id="section-1">修改头像</h3>
+				
+				<div class="row">
+					<div class="col-sm-offset-2">
+						<form id="form_setHead" th:action="@{'/user/setHead/'+${user.id}}" method="post" enctype="multipart/form-data">
+						<img id="img_head" th:src="@{'/common/headImg/'+${user.headImg}}"
+							class="img-circle" style="width:98px;height:98px;" 
+							onclick="$('#input_head').trigger('click');"/>
+						<a class="btn btn-default" onclick="setHeadImg()">上传头像</a>
+						<input type="file" name="file" id="input_head" style="width:0;height:0;"
+							onchange="checkHeadImg(this)">
+						</form>
 					</div>
+				</div>
+				
+				<h3 id="section-2">个人信息</h3>
+				<form class="form-horizontal" role="form" th:object="${user}">
+					
 					<div class="form-group">
 						<label for="lastname" class="col-sm-2 control-label">昵称</label>
 						<div class="col-sm-10">
 							<input type="text" class="form-control" th:field="*{nickname}">
 						</div>
-					</div>					
+					</div>
 					<div class="form-group">
 						<label for="lastname" class="col-sm-2 control-label">性别</label>
 						<div class="col-sm-10">
@@ -125,7 +189,8 @@
 					</div>
 				</form>
 				<hr>
-				<h3 id="section-2">修改密码</h3>
+				
+				<h3 id="section-3">修改密码</h3>
 				<p>Nullam hendrerit justo non leo aliquet imperdiet. Etiam in
 					sagittis lectus. Suspendisse ultrices placerat accumsan. Mauris
 					quis dapibus orci. In dapibus velit blandit pharetra tincidunt.
@@ -143,7 +208,7 @@
 					hendrerit tincidunt ante. Vivamus sem augue, hendrerit non sapien
 					in, mollis ornare augue.</p>
 				<hr>
-				<h2 id="section-3">第三部分</h2>
+				<h2 id="section-4">第三部分</h2>
 				<p>Integer pulvinar leo id risus pellentesque vestibulum. Sed
 					diam libero, sodales eget sapien vel, porttitor bibendum enim.
 					Donec sed nibh vitae lorem porttitor blandit in nec ante.
@@ -174,7 +239,7 @@
 					mollis tempus. Morbi vel accumsan diam, eget convallis tellus.
 					Suspendisse potenti.</p>
 				<hr>
-				<h2 id="section-4">第四部分</h2>
+				<h2 id="section-5">第四部分</h2>
 				<p>Suspendisse a orci facilisis, dignissim tortor vitae,
 					ultrices mi. Vestibulum a iaculis lacus. Phasellus vitae convallis
 					ligula, nec volutpat tellus. Vivamus scelerisque mollis nisl, nec
@@ -221,51 +286,7 @@
 					iaculis. Quisque eget commodo ligula. Praesent leo dui, facilisis
 					quis eleifend in, aliquet vitae nunc. Suspendisse fermentum odio ac
 					massa ultricies pellentesque. Fusce eu suscipit massa.</p>
-				<hr>
-				<h2 id="section-5">第五部分</h2>
-				<p>Nam eget purus nec est consectetur vehicula. Nullam ultrices
-					nisl risus, in viverra libero egestas sit amet. Etiam porttitor
-					dolor non eros pulvinar malesuada. Vestibulum sit amet est mollis
-					nulla tempus aliquet. Praesent luctus hendrerit arcu non laoreet.
-					Morbi consequat placerat magna, ac ornare odio sagittis sed. Donec
-					vitae ullamcorper purus. Vivamus non metus ac justo porta volutpat.</p>
-				<p>Vivamus mattis accumsan erat, vel convallis risus pretium
-					nec. Integer nunc nulla, viverra ut sem non, scelerisque vehicula
-					arcu. Fusce bibendum convallis augue sit amet lobortis. Cras porta
-					urna turpis, sodales lobortis purus adipiscing id. Maecenas
-					ullamcorper, turpis suscipit pellentesque fringilla, massa lacus
-					pulvinar mi, nec dignissim velit arcu eget purus. Nam at dapibus
-					tellus, eget euismod nisl. Ut eget venenatis sapien. Vivamus
-					vulputate varius mauris, vel varius nisl facilisis ac. Nulla
-					aliquet justo a nibh ornare, eu congue neque rutrum.</p>
-				<p>Suspendisse a orci facilisis, dignissim tortor vitae,
-					ultrices mi. Vestibulum a iaculis lacus. Phasellus vitae convallis
-					ligula, nec volutpat tellus. Vivamus scelerisque mollis nisl, nec
-					vehicula elit egestas a. Sed luctus metus id mi gravida, faucibus
-					convallis neque pretium. Maecenas quis sapien ut leo fringilla
-					tempor vitae sit amet leo. Donec imperdiet tempus placerat.
-					Pellentesque pulvinar ultrices nunc sed ultrices. Morbi vel mi
-					pretium, fermentum lacus et, viverra tellus. Phasellus sodales
-					libero nec dui convallis, sit amet fermentum sapien auctor.
-					Vestibulum ante ipsum primis in faucibus orci luctus et ultrices
-					posuere cubilia Curae; Sed eu elementum nibh, quis varius libero.</p>
-				<p>Morbi sed fermentum ipsum. Morbi a orci vulputate tortor
-					ornare blandit a quis orci. Donec aliquam sodales gravida. In ut
-					ullamcorper nisi, ac pretium velit. Vestibulum vitae lectus
-					volutpat, consequat lorem sit amet, pulvinar tellus. In tincidunt
-					vel leo eget pulvinar. Curabitur a eros non lacus malesuada
-					aliquam. Praesent et tempus odio. Integer a quam nunc. In hac
-					habitasse platea dictumst. Aliquam porta nibh nulla, et mattis
-					turpis placerat eget. Pellentesque dui diam, pellentesque vel
-					gravida id, accumsan eu magna. Sed a semper arcu, ut dignissim leo.</p>
-				<p>Sed vitae lobortis diam, id molestie magna. Aliquam consequat
-					ipsum quis est dictum ultrices. Aenean nibh velit, fringilla in
-					diam id, blandit hendrerit lacus. Donec vehicula rutrum tellus eget
-					fermentum. Pellentesque ac erat et arcu ornare tincidunt. Aliquam
-					erat volutpat. Vivamus lobortis urna quis gravida semper. In
-					condimentum, est a faucibus luctus, mi dolor cursus mi, id vehicula
-					arcu risus a nibh. Pellentesque blandit sapien lacus, vel vehicula
-					nunc feugiat sit amet.</p>
+				
 			</div>
 		</div>
 	</div>
