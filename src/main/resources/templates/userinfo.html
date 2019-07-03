@@ -298,7 +298,8 @@
 				<h3 id="section-2">个人信息</h3>
 				<form id="form_userinfo" th:action="@{/user/setUserinfo}"
 					class="form-horizontal" role="form" th:object="${user}" method="post">
-					<input type="hidden" th:field="*{id}"/>			
+					<input type="hidden" th:field="*{id}"/>
+					<input type="hidden" th:field="*{account}"/>	
 					<div class="form-group">
 						<label for="lastname" class="col-sm-2 control-label">昵称</label>
 						<div class="col-sm-10">

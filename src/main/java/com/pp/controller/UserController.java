@@ -97,7 +97,8 @@ public class UserController {
 		Subject subject = SecurityUtils.getSubject();
 		try{
 			// 调用安全认证框架的登录方法
-			subject.login(new UsernamePasswordToken(user.getAccount(), user.getPassword(), rememberMe));			
+			subject.login(new UsernamePasswordToken(user.getAccount(), user.getPassword(), rememberMe));
+			subject.getSession().setAttribute("userinfo", subject.getPrincipal());
 			return "redirect:/index";
 		}catch(UnknownAccountException|LockedAccountException|ExcessiveAttemptsException ex){
 			// 用户名不存在 | 账号被锁 | 密码错误次数达到5次
@@ -116,7 +117,8 @@ public class UserController {
 	public String logout() {
 		Subject subject = SecurityUtils.getSubject();
 		if (subject.isAuthenticated()) {
-			subject.logout(); 
+			subject.getSession().removeAttribute("userinfo");
+			subject.logout();
 		}
 		return "redirect:/index";
 	}
@@ -130,8 +132,7 @@ public class UserController {
 	
 	@RequestMapping(value="/userinfo", method=RequestMethod.GET)
 	public String userinfo(Model model) {
-		Subject subject = SecurityUtils.getSubject();
-		model.addAttribute("user", subject.getPrincipal());
+		model.addAttribute("user", SecurityUtils.getSubject().getSession().getAttribute("userinfo"));
 		return "userinfo";
 	}
 	
@@ -161,7 +162,7 @@ public class UserController {
 				fileinfo.setPath(filePath);
 				fileinfo.setOriginalname(fileName);
 				fileinfo.setCreateTime(date);
-				User curUser = (User) SecurityUtils.getSubject().getPrincipal();
+				User curUser = (User) SecurityUtils.getSubject().getSession().getAttribute("userinfo");
 				fileinfo.setCreateBy(curUser.getAccount());
 				
 				File dest = new File(pathname); 
@@ -198,6 +199,9 @@ public class UserController {
 			result.put("errors", bindResult.getAllErrors());
 		} else {			
 			userService.setUserinfo(user);
+			// 更新session
+			user = userService.selectByAccount(user.getAccount());
+			SecurityUtils.getSubject().getSession().setAttribute("userinfo", user);
 			result.put("result", "true");
 		}
 		return result;
@@ -208,7 +212,7 @@ public class UserController {
 	public Map<String, Object> setPassword(String password, String password1) {
 		Map<String, Object> result = new HashMap<String, Object>();
 		if(password1.matches("^\\w{6,18}$")) {			
-			User user = (User) SecurityUtils.getSubject().getPrincipal();
+			User user = (User) SecurityUtils.getSubject().getSession().getAttribute("userinfo");
 			if(ShiroUtils.encryptPassword(password, user.getAccount()).equals(user.getPassword())) {
 				user.setPassword(ShiroUtils.encryptPassword(password1, user.getAccount()));
 				userService.setUserinfo(user);
