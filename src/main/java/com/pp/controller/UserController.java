@@ -196,9 +196,31 @@ public class UserController {
 		if(bindResult.hasErrors()) {
 			result.put("result", "false");
 			result.put("errors", bindResult.getAllErrors());
+		} else {			
+			userService.setUserinfo(user);
+			result.put("result", "true");
 		}
-		userService.setUserinfo(user);
-		result.put("result", "true");
+		return result;
+	}
+	
+	@ResponseBody
+	@RequestMapping(value="/setPassword")
+	public Map<String, Object> setPassword(String password, String password1) {
+		Map<String, Object> result = new HashMap<String, Object>();
+		if(password1.matches("^\\w{6,18}$")) {			
+			User user = (User) SecurityUtils.getSubject().getPrincipal();
+			if(ShiroUtils.encryptPassword(password, user.getAccount()).equals(user.getPassword())) {
+				user.setPassword(ShiroUtils.encryptPassword(password1, user.getAccount()));
+				userService.setUserinfo(user);
+				result.put("result", "true");
+			} else {
+				result.put("result", "false");
+				result.put("message", "旧密码输入错误");
+			}
+		} else {
+			result.put("result", "false");
+			result.put("message", "新密码格式不对：密码只能由4-18位数字、字母或下划线组成。");
+		}
 		return result;
 	}
 }

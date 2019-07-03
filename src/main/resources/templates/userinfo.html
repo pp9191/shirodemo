@@ -61,11 +61,11 @@
 			$('#dp_birthday input').datepicker({
 		        language: 'zh-CN',
 		        weekStart: 1,
-		        todayBtn:  true,   //今日日期按钮
+		        todayBtn:  "linked",   //今日日期按钮
 				autoclose: true,   //自动关闭
 				todayHighlight: true,   //高亮今日日期
 				startDate: '1900-01-01',
-				endDate: new Date(),
+				endDate: "today",
 		    });
 			
 			$('form').bootstrapValidator({
@@ -161,7 +161,10 @@
 						}
 					}
 				}
-			});
+			}).on('success.form.bv', function(e) {
+		        // 阻止默认事件提交
+		        e.preventDefault();
+		    });
 		});
 		
 		var imgType = [".bmp", ".gif", ".png", ".jpg", ".jpeg"];
@@ -237,6 +240,26 @@
 						    title: '提示',
 						    content: "保存成功"
 						});						
+					}
+				});
+			} 
+		}
+		
+		function setPassword(){
+			$("#form_setPassword").data("bootstrapValidator").validate();  
+			if($("#form_setPassword").data("bootstrapValidator").isValid()){			
+				$("#form_setPassword").ajaxSubmit(function(data){
+					if(data.result == "false"){
+						$.alert({
+						    title: '提示',
+						    content: data.message
+						});
+					}else{
+						$.alert({
+						    title: '提示',
+						    content: "保存成功"
+						});	
+						document.getElementById("form_setPassword").reset();
 					}
 				});
 			} 
@@ -326,7 +349,7 @@
 					</div>
 					<div class="form-group">
 						<div class="col-sm-offset-2 col-sm-10">
-							<a class="btn btn-default" onclick="saveUserInfo()">保存</a>
+							<input type="submit" class="btn btn-default" value="保存" onclick="saveUserInfo()"/>
 						</div>
 					</div>
 				</form>
@@ -334,7 +357,7 @@
 				<hr/>
 				
 				<h3 id="section-3">修改密码</h3>
-				<form class="form-horizontal" role="form" method="post">
+				<form id="form_setPassword" th:action="@{/user/setPassword}" class="form-horizontal" role="form" method="post">
 					<div class="form-group">
 						<label for="password" class="col-sm-2 control-label">旧密码</label>
 						<div class="col-sm-10">
@@ -355,7 +378,7 @@
 					</div>
 					<div class="form-group">
 						<div class="col-sm-offset-2 col-sm-10">
-							<a class="btn btn-default" >保存</a>
+							<input type="submit" class="btn btn-default" value="保存" onclick="setPassword()"/>
 						</div>
 					</div>
 				</form>

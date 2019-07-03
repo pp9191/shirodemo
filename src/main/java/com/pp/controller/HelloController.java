@@ -43,18 +43,18 @@ public class HelloController {
         Graphics g = image.getGraphics();
         g.setColor(new Color(0xDCDBD2));
         g.fillRect(0, 0, width, height);
-        g.setColor(Color.black);
+//        g.setColor(Color.black);
 //        g.drawRect(0, 0, width - 1, height - 1);
         Random rdm = new Random();
         String hash1 = Integer.toHexString(rdm.nextInt());
-        System.out.println(hash1);
-        for (int i = 0; i < 50; i++) {
-            int x = rdm.nextInt(width);
-            int y = rdm.nextInt(height);
-            g.drawOval(x, y, 0, 0);
-        }
+//        System.out.println(hash1);
+//        for (int i = 0; i < 50; i++) {
+//            int x = rdm.nextInt(width);
+//            int y = rdm.nextInt(height);
+//            g.drawOval(x, y, 0, 0);
+//        }
         String capstr = hash1.substring(0, 4);
-         Session session = SecurityUtils.getSubject().getSession();
+        Session session = SecurityUtils.getSubject().getSession();
         //将生成的验证码存入session
         session.setAttribute("validateCode", capstr);
         g.setColor(new Color(53, 61, 255));
