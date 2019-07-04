@@ -6,7 +6,7 @@
 <meta charset="UTF-8">
 <title>Insert title here</title>
 </head>
-<body layout:fragment="content" data-spy="scroll" data-target="#myScrollspy">
+<body layout:fragment="content">
 	<style type="text/css">
 		/* Custom Styles */
 		ul.nav-pills {
@@ -26,16 +26,8 @@
 		}
 		
 		ul.nav-pills li a {
-			/* margin: 0;
-			padding: 8px 16px; */
 			border-radius: 0;
 		}
-		
-		/* ul.nav-pills li.active a, ul.nav-tabs li.active a:hover {
-			color: #fff;
-			background: #0088cc;
-			border: 1px solid #0088cc;
-		} */
 		
 		ul.nav-pills li:first-child a {
 			border-radius: 4px 4px 0 0;
@@ -51,12 +43,6 @@
 	</style> 
 	<script>
 		$(function() {
-			$("#myNav").affix({
-				offset : {
-					top : 125
-				}
-			});
-			
 			$('#dp_birthday input').datepicker({
 		        language: 'zh-CN',
 		        weekStart: 1,
@@ -270,11 +256,9 @@
 		<div class="row">
 			<div class="col-sm-4 col-md-3 col-lg-2" id="myScrollspy">
 				<ul class="nav nav-pills nav-stacked" id="myNav">
-					<li class="active"><a href="#section-1">修改头像</a></li>
+					<li><a href="#section-1">修改头像</a></li>
 					<li><a href="#section-2">个人信息</a></li>
 					<li><a href="#section-3">修改密码</a></li>
-					<!-- <li><a href="#section-4">第四部分</a></li>
-					<li><a href="#section-5">第五部分</a></li> -->
 				</ul>
 			</div>
 			<div class="col-sm-8 col-md-9 col-lg-10">
@@ -284,7 +268,7 @@
 					<div class="col-sm-10 col-sm-offset-2">
 						<form id="form_setHead" th:action="@{'/user/setHead/'+${user.id}}" method="post" enctype="multipart/form-data">
 						<img id="img_head" th:src="@{'/common/headImg/'+${user.headImg}}" class="img-circle" 
-							style="width:100px; height:100px; cursor:pointer;"  onclick="$('#input_head').trigger('click');"/>
+							style="width:100px; height:100px; cursor:pointer;" onclick="$('#input_head').trigger('click');"/>
 						<a class="btn btn-default" onclick="setHeadImg()" style="margin-left:20px;">上传头像</a>
 						<input type="file" name="file" id="input_head" accept="image/*" 
 							style="width:0; height:0;" onchange="checkHeadImg(this)"/>
