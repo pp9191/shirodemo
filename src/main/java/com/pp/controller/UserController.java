@@ -74,6 +74,8 @@ public class UserController {
 			System.out.println(user.getPassword() + "|" + user.getPassword().length());
 			if(userService.addUser(user) == 1) {				
 				// 注册成功，跳转登录
+				FieldError error = new FieldError("user", "account", "注册成功，请登录");
+				result.addError(error);
 				return "login";
 			}
 		}
@@ -138,14 +140,15 @@ public class UserController {
 	
 	@ResponseBody
 	@RequestMapping(value="/setHead/{userId}")
-	public Map<String, String> setHeadImg(@RequestParam("file") MultipartFile file, @PathVariable String userId) {
-		Map<String, String> result = new HashMap<String, String>();
-		
+	public Map<String, Object> setHeadImg(@RequestParam("file") MultipartFile file, @PathVariable String userId) {
+		Map<String, Object> result = new HashMap<String, Object>();		
 		if (!file.isEmpty()) {
 			String fileName = file.getOriginalFilename();
 			String type = fileName.substring(fileName.lastIndexOf(".") + 1);
-			
-			if(imgType.contains(type)) {
+			if(file.getSize() > 2 * 1024 * 1024) {
+				result.put("result", "false");
+	        	result.put("message", "文件大小超出2MB限制");
+			}else if(imgType.contains(type)) {
 				Date date =  new Date();
 				String uuid = UUID.randomUUID().toString();
 				String filePath = basePath.concat(ShiroUtils.getDatePath(date));

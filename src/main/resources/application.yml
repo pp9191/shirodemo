@@ -6,6 +6,10 @@ server:
       context-path: null
    naspath: D:\download
 spring:
+   servlet:
+      multipart:
+         max-file-size: 10MB # 最大支持文件大小 
+         max-request-size: 50MB # 最大支持请求(总)大小
    datasource:
       url: jdbc:mysql://192.168.0.198:3306/test
       username: root
