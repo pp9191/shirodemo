@@ -166,8 +166,6 @@
 		    });
 		});
 		
-		var imgType = [".bmp", ".gif", ".png", ".jpg", ".jpeg"];
-		
 		function setHeadImg(){
 			if($("#input_head").val()){
 				$("#form_setHead").ajaxSubmit(function(data){
@@ -188,11 +186,17 @@
 						$("#img_head").attr("src", src); */
 					}
 				});
+			}else{
+				$.alert({
+				    title: '提示',
+				    content: "请选择上传图片"
+				});
 			}
 		}
 		
 		function checkHeadImg(obj){
 			if($(obj).val()){
+				var imgType = [".bmp", ".gif", ".png", ".jpg", ".jpeg"];
 				var filename = $(obj).val();
 				var type = filename.substr(filename.lastIndexOf("."));
 				if(imgType.indexOf(type) == -1){
@@ -205,11 +209,6 @@
 					// 图片预览
 					bindAvatar(obj, document.getElementById("img_head"));
 				}
-			}else{
-				$.alert({
-				    title: '提示',
-				    content: "请选择上传图片"
-				});
 			}
 		}
 		
