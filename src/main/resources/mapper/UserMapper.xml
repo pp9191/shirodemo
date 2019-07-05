@@ -46,13 +46,13 @@
     insert into t_user (id, account, password, 
       status, nickname, gender, 
       birthday, phone, email, 
-      address, head_img, create_time, 
-      remark)
+      address, head_img, remark, 
+      create_time)
     values (#{id,jdbcType=BIGINT}, #{account,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}, 
       #{status,jdbcType=INTEGER}, #{nickname,jdbcType=VARCHAR}, #{gender,jdbcType=INTEGER}, 
       #{birthday,jdbcType=DATE}, #{phone,jdbcType=VARCHAR}, #{email,jdbcType=VARCHAR}, 
-      #{address,jdbcType=VARCHAR}, #{headImg,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, 
-      #{remark,jdbcType=VARCHAR})
+      #{address,jdbcType=VARCHAR}, #{headImg,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR},
+      now())
   </insert>
   <insert id="insertSelective" parameterType="com.pp.entity.User" >
     insert into t_user
@@ -90,12 +90,10 @@
       <if test="headImg != null" >
         head_img,
       </if>
-      <if test="createTime != null" >
-        create_time,
-      </if>
       <if test="remark != null" >
         remark,
       </if>
+        create_time
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="id != null" >
@@ -131,12 +129,10 @@
       <if test="headImg != null" >
         #{headImg,jdbcType=VARCHAR},
       </if>
-      <if test="createTime != null" >
-        #{createTime,jdbcType=TIMESTAMP},
-      </if>
       <if test="remark != null" >
         #{remark,jdbcType=VARCHAR},
       </if>
+        now()
     </trim>
   </insert>
   <update id="updateByPrimaryKeySelective" parameterType="com.pp.entity.User" >
