@@ -7,6 +7,9 @@
 <title>Insert title here</title>
 </head>
 <body layout:fragment="content">
+<script type="text/javascript">
+
+</script>
 	<div class="container-fluid">		
 		<div class="col-xs-4 col-sm-3 col-lg-2" >
 			<ul class="nav nav-pills nav-stacked" style="min-height: 500px; border-radius: 5px; background-color: #f8f8f8;">
@@ -40,8 +43,8 @@
 						<td th:text="${#dates.format(user.createTime, 'yyyy-MM-dd')}"></td>
 						<td th:text="${user.status}"></td>
 						<td>
-							<a href="javascript:">编辑</a>
-							<a href="javascript:">删除</a>
+							<a th:href="@{'javascript:editUser(\''+${user.id}+'\');'}">编辑</a>
+							<a th:href="@{'javascript:deleteUser(\''+${user.id}+'\');'}">删除</a>
 						</td>
 					</tr>
 				</tbody>
