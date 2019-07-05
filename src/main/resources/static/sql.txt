@@ -82,8 +82,8 @@ PRIMARY KEY (`user_id`, `role_id`)
 DROP TABLE IF EXISTS `t_fileinfo`;
 CREATE TABLE `t_fileinfo` (
 `id`  varchar(36) NOT NULL COMMENT '主键（实际文件名）' ,
-`type`  varchar(10) NOT NULL COMMENT '文件类型（文件名后缀）' ,
 `path`  varchar(256) NOT NULL COMMENT '所在文件夹路径' ,
+`filename`  varchar(50) NOT NULL COMMENT '文件名' ,
 `originalname`  varchar(256) NOT NULL COMMENT '原始文件名' ,
 `create_time`  datetime NULL DEFAULT NULL ,
 `create_by`  varchar(36) NULL DEFAULT NULL ,
