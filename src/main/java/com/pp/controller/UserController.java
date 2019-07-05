@@ -199,7 +199,7 @@ public class UserController {
 		if(bindResult.hasErrors()) {
 			result.put("result", "false");
 			result.put("errors", bindResult.getAllErrors());
-		} else {			
+		} else {
 			userService.setUserinfo(user);
 			// 更新session
 			user = userService.selectByAccount(user.getAccount());
