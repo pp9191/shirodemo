@@ -42,7 +42,6 @@ public class User implements Serializable{
 
     private String headImg;
 
-    @DateTimeFormat(pattern="yyyy-MM-dd")
     private Date createTime;
 
     @Length(max=200, message="签名超出长度200位字符")
