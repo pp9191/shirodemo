@@ -5,9 +5,9 @@ import java.util.Date;
 public class FileInfo {
     private String id;
 
-    private String type;
-
     private String path;
+
+    private String filename;
 
     private String originalname;
 
@@ -23,20 +23,20 @@ public class FileInfo {
         this.id = id == null ? null : id.trim();
     }
 
-    public String getType() {
-        return type;
-    }
-
-    public void setType(String type) {
-        this.type = type == null ? null : type.trim();
-    }
-
     public String getPath() {
         return path;
     }
 
     public void setPath(String path) {
         this.path = path == null ? null : path.trim();
+    }
+
+    public String getFilename() {
+        return filename;
+    }
+
+    public void setFilename(String filename) {
+        this.filename = filename == null ? null : filename.trim();
     }
 
     public String getOriginalname() {

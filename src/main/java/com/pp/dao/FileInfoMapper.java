@@ -1,10 +1,7 @@
 package com.pp.dao;
 
-import org.apache.ibatis.annotations.Mapper;
-
 import com.pp.entity.FileInfo;
 
-@Mapper
 public interface FileInfoMapper {
     int deleteByPrimaryKey(String id);
 

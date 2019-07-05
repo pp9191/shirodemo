@@ -29,23 +29,22 @@ public class FileController {
 		FileInfo fileInfo = fileService.getFileInfo(id);
 		
 		File file = null;
-		String type = null;
+		String format = null;
 		if(fileInfo != null) {			
-			String fileName = fileInfo.getId() + "." + fileInfo.getType(); 
-			String pathname = fileInfo.getPath() + File.separator + fileName;
-			file = new File(pathname);			
-			type = fileInfo.getType();
+			String fileName = fileInfo.getFilename();
+			file = new File(fileInfo.getPath(), fileName);
+			format = fileName.substring(fileName.lastIndexOf(".") + 1);
 		} 
 		// 实现文件下载
 		try {
 			if(file == null || !file.exists()) {				
 				file = ResourceUtils.getFile("classpath:static/common/img/default.jpg");
-				type = "jpg";
+				format = "jpg";
 			}
 			
 			BufferedImage image = ImageIO.read(file);
 			ServletOutputStream os = response.getOutputStream();
-			ImageIO.write(image, type, os);
+			ImageIO.write(image, format, os);
 			os.close();
 		} catch (IOException e) {
 			e.printStackTrace();

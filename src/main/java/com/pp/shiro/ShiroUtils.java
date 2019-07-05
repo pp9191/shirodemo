@@ -31,12 +31,9 @@ public class ShiroUtils {
 	}
 	
 	public static void deleteFile(FileInfo fileinfo) {
-		if(fileinfo != null) {
-			String pathname = fileinfo.getPath() + File.separator + fileinfo.getId() + "." + fileinfo.getType();
-			File file = new File(pathname);
-			if(file.exists()) {
-				file.delete();
-			}
+		File file = new File(fileinfo.getPath(), fileinfo.getFilename());
+		if(file.exists()) {
+			file.delete();
 		}
 	}
 

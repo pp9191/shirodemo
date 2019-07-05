@@ -48,7 +48,7 @@ public class UserController {
 	@Value("${server.naspath}")
 	private String basePath;
 	
-	private List<String> imgType = Arrays.asList("bmp", "gif", "png", "jpg", "jpeg");
+	private List<String> imgType = Arrays.asList(".bmp", ".gif", ".png", ".jpg", ".jpeg");
 
 	@RequestMapping(value="/signup", method=RequestMethod.GET)
 	public String signup(User user) {		
@@ -142,53 +142,54 @@ public class UserController {
 	@RequestMapping(value="/setHead/{userId}")
 	public Map<String, Object> setHeadImg(@RequestParam("file") MultipartFile file, @PathVariable String userId) {
 		Map<String, Object> result = new HashMap<String, Object>();		
-		if (!file.isEmpty()) {
-			String fileName = file.getOriginalFilename();
-			String type = fileName.substring(fileName.lastIndexOf(".") + 1);
-			if(file.getSize() > 2 * 1024 * 1024) {
-				result.put("result", "false");
-	        	result.put("message", "文件大小超出2MB限制");
-			}else if(imgType.contains(type)) {
-				Date date =  new Date();
+		if (file.isEmpty()) {
+			result.put("result", "false");
+        	result.put("message", "请选择上传文件");
+        } else if (file.getSize() > 2 * 1024 * 1024) {
+    		result.put("result", "false");
+    		result.put("message", "文件大小超出2MB限制");
+    	} else {
+			String originalName = file.getOriginalFilename();
+			String type = originalName.substring(originalName.lastIndexOf("."));
+			if (imgType.contains(type)) {
+				Date date = new Date();
 				String uuid = UUID.randomUUID().toString();
 				String filePath = basePath.concat(ShiroUtils.getDatePath(date));
-				String pathname = filePath.concat(File.separator).concat(uuid).concat(".").concat(type);
-				File dir = new File(filePath);
+				String filename = uuid + type;
 				
+				File dir = new File(filePath);
 				if (!dir.exists()) {
 					dir.mkdirs();
 				}
-				
+
 				FileInfo fileinfo = new FileInfo();
 				fileinfo.setId(uuid);
-				fileinfo.setType(type);
 				fileinfo.setPath(filePath);
-				fileinfo.setOriginalname(fileName);
+				fileinfo.setFilename(filename);
+				fileinfo.setOriginalname(originalName);
 				fileinfo.setCreateTime(date);
 				User curUser = (User) SecurityUtils.getSubject().getSession().getAttribute("userinfo");
 				fileinfo.setCreateBy(curUser.getAccount());
-				
-				File dest = new File(pathname); 
-				try { 
+
+				File dest = new File(dir, filename);
+				try {
 					file.transferTo(dest);
 					userService.setHeadImg(userId, fileinfo);
 					// 更新subject信息
 					curUser.setHeadImg(uuid);
-					
+
 					result.put("result", "true");
 					result.put("headImg", uuid);
-				} catch (IOException e) { 
+				} catch (IOException e) {
 					result.put("result", "false");
 					result.put("message", e.getMessage());
-				}		
-				
+				}
+
 			} else {
 				result.put("result", "false");
-	        	result.put("message", "不支持的图片格式，仅支持以下格式：" + imgType.toString());
+				result.put("message", "不支持的图片格式，仅支持以下格式：" + imgType.toString());
 			}
-        } else {
-        	result.put("result", "false");
-        	result.put("message", "请选择上传文件");
+        	
         }
 		return result;		
 	}

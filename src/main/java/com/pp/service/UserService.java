@@ -46,7 +46,10 @@ public class UserService {
 		if(user.getHeadImg() != null && !user.getHeadImg().isEmpty()) {
 			FileInfo old_ = fileMapper.selectByPrimaryKey(user.getHeadImg());
 			// 删除旧的图像文件
-			ShiroUtils.deleteFile(old_);
+			if(old_ != null) {		
+				fileMapper.deleteByPrimaryKey(old_.getId());
+				ShiroUtils.deleteFile(old_);
+			}
 		}
 		// 更新图像
 		user.setHeadImg(fileinfo.getId());

@@ -3,14 +3,14 @@
 <mapper namespace="com.pp.dao.FileInfoMapper" >
   <resultMap id="BaseResultMap" type="com.pp.entity.FileInfo" >
     <id column="id" property="id" jdbcType="VARCHAR" />
-    <result column="type" property="type" jdbcType="VARCHAR" />
     <result column="path" property="path" jdbcType="VARCHAR" />
+    <result column="filename" property="filename" jdbcType="VARCHAR" />
     <result column="originalname" property="originalname" jdbcType="VARCHAR" />
     <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
     <result column="create_by" property="createBy" jdbcType="VARCHAR" />
   </resultMap>
   <sql id="Base_Column_List" >
-    id, type, path, originalname, create_time, create_by
+    id, path, filename, originalname, create_time, create_by
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
     select 
@@ -23,10 +23,10 @@
     where id = #{id,jdbcType=VARCHAR}
   </delete>
   <insert id="insert" parameterType="com.pp.entity.FileInfo" >
-    insert into t_fileinfo (id, type, path, 
+    insert into t_fileinfo (id, path, filename, 
       originalname, create_time, create_by
       )
-    values (#{id,jdbcType=VARCHAR}, #{type,jdbcType=VARCHAR}, #{path,jdbcType=VARCHAR}, 
+    values (#{id,jdbcType=VARCHAR}, #{path,jdbcType=VARCHAR}, #{filename,jdbcType=VARCHAR}, 
       #{originalname,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{createBy,jdbcType=VARCHAR}
       )
   </insert>
@@ -36,11 +36,11 @@
       <if test="id != null" >
         id,
       </if>
-      <if test="type != null" >
-        type,
-      </if>
       <if test="path != null" >
         path,
+      </if>
+      <if test="filename != null" >
+        filename,
       </if>
       <if test="originalname != null" >
         originalname,
@@ -56,11 +56,11 @@
       <if test="id != null" >
         #{id,jdbcType=VARCHAR},
       </if>
-      <if test="type != null" >
-        #{type,jdbcType=VARCHAR},
-      </if>
       <if test="path != null" >
         #{path,jdbcType=VARCHAR},
+      </if>
+      <if test="filename != null" >
+        #{filename,jdbcType=VARCHAR},
       </if>
       <if test="originalname != null" >
         #{originalname,jdbcType=VARCHAR},
@@ -76,11 +76,11 @@
   <update id="updateByPrimaryKeySelective" parameterType="com.pp.entity.FileInfo" >
     update t_fileinfo
     <set >
-      <if test="type != null" >
-        type = #{type,jdbcType=VARCHAR},
-      </if>
       <if test="path != null" >
         path = #{path,jdbcType=VARCHAR},
+      </if>
+      <if test="filename != null" >
+        filename = #{filename,jdbcType=VARCHAR},
       </if>
       <if test="originalname != null" >
         originalname = #{originalname,jdbcType=VARCHAR},
@@ -96,8 +96,8 @@
   </update>
   <update id="updateByPrimaryKey" parameterType="com.pp.entity.FileInfo" >
     update t_fileinfo
-    set type = #{type,jdbcType=VARCHAR},
-      path = #{path,jdbcType=VARCHAR},
+    set path = #{path,jdbcType=VARCHAR},
+      filename = #{filename,jdbcType=VARCHAR},
       originalname = #{originalname,jdbcType=VARCHAR},
       create_time = #{createTime,jdbcType=TIMESTAMP},
       create_by = #{createBy,jdbcType=VARCHAR}

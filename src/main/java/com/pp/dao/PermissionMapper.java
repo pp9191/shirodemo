@@ -2,11 +2,8 @@ package com.pp.dao;
 
 import java.util.List;
 
-import org.apache.ibatis.annotations.Mapper;
-
 import com.pp.entity.Permission;
 
-@Mapper
 public interface PermissionMapper {
     int deleteByPrimaryKey(Long id);
 
