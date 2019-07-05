@@ -155,7 +155,7 @@ public class UserController {
 				Date date = new Date();
 				String uuid = UUID.randomUUID().toString();
 				String filePath = basePath.concat(ShiroUtils.getDatePath(date));
-				String filename = uuid + type;
+				String filename = uuid.concat(type);
 				
 				File dir = new File(filePath);
 				if (!dir.exists()) {
@@ -168,12 +168,12 @@ public class UserController {
 				fileinfo.setFilename(filename);
 				fileinfo.setOriginalname(originalName);
 				fileinfo.setCreateTime(date);
-				User curUser = (User) SecurityUtils.getSubject().getSession().getAttribute("userinfo");
+				Session session = SecurityUtils.getSubject().getSession();
+				User curUser = (User) session.getAttribute("userinfo");
 				fileinfo.setCreateBy(curUser.getAccount());
 
-				File dest = new File(dir, filename);
 				try {
-					file.transferTo(dest);
+					file.transferTo(new File(dir, filename));
 					userService.setHeadImg(userId, fileinfo);
 					// 更新subject信息
 					curUser.setHeadImg(uuid);
@@ -184,12 +184,10 @@ public class UserController {
 					result.put("result", "false");
 					result.put("message", e.getMessage());
 				}
-
 			} else {
 				result.put("result", "false");
 				result.put("message", "不支持的图片格式，仅支持以下格式：" + imgType.toString());
-			}
-        	
+			}        	
         }
 		return result;		
 	}
@@ -215,8 +213,9 @@ public class UserController {
 	@RequestMapping(value="/setPassword")
 	public Map<String, Object> setPassword(String password, String password1) {
 		Map<String, Object> result = new HashMap<String, Object>();
-		if(password1.matches("^\\w{6,18}$")) {			
-			User user = (User) SecurityUtils.getSubject().getSession().getAttribute("userinfo");
+		if(password1.matches("^\\w{6,18}$")) {	
+			Session session = SecurityUtils.getSubject().getSession();
+			User user = (User) session.getAttribute("userinfo");
 			if(ShiroUtils.encryptPassword(password, user.getAccount()).equals(user.getPassword())) {
 				user.setPassword(ShiroUtils.encryptPassword(password1, user.getAccount()));
 				userService.setUserinfo(user);
