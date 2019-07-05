@@ -134,7 +134,8 @@ public class UserController {
 	
 	@RequestMapping(value="/userinfo", method=RequestMethod.GET)
 	public String userinfo(Model model) {
-		model.addAttribute("user", SecurityUtils.getSubject().getSession().getAttribute("userinfo"));
+		Session session = SecurityUtils.getSubject().getSession();
+		model.addAttribute("user", session.getAttribute("userinfo"));
 		return "userinfo";
 	}
 	
