@@ -65,15 +65,15 @@ public class UserController {
 			
 		} else if(!codeNo.equals(vallidateCode)) {
 			FieldError error = new FieldError("user", "account", "验证码错误");
-			result.addError(error);			
+			result.addError(error);	
 		} else if(userService.selectByAccount(user.getAccount()) != null) {
 			FieldError error = new FieldError("user", "account", "用户名已存在");
-			result.addError(error);			
+			result.addError(error);	
 		} else {
 			// 密码加密
 			user.setPassword(ShiroUtils.encryptPassword(user.getPassword(), user.getAccount()));
 			System.out.println(user.getPassword() + "|" + user.getPassword().length());
-			if(userService.addUser(user) == 1) {				
+			if(userService.addUser(user) == 1) {
 				// 注册成功，跳转登录
 				FieldError error = new FieldError("user", "account", "注册成功，请登录");
 				result.addError(error);
