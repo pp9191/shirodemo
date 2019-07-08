@@ -6,12 +6,15 @@ server:
       context-path: null
    naspath: D:\download
 spring:
+   jackson:
+      date-format: yyyy-MM-dd
+      time-zone: GMT+8
    servlet:
       multipart:
          max-file-size: 10MB # 最大支持文件大小 
          max-request-size: 50MB # 最大支持请求(总)大小
    datasource:
-      url: jdbc:mysql://192.168.0.198:3306/test
+      url: jdbc:mysql://10.7.129.254:3306/test
       username: root
       password: 123456
       driver-class-name: org.mariadb.jdbc.Driver

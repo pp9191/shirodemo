@@ -22,7 +22,7 @@
 			<div class="btn-toolbar" role="toolbar">
 				<a class="btn btn-default" data-toggle="modal" href="/userinfo/signup" data-target="#showModal">添加用户</a>
 			</div>	
-			<table class="table">
+			<!-- <table class="table">
 				<thead>
 					<tr>
 						<th>用户名</th>
@@ -48,6 +48,21 @@
 						</td>
 					</tr>
 				</tbody>
+			</table> -->
+
+			<table data-toggle="table" data-url="/user/users" data-method="post"
+				data-pagination="true" data-pageSize="2">
+				<thead>
+					<tr>
+						<th data-field="account">用户名</th>
+						<th data-field="nickname">昵称</th>
+						<th data-field="gender">性别</th>
+						<th data-field="phone">手机号</th>
+						<th data-field="email">邮箱</th>
+						<th data-field="createTime">注册时间</th>
+						<th data-field="status">状态</th>
+					</tr>
+				</thead>
 			</table>
 		</div>		
 	</div>

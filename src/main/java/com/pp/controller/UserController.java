@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 import org.apache.shiro.SecurityUtils;
@@ -126,9 +127,8 @@ public class UserController {
 	}
 	
 	@RequestMapping(value="/users", method=RequestMethod.GET)
-	public String getUsers(Model model) {
-		List<User> users = userService.getUsers();
-		model.addAttribute("users", users);
+	public String getUsers() {
+		
 		return "users";
 	}
 	
@@ -137,6 +137,20 @@ public class UserController {
 		Session session = SecurityUtils.getSubject().getSession();
 		model.addAttribute("user", session.getAttribute("userinfo"));
 		return "userinfo";
+	}
+	
+	@ResponseBody
+	@RequestMapping(value="/users", method=RequestMethod.POST)
+	public Map<String, Object> getUsers(Integer offset, Integer limit) {
+				  
+		Map<String, Object> params = new HashMap<>();
+		int total = userService.getUsersCount(params);
+		params.put("offset", offset);
+		params.put("limit", limit);
+		List<User> users = userService.getUsers(params);
+		params.put("total", total);
+		params.put("rows", users);
+		return params;
 	}
 	
 	@ResponseBody

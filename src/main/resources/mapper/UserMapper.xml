@@ -26,11 +26,19 @@
     from t_user
     where account = #{account,jdbcType=VARCHAR}
   </select>
-  <select id="getUsers" resultMap="BaseResultMap" parameterType="com.pp.entity.User" >
+  <select id="getUsers" resultMap="BaseResultMap" parameterType="map" >
     select 
     <include refid="Base_Column_List" />
-    from t_user
+    from t_user 
+    <if test="offset != null and limit != null" >
+	    limit #{offset} , #{limit}
+    </if>
     order by id
+  </select>
+  <select id="getUsersCount" resultType="int" parameterType="map" >
+    select 
+    count(*)
+    from t_user
   </select>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
     select 

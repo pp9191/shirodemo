@@ -1,6 +1,7 @@
 package com.pp.service;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
@@ -34,9 +35,14 @@ public class UserService {
 		return userMapper.selectByAccount(account);
 	}
 
-	public List<User> getUsers() {
+	public List<User> getUsers(Map<String, Object> params) {
 		
-		return userMapper.getUsers();
+		return userMapper.getUsers(params);
+	}
+	
+	public int getUsersCount(Map<String, Object> params) {
+		
+		return userMapper.getUsersCount(params);
 	}
 
 	@Transactional

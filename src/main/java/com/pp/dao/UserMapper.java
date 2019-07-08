@@ -1,6 +1,7 @@
 package com.pp.dao;
 
 import java.util.List;
+import java.util.Map;
 
 import com.pp.entity.User;
 
@@ -19,5 +20,7 @@ public interface UserMapper {
 
 	User selectByAccount(String account);
 
-	List<User> getUsers();
+	List<User> getUsers(Map<String, Object> params);
+	
+	int getUsersCount(Map<String, Object> params);
 }
