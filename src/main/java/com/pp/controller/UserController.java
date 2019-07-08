@@ -148,9 +148,11 @@ public class UserController {
 		params.put("offset", offset);
 		params.put("limit", limit);
 		List<User> users = userService.getUsers(params);
-		params.put("total", total);
-		params.put("rows", users);
-		return params;
+		
+		Map<String, Object> result = new HashMap<>();
+		result.put("total", total);
+		result.put("rows", users);
+		return result;
 	}
 	
 	@ResponseBody

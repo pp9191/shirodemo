@@ -7,9 +7,7 @@
 <title>Insert title here</title>
 </head>
 <body layout:fragment="content">
-<script type="text/javascript">
 
-</script>
 	<div class="container-fluid">		
 		<div class="col-xs-4 col-sm-3 col-lg-2" >
 			<ul class="nav nav-pills nav-stacked" style="min-height: 500px; border-radius: 5px; background-color: #f8f8f8;">
@@ -51,7 +49,7 @@
 			</table> -->
 
 			<table data-toggle="table" data-url="/user/users" data-method="post"
-				data-pagination="true" data-sidePagination="server" data-pageSize="10">
+				data-pagination="true" data-side-pagination="server" data-page-size="10">
 				<thead>
 					<tr>
 						<th data-field="account">用户名</th>
@@ -59,6 +57,7 @@
 						<th data-field="gender">性别</th>
 						<th data-field="phone">手机号</th>
 						<th data-field="email">邮箱</th>
+						<th data-field="address">住址</th>
 						<th data-field="createTime">注册时间</th>
 						<th data-field="status">状态</th>
 					</tr>

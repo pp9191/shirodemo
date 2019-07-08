@@ -30,10 +30,10 @@
     select 
     <include refid="Base_Column_List" />
     from t_user 
+    order by id
     <if test="offset != null and limit != null" >
 	    limit #{offset} , #{limit}
     </if>
-    order by id
   </select>
   <select id="getUsersCount" resultType="int" parameterType="map" >
     select 
