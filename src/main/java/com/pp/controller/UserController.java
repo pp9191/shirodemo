@@ -9,7 +9,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 import org.apache.shiro.SecurityUtils;
@@ -47,9 +46,10 @@ public class UserController {
 	private UserService userService;
 	
 	@Value("${server.naspath}")
-	private String basePath;
+	private String baseUploadPath;
 	
-	private List<String> imgType = Arrays.asList(".bmp", ".gif", ".png", ".jpg", ".jpeg");
+	private static final List<String> imgType = Arrays.asList(".bmp", ".gif", ".png", ".jpg", ".jpeg");
+	private static final String basePath = "user/";
 
 	@RequestMapping(value="/{path}", method=RequestMethod.GET)
 	public String urlMapping(@PathVariable String path, Model model) {
@@ -59,7 +59,7 @@ public class UserController {
 			Session session = SecurityUtils.getSubject().getSession();
 			model.addAttribute("user", session.getAttribute("userinfo"));
 		} 
-		return path;
+		return basePath.concat(path);
 	}
 	
 	@RequestMapping(value="/logout")
@@ -93,10 +93,10 @@ public class UserController {
 				// 注册成功，跳转登录
 				FieldError error = new FieldError("user", "account", "注册成功，请登录");
 				result.addError(error);
-				return "login";
+				return basePath.concat("login");
 			}
 		}
-		return "signup";
+		return basePath.concat("signup");
 	}
 		
 	@RequestMapping(value="/login", method=RequestMethod.POST)
@@ -104,26 +104,26 @@ public class UserController {
 		System.out.println(user.getAccount() + " || " + user.getPassword());
 		if(result.hasErrors()) {
 			// 校验报错
-			return "login";
-		}
-		
-		Subject subject = SecurityUtils.getSubject();
-		try{
-			// 调用安全认证框架的登录方法
-			subject.login(new UsernamePasswordToken(user.getAccount(), user.getPassword(), rememberMe));
-			subject.getSession().setAttribute("userinfo", subject.getPrincipal());
-			return "redirect:/index";
-		}catch(UnknownAccountException|LockedAccountException|ExcessiveAttemptsException ex){
-			// 用户名不存在 | 账号被锁 | 密码错误次数达到5次
-			FieldError error = new FieldError("user", "account", ex.getMessage());
-			result.addError(error);
-		}catch(AuthenticationException ex){
 			
-			FieldError error = new FieldError("user", "account", "密码错误");
-			result.addError(error);
-		}
+		}else {			
+			Subject subject = SecurityUtils.getSubject();
+			try{
+				// 调用安全认证框架的登录方法
+				subject.login(new UsernamePasswordToken(user.getAccount(), user.getPassword(), rememberMe));
+				subject.getSession().setAttribute("userinfo", subject.getPrincipal());
+				return "redirect:/index";
+			}catch(UnknownAccountException|LockedAccountException|ExcessiveAttemptsException ex){
+				// 用户名不存在 | 账号被锁 | 密码错误次数达到5次
+				FieldError error = new FieldError("user", "account", ex.getMessage());
+				result.addError(error);
+			}catch(AuthenticationException ex){
+				
+				FieldError error = new FieldError("user", "account", "密码错误");
+				result.addError(error);
+			}
+		}		
 		// 登陆失败
-		return "login";
+		return basePath.concat("login");
 	}	
 	
 	@ResponseBody
@@ -158,7 +158,7 @@ public class UserController {
 			if (imgType.contains(type)) {
 				Date date = new Date();
 				String uuid = UUID.randomUUID().toString();
-				String filePath = basePath.concat(ShiroUtils.getDatePath(date));
+				String filePath = baseUploadPath.concat(ShiroUtils.getDatePath(date));
 				String filename = uuid.concat(type);
 				
 				File dir = new File(filePath);
