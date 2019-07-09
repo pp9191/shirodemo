@@ -62,6 +62,16 @@ public class UserController {
 		return basePath.concat(path);
 	}
 	
+	@RequestMapping(value="/dialog_user/{account}")
+	public String addUser(@PathVariable String account, Model model) {
+		if(account == null || account.isEmpty()){		
+			model.addAttribute("user", new User());
+		}else {			
+			model.addAttribute("user", userService.selectByAccount(account));			
+		}
+		return basePath.concat("dialog_user");
+	}
+	
 	@RequestMapping(value="/logout")
 	public String logout() {
 		Subject subject = SecurityUtils.getSubject();

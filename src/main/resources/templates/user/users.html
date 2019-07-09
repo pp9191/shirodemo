@@ -7,6 +7,15 @@
 <title>Insert title here</title>
 </head>
 <body layout:fragment="content">
+<script type="text/javascript">
+function showAddDialog(){
+	$.dialog({
+		title: "新增用户",
+		content: "url: /user/dialog_user",
+		columnClass: "col-md-8 col-md-offset-2"
+	});
+}
+</script>
 
 	<div class="container-fluid">		
 		<div class="col-xs-4 col-sm-3 col-lg-2" >
@@ -19,7 +28,7 @@
 		<div class="col-xs-8 col-md-9 col-lg-10">
 			<div id="toolbar">
 				<div class="btn-group">
-					<button class="btn btn-default">
+					<button class="btn btn-default" onclick="showAddDialog()">
 						<i class="glyphicon glyphicon-plus"></i>
 					</button>
 					<button class="btn btn-default">
