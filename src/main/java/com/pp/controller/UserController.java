@@ -53,12 +53,12 @@ public class UserController {
 
 	@RequestMapping(value="/{path}", method=RequestMethod.GET)
 	public String urlMapping(@PathVariable String path, Model model) {
-		if(path.equals("userinfo") || path.equals("dialog_user")) {
+		if(path.equals("login") || path.equals("signup")){
+			model.addAttribute("user", new User());
+		}else if(path.equals("userinfo")) {
 			Session session = SecurityUtils.getSubject().getSession();
 			model.addAttribute("user", session.getAttribute("userinfo"));
-		}else if(path.equals("login") || path.equals("signup")){
-			model.addAttribute("user", new User());
-		}
+		} 
 		return path;
 	}
 	
