@@ -17,9 +17,19 @@
 	        </ul>
 		</div>
 		<div class="col-xs-8 col-md-9 col-lg-10">
-			<div class="btn-toolbar" role="toolbar">
-				<a class="btn btn-default" data-toggle="modal" href="/userinfo/signup" data-target="#showModal">添加用户</a>
-			</div>	
+			<div id="toolbar">
+				<div class="btn-group">
+					<button class="btn btn-default">
+						<i class="glyphicon glyphicon-plus"></i>
+					</button>
+					<button class="btn btn-default">
+						<i class="glyphicon glyphicon-trash"></i>
+					</button>
+					<button class="btn btn-default">
+						<i class="glyphicon glyphicon-edit"></i>
+					</button>
+				</div>
+			</div>
 			<!-- <table class="table">
 				<thead>
 					<tr>
@@ -50,9 +60,12 @@
 
 			<table data-toggle="table" data-url="/user/users" data-method="post"
 				data-pagination="true" data-side-pagination="server" data-page-size="10"
-				data-classes="table table-striped table-hover">
+				data-classes="table table-striped table-hover" data-show-refresh="true"
+				data-show-toggle="true" data-show-columns="true"
+				data-search="true" data-show-search-button="true" data-toolbar="#toolbar">
 				<thead>
 					<tr>
+						<th data-checkbox="true"></th>
 						<th data-field="account" data-halign="center" data-align="center">用户名</th>
 						<th data-field="nickname" data-halign="center" data-align="center">昵称</th>
 						<th data-field="gender" data-halign="center" data-align="center">性别</th>
