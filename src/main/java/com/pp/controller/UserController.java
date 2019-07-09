@@ -51,10 +51,26 @@ public class UserController {
 	
 	private List<String> imgType = Arrays.asList(".bmp", ".gif", ".png", ".jpg", ".jpeg");
 
-	@RequestMapping(value="/signup", method=RequestMethod.GET)
-	public String signup(User user) {		
-		return "signup";
+	@RequestMapping(value="/{path}", method=RequestMethod.GET)
+	public String urlMapping(@PathVariable String path, Model model) {
+		if(path.equals("userinfo") || path.equals("dialog_user")) {
+			Session session = SecurityUtils.getSubject().getSession();
+			model.addAttribute("user", session.getAttribute("userinfo"));
+		}else if(path.equals("login") || path.equals("signup")){
+			model.addAttribute("user", new User());
+		}
+		return path;
 	}
+	
+	@RequestMapping(value="/logout")
+	public String logout() {
+		Subject subject = SecurityUtils.getSubject();
+		if (subject.isAuthenticated()) {
+			subject.getSession().removeAttribute("userinfo");
+			subject.logout();
+		}
+		return "redirect:/index";
+	}	
 	
 	@RequestMapping(value="/signup", method=RequestMethod.POST)
 	public String signup(@ModelAttribute @Valid User user, BindingResult result, String codeNo) {
@@ -82,13 +98,7 @@ public class UserController {
 		}
 		return "signup";
 	}
-	
-	@RequestMapping(value="/login", method=RequestMethod.GET)
-	public String login(User user) {
 		
-		return "login";
-	}
-	
 	@RequestMapping(value="/login", method=RequestMethod.POST)
 	public String login(@ModelAttribute @Valid User user, BindingResult result, boolean rememberMe) {
 		System.out.println(user.getAccount() + " || " + user.getPassword());
@@ -114,30 +124,7 @@ public class UserController {
 		}
 		// 登陆失败
 		return "login";
-	}
-	
-	@RequestMapping(value="/logout")
-	public String logout() {
-		Subject subject = SecurityUtils.getSubject();
-		if (subject.isAuthenticated()) {
-			subject.getSession().removeAttribute("userinfo");
-			subject.logout();
-		}
-		return "redirect:/index";
-	}
-	
-	@RequestMapping(value="/users", method=RequestMethod.GET)
-	public String getUsers() {
-		
-		return "users";
-	}
-	
-	@RequestMapping(value="/userinfo", method=RequestMethod.GET)
-	public String userinfo(Model model) {
-		Session session = SecurityUtils.getSubject().getSession();
-		model.addAttribute("user", session.getAttribute("userinfo"));
-		return "userinfo";
-	}
+	}	
 	
 	@ResponseBody
 	@RequestMapping(value="/users", method=RequestMethod.POST)
