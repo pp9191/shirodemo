@@ -148,9 +148,7 @@
 						    content: data.message
 						});
 					}else{
-						$.alert({
-						    content: "上传成功"
-						});
+						$.alert("上传成功");
 						$("#input_head").val("");
 						
 						/* var src = $("#img_head").attr("src");
@@ -159,9 +157,7 @@
 					}
 				});
 			}else{
-				$.alert({
-				    content: "请选择上传图片"
-				});
+				$.alert("请选择上传图片");
 			}
 		}
 		
@@ -171,9 +167,7 @@
 				var filename = $(obj).val();
 				var type = filename.substr(filename.lastIndexOf("."));
 				if(imgType.indexOf(type) == -1){
-					$.alert({
-					    content: "图片格式不被支持，仅支持以下图片格式：" + imgType.join("，")
-					});
+					$.alert("图片格式不被支持，仅支持以下图片格式：" + imgType.join("，"));
 					$(obj).val("");
 				}else{
 					// 图片预览
@@ -187,9 +181,7 @@
 			if(window.URL.createObjectURL){
 				el_img.src = window.URL.createObjectURL(el_input.files[0]);	
 			} else {
-				$.alert({
-				    content: "此浏览器不支持预览"
-				});
+				$.alert("此浏览器不支持预览");
 			}
 		 }
 		
@@ -198,13 +190,9 @@
 			if($("#form_userinfo").data("bootstrapValidator").isValid()){			
 				$("#form_userinfo").ajaxSubmit(function(data){
 					if(data.result == "false"){
-						$.alert({
-						    content: data.errors[0]
-						});
+						$.alert(data.errors[0]);
 					}else{
-						$.alert({
-						    content: "保存成功"
-						});						
+						$.alert("保存成功");					
 					}
 				});
 			} 
@@ -215,13 +203,9 @@
 			if($("#form_setPassword").data("bootstrapValidator").isValid()){			
 				$("#form_setPassword").ajaxSubmit(function(data){
 					if(data.result == "false"){
-						$.alert({
-						    content: data.message
-						});
+						$.alert(data.message);
 					}else{
-						$.alert({
-						    content: "保存成功"
-						});	
+						$.alert("保存成功");
 						document.getElementById("form_setPassword").reset();
 					}
 				});

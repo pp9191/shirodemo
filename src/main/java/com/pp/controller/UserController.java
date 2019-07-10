@@ -56,8 +56,8 @@ public class UserController {
 		if(path.equals("login") || path.equals("signup") || path.equals("dialog_user")){
 			model.addAttribute("user", new User());
 		}else if(path.equals("userinfo")) {
-			Session session = SecurityUtils.getSubject().getSession();
-			model.addAttribute("user", session.getAttribute("userinfo"));
+			User user = (User) SecurityUtils.getSubject().getPrincipal();
+			model.addAttribute("user", userService.selectByAccount(user.getAccount()));
 		} 
 		return basePath.concat(path);
 	}
@@ -214,10 +214,11 @@ public class UserController {
 			result.put("result", "false");
 			result.put("errors", bindResult.getAllErrors());
 		} else {
-			userService.setUserinfo(user);
-			// 更新session
-			user = userService.selectByAccount(user.getAccount());
-			SecurityUtils.getSubject().getSession().setAttribute("userinfo", user);
+			if(user.getPassword() != null && !user.getPassword().isEmpty()) {
+				// 密码加密
+				user.setPassword(ShiroUtils.encryptPassword(user.getPassword(), user.getAccount()));
+			}
+			userService.setUserinfo(user);			
 			result.put("result", "true");
 		}
 		return result;

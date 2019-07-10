@@ -97,7 +97,7 @@
         if(typeof options === 'string'){
             options = {
                 content: options,
-                title: (option2) ? option2 : false
+                title: option2
             };
         }
 
@@ -121,7 +121,7 @@
         if(typeof options === 'string'){
             options = {
                 content: options,
-                title: (option2) ? option2 : false
+                title: option2
             };
         }
 
@@ -145,7 +145,7 @@
         if(typeof options === 'string'){
             options = {
                 content: options,
-                title: (option2) ? option2 : false,
+                title: option2,
                 closeIcon: function(){
                     // Just close the modal
                 }

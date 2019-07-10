@@ -16,16 +16,28 @@
 					invalid : 'glyphicon glyphicon-remove',
 					validating : 'glyphicon glyphicon-refresh'
 				},
-				fields : {				
+				fields : {
+					account : {
+						message : '验证失败',
+						validators : {
+							notEmpty : {
+								message : '请输入用户名'
+							},
+							regexp : {
+								regexp : /^\w{4,18}$/,
+								message : '用户名长度必须在4到18位之间，并且只能包含字母、数字和下划线'
+							}
+						}
+					},
 					password : {
 						message : '验证失败',
 						validators : {
 							notEmpty : {
-								message : '请输入旧密码'
+								message : '请输入密码'
 							},
 							regexp : {
 								regexp : /^\w{6,18}$/,
-								message : '密码长度必须在6到18位之间，并且只能包含大写、小写、数字和下划线'
+								message : '密码长度必须在6到18位之间，并且只能包含字母、数字和下划线'
 							}
 						}
 					},
@@ -85,13 +97,10 @@
 			if($("#form_userinfo").data("bootstrapValidator").isValid()){			
 				$("#form_userinfo").ajaxSubmit(function(data){
 					if(data.result == "false"){
-						$.alert({
-						    content: data.errors[0]
-						});
+						$.alert(data.errors[0]);
 					}else{
-						$.alert({
-						    content: "保存成功"
-						});
+						$.alert("保存成功");
+						$(".jconfirm-closeIcon").click();
 					}
 				});
 			} 
@@ -110,7 +119,7 @@
 			<div class="form-group">
 				<label for="password" class="col-sm-2 control-label">密码</label>
 				<div class="col-sm-10">
-					<input type="password" class="form-control" th:field="*{password}" />
+					<input type="password" class="form-control" th:field="*{password}" autocomplete="new-password"/>
 				</div>
 			</div>
 			<div class="form-group">

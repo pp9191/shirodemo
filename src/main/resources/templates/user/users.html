@@ -15,6 +15,16 @@ function showAddDialog(){
 		columnClass: "col-sm-8 col-sm-offset-2"
 	});
 }
+function showEditDialog(){
+	var rows = $("#table_users").bootstrapTable('getSelections');
+	if(rows.length){		
+		$.dialog({
+			title: "修改用户",
+			content: "url: /user/dialog_user/" + rows[0].account,
+			columnClass: "col-sm-8 col-sm-offset-2"
+		}); 
+	}
+}
 </script>
 
 	<div class="container-fluid">		
@@ -34,7 +44,7 @@ function showAddDialog(){
 					<button class="btn btn-default">
 						<i class="glyphicon glyphicon-trash"></i>
 					</button>
-					<button class="btn btn-default">
+					<button class="btn btn-default" onclick="showEditDialog()">
 						<i class="glyphicon glyphicon-edit"></i>
 					</button>
 				</div>
@@ -67,10 +77,10 @@ function showAddDialog(){
 				</tbody>
 			</table> -->
 
-			<table data-toggle="table" data-url="/user/users" data-method="post"
+			<table id="table_users" data-toggle="table" data-url="/user/users" data-method="post"
 				data-pagination="true" data-side-pagination="server" data-page-size="10"
 				data-show-refresh="true" data-show-toggle="true" data-show-columns="true"
-				data-search="true" data-show-search-button="true" 
+				data-search="true" data-show-search-button="true" data-single-select="true"
 				data-toolbar="#toolbar">
 				
 				<thead>
