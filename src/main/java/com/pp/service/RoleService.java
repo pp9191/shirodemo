@@ -14,9 +14,12 @@ public class RoleService {
 	@Autowired
 	private RoleMapper roleMapper;
 
-	public List<Role> getRoles(Long userId) {
-		
+	public List<Role> getRoles(Long userId) {		
 		return roleMapper.getRoles(userId);
+	}
+	
+	public int addRole(Role role) {
+		return roleMapper.insertSelective(role);
 	}
 
 }

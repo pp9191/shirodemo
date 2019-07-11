@@ -4,8 +4,6 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.annotation.CacheEvict;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -29,7 +27,6 @@ public class UserService {
 		return userMapper.insertSelective(user);
 	}
 	
-	@Cacheable(value="users", key="#account")
 	public User selectByAccount(String account) {
 		
 		return userMapper.selectByAccount(account);
@@ -63,7 +60,6 @@ public class UserService {
 		userMapper.updateByPrimaryKeySelective(user);
 	}
 
-	@CacheEvict(value="users", key="#user.account")
 	public int setUserinfo(User user) {
 		return userMapper.updateByPrimaryKeySelective(user);
 	}

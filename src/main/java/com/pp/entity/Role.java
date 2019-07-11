@@ -1,9 +1,13 @@
 package com.pp.entity;
 
+import java.io.Serializable;
 import java.util.Date;
 
-public class Role {
-    private Long id;
+public class Role implements Serializable{
+    
+	private static final long serialVersionUID = 145385866889782648L;
+
+	private Long id;
 
     private String rolename;
 

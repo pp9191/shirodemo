@@ -1,7 +1,12 @@
 package com.pp.entity;
 
-public class Permission {
-    private Long id;
+import java.io.Serializable;
+
+public class Permission implements Serializable{
+    
+	private static final long serialVersionUID = -3125446411610790381L;
+
+	private Long id;
 
     private String urlMapping;
 

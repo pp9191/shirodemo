@@ -46,4 +46,12 @@
 		overflowToDisk="false" 
 		timeToIdleSeconds="0"
 		timeToLiveSeconds="300" />
+	
+	<cache 
+		name="fileinfo" 
+		eternal="false" 
+		maxElementsInMemory="100"
+		overflowToDisk="false" 
+		timeToIdleSeconds="0"
+		timeToLiveSeconds="300" />
 </ehcache>

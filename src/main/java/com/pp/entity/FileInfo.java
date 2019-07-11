@@ -1,9 +1,13 @@
 package com.pp.entity;
 
+import java.io.Serializable;
 import java.util.Date;
 
-public class FileInfo {
-    private String id;
+public class FileInfo implements Serializable{
+    
+	private static final long serialVersionUID = -1406911948803946120L;
+
+	private String id;
 
     private String path;
 
