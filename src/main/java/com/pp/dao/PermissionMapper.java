@@ -2,6 +2,8 @@ package com.pp.dao;
 
 import java.util.List;
 
+import org.springframework.cache.annotation.Cacheable;
+
 import com.pp.entity.Permission;
 
 public interface PermissionMapper {
@@ -17,5 +19,6 @@ public interface PermissionMapper {
 
     int updateByPrimaryKey(Permission record);
     
+    @Cacheable(value="roleAndPermission", key="'permission_'+#roleId")
     List<Permission> getPermissions(Long roleId);
 }

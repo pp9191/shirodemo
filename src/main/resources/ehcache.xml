@@ -46,8 +46,16 @@
 		maxElementsInMemory="100"
 		overflowToDisk="false" 
 		timeToIdleSeconds="0"
-		timeToLiveSeconds="300" />
+		timeToLiveSeconds="1800" />
 	
+	<cache 
+		name="roleAndPermission" 
+		eternal="false" 
+		maxElementsInMemory="100"
+		overflowToDisk="false" 
+		timeToIdleSeconds="0"
+		timeToLiveSeconds="300" />
+		
 	<cache 
 		name="fileinfo" 
 		eternal="false" 
@@ -55,4 +63,5 @@
 		overflowToDisk="false" 
 		timeToIdleSeconds="3600"
 		timeToLiveSeconds="0" />
+	
 </ehcache>
