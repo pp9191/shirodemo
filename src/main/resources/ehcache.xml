@@ -45,8 +45,8 @@
 		eternal="false" 
 		maxElementsInMemory="100"
 		overflowToDisk="false" 
-		timeToIdleSeconds="0"
-		timeToLiveSeconds="1800" />
+		timeToIdleSeconds="1800"
+		timeToLiveSeconds="0" />
 	
 	<cache 
 		name="roleAndPermission" 
@@ -61,7 +61,7 @@
 		eternal="false" 
 		maxElementsInMemory="100"
 		overflowToDisk="false" 
-		timeToIdleSeconds="3600"
+		timeToIdleSeconds="1800"
 		timeToLiveSeconds="0" />
 	
 </ehcache>
