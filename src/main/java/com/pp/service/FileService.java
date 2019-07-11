@@ -11,7 +11,7 @@ public class FileService {
 	
 	@Autowired
 	private FileInfoMapper fileMapper;
-		
+	
 	public FileInfo getFileInfo(String id) {
 		
 		return fileMapper.selectByPrimaryKey(id);

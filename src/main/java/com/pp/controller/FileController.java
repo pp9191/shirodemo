@@ -3,7 +3,6 @@ package com.pp.controller;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import javax.imageio.ImageIO;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
@@ -24,7 +23,7 @@ public class FileController {
 	private FileService fileService;
 	
 	@RequestMapping("/common/headImg/{id}")
-	public void validateCode(@PathVariable String id, HttpServletResponse response) throws UnsupportedEncodingException {
+	public void validateCode(@PathVariable String id, HttpServletResponse response) {
 		
 		FileInfo fileInfo = fileService.getFileInfo(id);
 		

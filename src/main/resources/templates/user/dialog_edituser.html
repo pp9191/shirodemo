@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" >
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+	<script>
+		$(function() {
+			$('#dp_birthday input').datepicker();
+			
+			$('form').bootstrapValidator({
+				message : 'This value is not valid',
+				feedbackIcons : {
+					valid : 'glyphicon glyphicon-ok',
+					invalid : 'glyphicon glyphicon-remove',
+					validating : 'glyphicon glyphicon-refresh'
+				},
+				fields : {
+					account : {
+						message : '验证失败',
+						validators : {
+							notEmpty : {
+								message : '请输入用户名'
+							},
+							regexp : {
+								regexp : /^\w{4,18}$/,
+								message : '用户名长度必须在4到18位之间，并且只能包含字母、数字和下划线'
+							}
+						}
+					},
+					password : {
+						message : '验证失败',
+						validators : {
+							notEmpty : {
+								message : '请输入密码'
+							},
+							regexp : {
+								regexp : /^\w{6,18}$/,
+								message : '密码长度必须在6到18位之间，并且只能包含字母、数字和下划线'
+							}
+						}
+					},
+					nickname : {
+						message : '验证失败',
+						validators : {
+							stringLength : {
+								max : 50,
+								message : '长度超出最大长度50字符'
+							}
+						}
+					},
+					phone : {
+						message : '验证失败',
+						validators : {
+							regexp : {
+								regexp: /^1[3-9]\d{9}$/,
+								message: '手机号格式有误'
+							}
+						}
+					},
+					email : {
+						message : '验证失败',
+						validators : {
+							emailAddress : {
+								message: '邮箱格式有误'
+							}
+						}
+					},
+					address : {
+						message : '验证失败',
+						validators : {
+							stringLength : {
+								max : 200,
+								message : '长度超出最大长度200字符'
+							}
+						}
+					},
+					remark : {
+						message : '验证失败',
+						validators : {
+							stringLength : {
+								max : 200,
+								message : '长度超出最大长度200字符'
+							}
+						}
+					}
+				}
+			}).on('success.form.bv', function(e) {
+		        // 阻止默认事件提交
+		        e.preventDefault();
+		    });
+		});
+		
+		function saveUserInfo(){
+			$("#form_userinfo").data("bootstrapValidator").validate();  
+			if($("#form_userinfo").data("bootstrapValidator").isValid()){			
+				$("#form_userinfo").ajaxSubmit(function(data){
+					if(data.result == "false"){
+						$.alert(data.errors[0]);
+					}else{
+						$.alert("保存成功");
+						$(".jconfirm-closeIcon").click();
+					}
+				});
+			} 
+		}
+	</script>
+	<div style="width:96%;">
+		<form id="form_userinfo" th:action="@{/user/setUserinfo}" class="form-horizontal" role="form"
+			th:object="${user}" method="post">
+			<input type="hidden" th:field="*{id}" />
+			<div class="form-group">
+				<label for="account" class="col-sm-2 control-label">用户名</label>
+				<div class="col-sm-10">
+					<input type="text" class="form-control" th:field="*{account}" />
+				</div>
+			</div>
+			<div class="form-group">
+				<label for="password" class="col-sm-2 control-label">密码</label>
+				<div class="col-sm-10">
+					<input type="password" class="form-control" th:field="*{password}" autocomplete="new-password"/>
+				</div>
+			</div>
+			<div class="form-group">
+				<label for="nickname" class="col-sm-2 control-label">昵称</label>
+				<div class="col-sm-10">
+					<input type="text" class="form-control" th:field="*{nickname}" />
+				</div>
+			</div>
+			<div class="form-group">
+				<label for="gender" class="col-sm-2 control-label">性别</label>
+				<div class="col-sm-10">
+					<label class="radio-inline"> <input type="radio" th:field="*{gender}" value="1" />男</label> 
+					<label class="radio-inline"> <input type="radio" th:field="*{gender}" value="2" />女</label>
+				</div>
+			</div>
+			<div class="form-group">
+				<label for="birthday" class="col-sm-2 control-label">生日</label>
+				<div class="col-sm-10" id="dp_birthday">
+					<input type="text" class="form-control" th:field="*{birthday}" />
+				</div>
+			</div>
+			<div class="form-group">
+				<label for="phone" class="col-sm-2 control-label">手机号码</label>
+				<div class="col-sm-10">
+					<input type="text" class="form-control" th:field="*{phone}" />
+				</div>
+			</div>
+			<div class="form-group">
+				<label for="email" class="col-sm-2 control-label">邮箱</label>
+				<div class="col-sm-10">
+					<input type="text" class="form-control" th:field="*{email}" />
+				</div>
+			</div>
+			<div class="form-group">
+				<label for="address" class="col-sm-2 control-label">住址</label>
+				<div class="col-sm-10">
+					<input type="text" class="form-control" th:field="*{address}" />
+				</div>
+			</div>
+			<div class="form-group">
+				<label for="remark" class="col-sm-2 control-label">个性签名</label>
+				<div class="col-sm-10">
+					<textarea class="form-control" th:field="*{remark}" rows="3"></textarea>
+				</div>
+			</div>
+			<div class="form-group">
+				<div class="col-sm-offset-2 col-sm-10">
+					<input type="submit" class="btn btn-default" value="保存" onclick="saveUserInfo()" />
+				</div>
+			</div>
+		</form>
+	</div>
+</body>
+</html>

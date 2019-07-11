@@ -53,7 +53,7 @@ public class UserController {
 
 	@RequestMapping(value="/{path}", method=RequestMethod.GET)
 	public String urlMapping(@PathVariable String path, Model model) {
-		if(path.equals("login") || path.equals("signup") || path.equals("dialog_user")){
+		if(path.equals("login") || path.equals("signup") || path.equals("dialog_adduser")){
 			model.addAttribute("user", new User());
 		}else if(path.equals("userinfo")) {
 			User user = (User) SecurityUtils.getSubject().getPrincipal();
@@ -62,14 +62,14 @@ public class UserController {
 		return basePath.concat(path);
 	}
 	
-	@RequestMapping(value="/dialog_user/{account}")
+	@RequestMapping(value="/dialog_edituser/{account}")
 	public String addUser(@PathVariable String account, Model model) {
-		if(account == null || account.isEmpty()){		
-			model.addAttribute("user", new User());
-		}else {			
-			model.addAttribute("user", userService.selectByAccount(account));			
+		User user = userService.selectByAccount(account);
+		if(user == null) {
+			user = new User();
 		}
-		return basePath.concat("dialog_user");
+		model.addAttribute("user", user);
+		return basePath.concat("dialog_edituser");
 	}
 	
 	@RequestMapping(value="/logout")
