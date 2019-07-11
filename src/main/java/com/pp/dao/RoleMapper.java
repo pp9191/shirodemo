@@ -19,6 +19,6 @@ public interface RoleMapper {
 
     int updateByPrimaryKey(Role record);
     
-    @Cacheable(value="roleAndPermission", key="'role_'+#userId")
+    @Cacheable(value="roleAndPermission", key="'roles_'+#userId")
     List<Role> getRoles(Long userId);
 }
