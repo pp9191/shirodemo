@@ -24,7 +24,7 @@ public class UserService {
 	@Autowired
 	private FileInfoMapper fileMapper;
 	
-	public Integer addUser(User user) {
+	public int addUser(User user) {
 		
 		return userMapper.insertSelective(user);
 	}
@@ -64,7 +64,7 @@ public class UserService {
 	}
 
 	@CacheEvict(value="users", key="#user.account")
-	public Integer setUserinfo(User user) {
+	public int setUserinfo(User user) {
 		return userMapper.updateByPrimaryKeySelective(user);
 	}
 }

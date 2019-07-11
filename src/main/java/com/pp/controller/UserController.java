@@ -64,11 +64,11 @@ public class UserController {
 	
 	@RequestMapping(value="/dialog_user/{account}")
 	public String addUser(@PathVariable String account, Model model) {
-		if(account == null || account.isEmpty()){		
-			model.addAttribute("user", new User());
-		}else {			
-			model.addAttribute("user", userService.selectByAccount(account));			
+		User user = userService.selectByAccount(account);
+		if(user == null) {
+			user = new User();
 		}
+		model.addAttribute("user", user);
 		return basePath.concat("dialog_user");
 	}
 	
