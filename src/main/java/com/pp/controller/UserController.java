@@ -224,9 +224,9 @@ public class UserController {
 				result.put("result", "true");
 			}
 		} else {
-			if(user.getPassword() != null && !user.getPassword().isEmpty()) {
-				// 密码加密
-				user.setPassword(ShiroUtils.encryptPassword(user.getPassword(), user.getAccount()));
+			if(user.getPassword() != null) {
+				// 不支持修改密码
+				user.setPassword(null);
 			}
 			userService.setUserinfo(user);			
 			result.put("result", "true");
