@@ -117,7 +117,7 @@
 					}else{
 						$.alert("保存成功");
 						// 关闭弹窗
-						jconfirm.instances.pop().close();
+						closeCurrentDialog();
 					}
 				});
 			} 
@@ -188,8 +188,9 @@
 				</div>
 			</div>
 			<div class="form-group">
-				<div class="col-sm-offset-2 col-sm-10">
-					<input type="submit" class="btn btn-default" value="保存" onclick="saveUserInfo()" />
+				<div style="text-align:center;">
+					<input type="submit" class="btn btn-primary" value="保存" onclick="saveUserInfo()" />
+					<input type="button" class="btn btn-default" value="取消" onclick="closeCurrentDialog()" />
 				</div>
 			</div>
 		</form>

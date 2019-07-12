@@ -1,6 +1,7 @@
 // Global defaults
 jconfirm.defaults = {
     title: '提示',
+    backgroundDismissAnimation: '',
     defaultButtons: {
         ok: {
         	text: '确定',
@@ -25,3 +26,7 @@ $.extend($.fn.datepicker.defaults, {
 	startDate: '1900-01-01',
 	endDate: "today"
 });
+
+function closeCurrentDialog(){
+	jconfirm.instances.pop().close();
+}
