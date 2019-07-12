@@ -213,6 +213,16 @@ public class UserController {
 		if(bindResult.hasErrors()) {
 			result.put("result", "false");
 			result.put("errors", bindResult.getAllErrors());
+		} else if(user.getId() == null) {
+			// 新增用户
+			if(userService.selectByAccount(user.getAccount()) != null) {
+				result.put("result", "false");
+				result.put("errors", new String[] {"用户名已存在"});
+			}else {
+				user.setPassword(ShiroUtils.encryptPassword(user.getPassword(), user.getAccount()));
+				userService.addUser(user);			
+				result.put("result", "true");
+			}
 		} else {
 			if(user.getPassword() != null && !user.getPassword().isEmpty()) {
 				// 密码加密
