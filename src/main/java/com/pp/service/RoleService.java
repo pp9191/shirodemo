@@ -21,5 +21,13 @@ public class RoleService {
 	public int addRole(Role role) {
 		return roleMapper.insertSelective(role);
 	}
+	
+	public int addRoleToUser(int userId, int roleId) {
+		return 0;
+	}
+	
+	public int addRoleToUser(int userId, int[] roleIds) {
+		return 0;
+	}
 
 }

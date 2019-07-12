@@ -30,11 +30,11 @@
     delete from t_role
     where id = #{id,jdbcType=BIGINT}
   </delete>
-  <insert id="insert" parameterType="com.pp.entity.Role" >
-    insert into t_role (id, rolename, remark, 
-      create_time, create_by)
-    values (#{id,jdbcType=BIGINT}, #{rolename,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR}, 
-      #{createTime,jdbcType=TIMESTAMP}, #{createBy,jdbcType=VARCHAR})
+  <insert id="insertUserRole" parameterType="com.pp.entity.Role" >
+    insert into t_user_role (user_id, role_id, create_time, create_by) values 
+    <foreach item="role" collection="roles" separator=",">
+    (#{userId,jdbcType=BIGINT}, #{role.roleId,jdbcType=BIGINT}, now(), #{createBy,jdbcType=VARCHAR})
+    </foreach>
   </insert>
   <insert id="insertSelective" parameterType="com.pp.entity.Role" >
     insert into t_role
