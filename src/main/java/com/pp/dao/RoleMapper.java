@@ -1,13 +1,14 @@
 package com.pp.dao;
 
 import java.util.List;
+import java.util.Map;
 
 import com.pp.entity.Role;
 
 public interface RoleMapper {
     int deleteByPrimaryKey(Long id);
 
-    int insert(Role record);
+    int insertUserRole(Map<String, Object> record);
     
     int insertSelective(Role record);
 
