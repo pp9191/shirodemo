@@ -47,17 +47,18 @@
 		overflowToDisk="false" 
 		timeToIdleSeconds="1800"
 		timeToLiveSeconds="0" />
-	
-	<cache 
-		name="roleAndPermission" 
-		eternal="false" 
-		maxElementsInMemory="100"
-		overflowToDisk="false" 
-		timeToIdleSeconds="0"
-		timeToLiveSeconds="300" />
 		
 	<cache 
 		name="fileinfo" 
+		eternal="false" 
+		maxElementsInMemory="100"
+		overflowToDisk="false" 
+		timeToIdleSeconds="1800"
+		timeToLiveSeconds="0" />	
+		
+	<!-- 授权缓存 -->
+	<cache 
+		name="authorizationCache" 
 		eternal="false" 
 		maxElementsInMemory="100"
 		overflowToDisk="false" 

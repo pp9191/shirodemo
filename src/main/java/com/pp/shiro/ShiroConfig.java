@@ -9,7 +9,9 @@ import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
 import org.apache.shiro.web.mgt.CookieRememberMeManager;
 import org.apache.shiro.web.mgt.DefaultWebSecurityManager;
 import org.apache.shiro.web.servlet.SimpleCookie;
+import org.apache.shiro.web.session.mgt.DefaultWebSessionManager;
 import org.apache.shiro.mgt.SecurityManager;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -22,10 +24,23 @@ import java.util.Map;
 @Configuration
 public class ShiroConfig {
 
+	@Value("${server.session.timeout}")
+	private int tomcatTimeout;
+
 	@Bean
 	public ShiroDialect shiroDialect() {
 		return new ShiroDialect();
 	}
+	
+	@Bean("sessionManager")
+    public DefaultWebSessionManager sessionManager() {
+        DefaultWebSessionManager sessionManager = new DefaultWebSessionManager();
+        if(tomcatTimeout == 0) {
+        	tomcatTimeout = 1800;
+        }
+        sessionManager.setGlobalSessionTimeout(tomcatTimeout*1000);        
+        return sessionManager;
+    }
 
 	@Bean("ehCacheManager")
 	public EhCacheManager ehCacheManager(CacheManager cacheManager) {
@@ -64,20 +79,32 @@ public class ShiroConfig {
 	}
 
 	@Bean("shiroRealm")
-	public ShiroRealm shiroRealm(HashedCredentialsMatcher matcher) {
+	public ShiroRealm shiroRealm(HashedCredentialsMatcher matcher, EhCacheManager cacheManager) {
 		ShiroRealm shiroRealm = new ShiroRealm();
-		shiroRealm.setAuthorizationCachingEnabled(false);
 		shiroRealm.setCredentialsMatcher(matcher);
+		shiroRealm.setCacheManager(cacheManager);
+		// 配置缓存
+		shiroRealm.setCachingEnabled(true);
+	    //启用身份验证缓存，默认false
+	    shiroRealm.setAuthenticationCachingEnabled(false);
+	    //缓存AuthenticationInfo信息的缓存名称
+	    //shiroRealm.setAuthenticationCacheName("authenticationCache");
+	    //启用授权缓存，默认false
+	    shiroRealm.setAuthorizationCachingEnabled(true);
+	    //缓存AuthorizationInfo信息的缓存名称
+	    shiroRealm.setAuthorizationCacheName("authorizationCache");
+	    
 		return shiroRealm;
 	}
 
 	@Bean("securityManager")
 	public SecurityManager securityManager(ShiroRealm shiroRealm, EhCacheManager ehCacheManager, 
-			CookieRememberMeManager rememberMeManager) {
+			CookieRememberMeManager rememberMeManager, DefaultWebSessionManager sessionManager) {
 		DefaultWebSecurityManager securityManager = new DefaultWebSecurityManager();
 		// 注册自己的Realm
 		securityManager.setRealm(shiroRealm);
 		securityManager.setCacheManager(ehCacheManager);
+		securityManager.setSessionManager(sessionManager);
 		securityManager.setRememberMeManager(rememberMeManager);
 		return securityManager;
 	}

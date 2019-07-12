@@ -2,8 +2,6 @@ package com.pp.dao;
 
 import java.util.List;
 
-import org.springframework.cache.annotation.Cacheable;
-
 import com.pp.entity.Role;
 
 public interface RoleMapper {
@@ -19,6 +17,5 @@ public interface RoleMapper {
 
     int updateByPrimaryKey(Role record);
     
-    @Cacheable(value="roleAndPermission", key="'roles_'+#userId")
     List<Role> getRoles(Long userId);
 }
