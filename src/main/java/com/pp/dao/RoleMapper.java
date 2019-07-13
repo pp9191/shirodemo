@@ -1,6 +1,8 @@
 package com.pp.dao;
 
 import java.util.List;
+import java.util.Map;
+
 import com.pp.entity.Role;
 
 public interface RoleMapper {
@@ -15,4 +17,6 @@ public interface RoleMapper {
     int updateByPrimaryKey(Role record);
     
     List<Role> getRoles(Long userId);
+    
+    List<Map<String, Object>> selectRoleAndUsers();
 }

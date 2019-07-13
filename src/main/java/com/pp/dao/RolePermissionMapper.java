@@ -1,6 +1,7 @@
 package com.pp.dao;
 
 import com.pp.entity.RolePermission;
+
 import org.apache.ibatis.annotations.Param;
 
 public interface RolePermissionMapper {
@@ -15,4 +16,6 @@ public interface RolePermissionMapper {
     int updateByPrimaryKeySelective(RolePermission record);
 
     int updateByPrimaryKey(RolePermission record);
+
+	int deleteByRoleId(Long roleId);
 }

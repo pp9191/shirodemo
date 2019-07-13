@@ -25,6 +25,25 @@
     <include refid="Base_Column_List" />
     from t_role
     where id = #{id,jdbcType=BIGINT}
+  </select>  
+  <select id="selectRoleAndUsers" resultType="map" parameterType="map" >
+    SELECT
+		t_user.account,
+		t_user.nickname,
+		t_user.gender,
+		t_user.birthday,
+		t_user.phone,
+		t_user.email,
+		t_user.address,
+		t_user.head_img headImg,
+		t_user_role.user_id userId,
+		t_user_role.role_id roleId,
+		t_role.rolename,
+		t_role.remark
+	FROM t_role
+	LEFT JOIN t_user_role ON t_role.id = t_user_role.role_id
+	LEFT JOIN t_user ON t_user.id = t_user_role.user_id
+	ORDER BY t_role.id, t_user.id
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
     delete from t_role
