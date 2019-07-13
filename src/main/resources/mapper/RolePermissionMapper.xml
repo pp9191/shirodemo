@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.pp.dao.RolePermissionMapper" >
+  <resultMap id="BaseResultMap" type="com.pp.entity.RolePermission" >
+    <id column="role_id" property="roleId" jdbcType="BIGINT" />
+    <id column="permssion_id" property="permssionId" jdbcType="BIGINT" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="create_by" property="createBy" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    role_id, permssion_id, create_time, create_by
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="map" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_role_permission
+    where role_id = #{roleId,jdbcType=BIGINT}
+      and permssion_id = #{permssionId,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="map" >
+    delete from t_role_permission
+    where role_id = #{roleId,jdbcType=BIGINT}
+      and permssion_id = #{permssionId,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.pp.entity.RolePermission" >
+    insert into t_role_permission (role_id, permssion_id, create_time, 
+      create_by)
+    values (#{roleId,jdbcType=BIGINT}, #{permssionId,jdbcType=BIGINT}, now(), 
+      #{createBy,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.pp.entity.RolePermission" >
+    insert into t_role_permission
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="roleId != null" >
+        role_id,
+      </if>
+      <if test="permssionId != null" >
+        permssion_id,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="createBy != null" >
+        create_by,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="roleId != null" >
+        #{roleId,jdbcType=BIGINT},
+      </if>
+      <if test="permssionId != null" >
+        #{permssionId,jdbcType=BIGINT},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createBy != null" >
+        #{createBy,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.pp.entity.RolePermission" >
+    update t_role_permission
+    <set >
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createBy != null" >
+        create_by = #{createBy,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where role_id = #{roleId,jdbcType=BIGINT}
+      and permssion_id = #{permssionId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.pp.entity.RolePermission" >
+    update t_role_permission
+    set create_time = #{createTime,jdbcType=TIMESTAMP},
+      create_by = #{createBy,jdbcType=VARCHAR}
+    where role_id = #{roleId,jdbcType=BIGINT}
+      and permssion_id = #{permssionId,jdbcType=BIGINT}
+  </update>
+</mapper>
