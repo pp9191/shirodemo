@@ -29,8 +29,16 @@ public class RoleService {
 		return roleMapper.getRoles(userId);
 	}
 	
-	public List<Map<String, Object>> selectRoleAndUsers() {		
-		return roleMapper.selectRoleAndUsers();
+	public Role getRoleByName(String rolename) {
+		return roleMapper.selectByName(rolename);
+	}
+	
+	public int getRoleAndUsersCount(Map<String, Object> params) {
+		return roleMapper.getRoleAndUsersCount(params);
+	}
+	
+	public List<Map<String, Object>> selectRoleAndUsers(Map<String, Object> params) {		
+		return roleMapper.selectRoleAndUsers(params);
 	}
 	
 	public int addRole(Role role) {
@@ -57,6 +65,7 @@ public class RoleService {
 	public int deleteUserRole(UserRole record) {
 		return userRoleMapper.deleteByPrimaryKey(record.getUserId(), record.getRoleId());
 	}
+
 	
 	
 }

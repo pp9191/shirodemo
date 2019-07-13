@@ -1,16 +1,24 @@
 package com.pp.controller;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.validation.Valid;
+
+import org.apache.shiro.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.pp.entity.Role;
+import com.pp.entity.User;
 import com.pp.service.RoleService;
 
 @Controller
@@ -29,10 +37,38 @@ public class RolePermissionController {
 	}
 	
 	@ResponseBody
+	@RequestMapping("/addRole")
+	public Map<String, Object> addRole(@ModelAttribute @Valid Role role, BindingResult bindResult) {
+		Map<String, Object> map = new HashMap<String, Object>();
+		if(bindResult.hasErrors()) {
+			map.put("result", "false");
+			map.put("errors", bindResult.getAllErrors());
+		}else if(roleService.getRoleByName(role.getRolename()) != null){
+			map.put("result", "false");
+			map.put("errors", new String[] {"角色名已存在"});
+		}else {			
+			User user = (User) SecurityUtils.getSubject().getPrincipal();
+			role.setCreateBy(user.getAccount());
+			roleService.addRole(role);
+			map.put("result", "true");
+		}		
+		return map;
+	}
+	
+	@ResponseBody
 	@RequestMapping("/roleAndUsers")
-	public List<Map<String, Object>> getRoleAndUsers() {
+	public Map<String, Object> getRoleAndUsers(Integer offset, Integer limit) {
 		
-		return roleService.selectRoleAndUsers();
+		Map<String, Object> params = new HashMap<>();
+		int total = roleService.getRoleAndUsersCount(params);
+		params.put("offset", offset);
+		params.put("limit", limit);
+		List<Map<String, Object>> roles = roleService.selectRoleAndUsers(params);
+		
+		Map<String, Object> result = new HashMap<>();
+		result.put("total", total);
+		result.put("rows", roles);
+		return result;
 	}
 	
 	

@@ -18,5 +18,9 @@ public interface RoleMapper {
     
     List<Role> getRoles(Long userId);
     
-    List<Map<String, Object>> selectRoleAndUsers();
+    Role selectByName(String rolename);
+
+    List<Map<String, Object>> selectRoleAndUsers(Map<String, Object> params);
+
+	int getRoleAndUsersCount(Map<String, Object> params);
 }

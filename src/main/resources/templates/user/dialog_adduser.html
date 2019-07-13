@@ -115,9 +115,13 @@
 					if(data.result == "false"){
 						$.alert(data.errors[0]);
 					}else{
-						$.alert("保存成功");
-						// 关闭弹窗
-						closeCurrentDialog();
+						var dialog = getCurrentDialog();						
+						$.alert({
+							content: "保存成功",
+							onClose: function(){	    								
+								dialog.close();
+							}
+						});
 					}
 				});
 			} 
@@ -190,7 +194,7 @@
 			<div class="form-group">
 				<div style="text-align:center;">
 					<input type="submit" class="btn btn-primary" value="保存" onclick="saveUserInfo()" />
-					<input type="button" class="btn btn-default" value="取消" onclick="closeCurrentDialog()" />
+					<input type="button" class="btn btn-default" value="取消" onclick="getCurrentDialog().close();" />
 				</div>
 			</div>
 		</form>

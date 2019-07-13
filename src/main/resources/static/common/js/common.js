@@ -27,6 +27,11 @@ $.extend($.fn.datepicker.defaults, {
 	endDate: "today"
 });
 
-function closeCurrentDialog(){
-	jconfirm.instances.pop().close();
+function getCurrentDialog(){
+	var length = jconfirm.instances.length;
+	if(length > 0){		
+		return jconfirm.instances[length - 1]
+	}else{
+		return null;
+	}
 }

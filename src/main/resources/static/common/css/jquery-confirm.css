@@ -611,7 +611,8 @@ body[class*=jconfirm-no-scroll-] {
 
 .jconfirm.jconfirm-white .jconfirm-box .jconfirm-buttons,
 .jconfirm.jconfirm-light .jconfirm-box .jconfirm-buttons {
-    float: right;
+    /* float: right; */
+    text-align: center;
 }
 
 .jconfirm.jconfirm-white .jconfirm-box .jconfirm-buttons button,

@@ -20,12 +20,25 @@
     )
     order by id
   </select>
+  <select id="selectByName" resultMap="BaseResultMap" parameterType="string" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_role
+    where rolename = #{rolename,jdbcType=BIGINT}
+  </select>  
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
     select 
     <include refid="Base_Column_List" />
     from t_role
     where id = #{id,jdbcType=BIGINT}
-  </select>  
+  </select>
+  <select id="getRoleAndUsersCount" resultType="int" parameterType="map" >
+    SELECT
+		count(*)
+	FROM t_role
+	LEFT JOIN t_user_role ON t_role.id = t_user_role.role_id
+	LEFT JOIN t_user ON t_user.id = t_user_role.user_id
+  </select>
   <select id="selectRoleAndUsers" resultType="map" parameterType="map" >
     SELECT
 		t_user.account,
@@ -44,6 +57,9 @@
 	LEFT JOIN t_user_role ON t_role.id = t_user_role.role_id
 	LEFT JOIN t_user ON t_user.id = t_user_role.user_id
 	ORDER BY t_role.id, t_user.id
+	<if test="offset != null and limit != null" >
+	    LIMIT #{offset} , #{limit}
+    </if>
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
     delete from t_role
@@ -61,12 +77,10 @@
       <if test="remark != null" >
         remark,
       </if>
-      <if test="createTime != null" >
-        create_time,
-      </if>
       <if test="createBy != null" >
         create_by,
       </if>
+        create_time
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="id != null" >
@@ -77,13 +91,11 @@
       </if>
       <if test="remark != null" >
         #{remark,jdbcType=VARCHAR},
-      </if>
-      <if test="createTime != null" >
-        #{createTime,jdbcType=TIMESTAMP},
-      </if>
+      </if>      
       <if test="createBy != null" >
         #{createBy,jdbcType=VARCHAR},
       </if>
+      	now()
     </trim>
   </insert>
   <update id="updateByPrimaryKeySelective" parameterType="com.pp.entity.Role" >

@@ -704,6 +704,10 @@
                         if(typeof res === 'undefined' || res)
                             that.close();
                     });
+                
+                if(button.id){
+                	button_element.attr("id", button.id);
+                }
 
                 that.buttons[key].el = button_element;
                 that.buttons[key].setText = function(text){
