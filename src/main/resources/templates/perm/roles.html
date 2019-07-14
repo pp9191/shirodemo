@@ -8,9 +8,19 @@
 </head>
 <body layout:fragment="content">
 <script type="text/javascript">
-function showAddDialog(){
-	
+function showAddDialog(flag){
+	var title = "新增";
+	var row;
+	if(flag == "edit"){
+		if($("#table_roles").bootstrapTable('getSelections').length == 0){
+			$.alert("请选择一条数据");
+			return;
+		}
+		title = "修改";
+		row = $("#table_roles").bootstrapTable('getSelections')[0];
+	}
 	var content = '<form id="form_role" action="/perm/addRole" class="form-horizontal" style="width:96%;" role="form" method="post">' +
+				  '<input type="hidden" id="id" name="id"/>' +
 				  '<div class="form-group">' +
 				  '<label for="rolename" class="col-md-2 control-label">角色名</label>' +
 				  '<div class="col-md-10"><input type="text" class="form-control" id="rolename" name="rolename"/></div>' +
@@ -21,7 +31,7 @@ function showAddDialog(){
 			 	  '</div>' +
 				  '</form>';
 	$.confirm({
-		title: "新增角色",
+		title: title,
 		content: content,
 		columnClass: "col-sm-8 col-sm-offset-2 col-lg-6 col-lg-offset-3",
 		buttons: {
@@ -42,7 +52,7 @@ function showAddDialog(){
 	    							onClose: function(){	    								
 			    						that.close();
 			    						// 刷新表格
-			    						$("#table_users").bootstrapTable('refresh');
+			    						$("#table_roles").bootstrapTable('refresh');
 	    							}
 	    						});   						
 	    					}
@@ -56,6 +66,11 @@ function showAddDialog(){
 	        }
 	    },
 	    onOpen: function () {
+	    	if(flag == "edit"){
+	    		$("#id").val(row.id);
+	    		$("#rolename").val(row.rolename).attr("readonly", "readonly");
+	    		$("#remark").val(row.remark);
+	    	}
 	    	$('#form_role').bootstrapValidator({
 				message : 'This value is not valid',
 				feedbackIcons : {
@@ -93,14 +108,35 @@ function showAddDialog(){
 	    }
 	});
 }
-function showEditDialog(){
-	var rows = $("#table_users").bootstrapTable('getSelections');
-	if(rows.length){		
-		$.dialog({
-			title: "修改角色",
-			content: "url:/user/dialog_edituser/" + rows[0].account,
-			columnClass: "col-sm-8 col-sm-offset-2"
-		}); 
+
+function deleteRole(){
+	var rows = $("#table_roles").bootstrapTable('getSelections');
+	if(rows.length){
+		$.confirm({
+			content: "删除后不能恢复，确定要删除？",
+			buttons: {
+		        ok: {
+		            text: '确定',
+		            btnClass: 'btn btn-primary', 
+		            action: function () {
+		            	$.ajax({
+							url: "/perm/deleteRole?id=" + rows[0].id,
+							dataType: "json",
+							success: function(data){
+								if(data.result == "true"){
+									$.alert("删除成功");
+									// 刷新表格
+									$("#table_roles").bootstrapTable('refresh');
+								}				
+							}
+						}); 
+		            }
+		        },
+		        close: {
+		            text: '取消'
+		        }
+		    }
+		});
 	}else{
 		$.alert("请选择一条数据");
 	}
@@ -111,13 +147,13 @@ function showEditDialog(){
 		
 		<div id="toolbar">
 			<div class="btn-group">
-				<button class="btn btn-default" onclick="showAddDialog()">
+				<button class="btn btn-default" onclick="showAddDialog('add')">
 					<i class="glyphicon glyphicon-plus"></i>
 				</button>
-				<button class="btn btn-default">
+				<button class="btn btn-default" onclick="deleteRole()">
 					<i class="glyphicon glyphicon-trash"></i>
 				</button>
-				<button class="btn btn-default" onclick="showEditDialog()">
+				<button class="btn btn-default" onclick="showAddDialog('edit')">
 					<i class="glyphicon glyphicon-edit"></i>
 				</button>
 			</div>
