@@ -8,9 +8,6 @@
 </head>
 <body layout:fragment="content">
 <script type="text/javascript">
-$(function(){
-	initRoles();
-});
 function showAddDialog(){
 	
 	var content = '<form id="form_role" action="/perm/addRole" class="form-horizontal" style="width:96%;" role="form" method="post">' +
@@ -108,25 +105,10 @@ function showEditDialog(){
 		$.alert("请选择一条数据");
 	}
 }
-function initRoles(){
-	$.ajax({
-		url: "/perm/allRoles",
-		type: "post",
-		dataType: "json",
-		success: function(data){
-			if(data.rows && data.rows.length){
-				var roleHtm = "";
-				$.each(data.rows, function(i, item){
-					roleHtm += '<a href="#" class="list-group-item" data-roleid="'+item.id+'">'+item.remark+'</a>'
-				});
-				$("#list_roles").html(roleHtm);
-			}
-		}
-	});
-}
 </script>
 
 	<div class="container">
+		
 		<div id="toolbar">
 			<div class="btn-group">
 				<button class="btn btn-default" onclick="showAddDialog()">
@@ -140,16 +122,21 @@ function initRoles(){
 				</button>
 			</div>
 		</div>
-		<div class="row">
-			<div class="col-sm-2">				
-				<div id="list_roles" class="list-group">						
-					
-				</div>
-			</div>
-			<div  class="col-sm-10">
-				
-			</div>
-		</div>	
+		
+		<table id="table_roles" data-toggle="table" data-url="/perm/allRoles" 
+			data-pagination="true" data-side-pagination="server" data-page-size="10"
+			data-show-refresh="true" data-show-toggle="true" data-show-columns="true"
+			data-search="true" data-show-search-button="true" data-single-select="true"
+			data-toolbar="#toolbar">				
+			<thead>
+				<tr>
+					<th data-checkbox="true"></th>
+					<th data-field="rolename" data-halign="center" data-align="center">角色</th>
+					<th data-field="remark" data-halign="center" data-align="center">角色说明</th>
+					<th data-field="createTime" data-halign="center" data-align="center">创建时间</th>
+				</tr>
+			</thead>
+		</table>	
 	</div>
 	
 </body>
