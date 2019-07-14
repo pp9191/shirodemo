@@ -33,39 +33,42 @@ public class RoleService {
 		return roleMapper.selectByName(rolename);
 	}
 	
-	public int getRoleAndUsersCount(Map<String, Object> params) {
-		return roleMapper.getRoleAndUsersCount(params);
-	}
-	
-	public List<Map<String, Object>> selectRoleAndUsers(Map<String, Object> params) {		
-		return roleMapper.selectRoleAndUsers(params);
-	}
-	
 	public int addRole(Role role) {
 		return roleMapper.insertSelective(role);
 	}
 	
+	public int updateRole(Role role) {
+		return roleMapper.updateByPrimaryKeySelective(role);
+	}
+	
 	@Transactional
-	public void deleteRole(Role role) {
+	public int deleteRole(Role role) {
 		// 删除角色授权
 		userRoleMapper.deleteByRoleId(role.getId());
 		// 删除权限点授权
 		rolePermissionMapper.deleteByRoleId(role.getId());
 		// 最后删除角色
-		roleMapper.deleteByPrimaryKey(role.getId());
+		int r = roleMapper.deleteByPrimaryKey(role.getId());
+		return r;
+	}
+
+	public List<Role> selectAll(Map<String, Object> params) {
+		return roleMapper.selectAll(params);
+	}
+
+	public int selectAllCount(Map<String, Object> params) {
+		return roleMapper.selectAllCount(params);
 	}
 	
-	public int addRoleToUser(UserRole record) {
+	public int addUserRole(UserRole record) {
 		if(userRoleMapper.selectByPrimaryKey(record.getUserId(), record.getRoleId()) == null) {			
 			return userRoleMapper.insert(record);
 		}
 		return 0;
 	}
 	
-	public int deleteUserRole(UserRole record) {
+	public int removeUserRole(UserRole record) {
 		return userRoleMapper.deleteByPrimaryKey(record.getUserId(), record.getRoleId());
 	}
-
-	
 	
 }

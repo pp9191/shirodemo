@@ -43,33 +43,50 @@ public class RolePermissionController {
 		if(bindResult.hasErrors()) {
 			map.put("result", "false");
 			map.put("errors", bindResult.getAllErrors());
-		}else if(roleService.getRoleByName(role.getRolename()) != null){
-			map.put("result", "false");
-			map.put("errors", new String[] {"角色名已存在"});
-		}else {			
-			User user = (User) SecurityUtils.getSubject().getPrincipal();
-			role.setCreateBy(user.getAccount());
-			roleService.addRole(role);
+		}else if(role.getId() == null) {
+			// 新增
+			if(roleService.getRoleByName(role.getRolename()) != null){
+				map.put("result", "false");
+				map.put("errors", new String[] {"角色名已存在"});
+			}else {			
+				User user = (User) SecurityUtils.getSubject().getPrincipal();
+				role.setCreateBy(user.getAccount());
+				roleService.addRole(role);
+				map.put("result", "true");
+			}
+		}else {
+			roleService.updateRole(role);
 			map.put("result", "true");
-		}		
+		}
 		return map;
 	}
 	
 	@ResponseBody
-	@RequestMapping("/roleAndUsers")
-	public Map<String, Object> getRoleAndUsers(Integer offset, Integer limit) {
+	@RequestMapping("/deleteRole")
+	public Map<String, Object> deleteRole(@ModelAttribute Role role) {
+		Map<String, Object> map = new HashMap<String, Object>();
+		if(roleService.deleteRole(role) > 0) {			
+			map.put("result", "true");
+		}else {
+			map.put("result", "false");
+		}
+		return map;
+	}
+	
+	@ResponseBody
+	@RequestMapping("/allRoles")
+	public Map<String, Object> getRoles(Integer offset, Integer limit) {
 		
 		Map<String, Object> params = new HashMap<>();
-		int total = roleService.getRoleAndUsersCount(params);
+		int total = roleService.selectAllCount(params);
 		params.put("offset", offset);
 		params.put("limit", limit);
-		List<Map<String, Object>> roles = roleService.selectRoleAndUsers(params);
+		List<Role> roles = roleService.selectAll(params);
 		
 		Map<String, Object> result = new HashMap<>();
 		result.put("total", total);
 		result.put("rows", roles);
 		return result;
 	}
-	
 	
 }

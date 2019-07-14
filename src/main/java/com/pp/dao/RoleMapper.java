@@ -20,7 +20,7 @@ public interface RoleMapper {
     
     Role selectByName(String rolename);
 
-    List<Map<String, Object>> selectRoleAndUsers(Map<String, Object> params);
+    List<Role> selectAll(Map<String, Object> params);
 
-	int getRoleAndUsersCount(Map<String, Object> params);
+	int selectAllCount(Map<String, Object> params);
 }

@@ -8,6 +8,9 @@
 </head>
 <body layout:fragment="content">
 <script type="text/javascript">
+$(function(){
+	initRoles();
+});
 function showAddDialog(){
 	
 	var content = '<form id="form_role" action="/perm/addRole" class="form-horizontal" style="width:96%;" role="form" method="post">' +
@@ -105,52 +108,48 @@ function showEditDialog(){
 		$.alert("请选择一条数据");
 	}
 }
+function initRoles(){
+	$.ajax({
+		url: "/perm/allRoles",
+		type: "post",
+		dataType: "json",
+		success: function(data){
+			if(data.rows && data.rows.length){
+				var roleHtm = "";
+				$.each(data.rows, function(i, item){
+					roleHtm += '<a href="#" class="list-group-item" data-roleid="'+item.id+'">'+item.remark+'</a>'
+				});
+				$("#list_roles").html(roleHtm);
+			}
+		}
+	});
+}
 </script>
 
-	<div class="container-fluid">		
-		<div class="hidden-xs col-sm-3 col-lg-2" >
-			<ul class="nav nav-pills nav-stacked" style="min-height: 500px; border-radius: 5px; background-color: #f8f8f8;">
-	            <li><a href="jvascript:">用户管理</a></li>
-				<li class="active"><a href="jvascript:">角色管理</a></li>
-	            <li><a href="jvascript:">权限管理</a></li>       
-	        </ul>
+	<div class="container">
+		<div id="toolbar">
+			<div class="btn-group">
+				<button class="btn btn-default" onclick="showAddDialog()">
+					<i class="glyphicon glyphicon-plus"></i>
+				</button>
+				<button class="btn btn-default">
+					<i class="glyphicon glyphicon-trash"></i>
+				</button>
+				<button class="btn btn-default" onclick="showEditDialog()">
+					<i class="glyphicon glyphicon-edit"></i>
+				</button>
+			</div>
 		</div>
-		<div class="col-xs-12 col-sm-9 col-lg-10">
-			<div id="toolbar">
-				<div class="btn-group">
-					<button class="btn btn-default" onclick="showAddDialog()">
-						<i class="glyphicon glyphicon-plus"></i>
-					</button>
-					<button class="btn btn-default">
-						<i class="glyphicon glyphicon-trash"></i>
-					</button>
-					<button class="btn btn-default" onclick="showEditDialog()">
-						<i class="glyphicon glyphicon-edit"></i>
-					</button>
+		<div class="row">
+			<div class="col-sm-2">				
+				<div id="list_roles" class="list-group">						
+					
 				</div>
 			</div>
-			
-			<table id="table_users" data-toggle="table" data-url="/perm/roleAndUsers" 
-				data-pagination="true" data-side-pagination="server" data-page-size="10"
-				data-show-refresh="true" data-show-toggle="true" data-show-columns="true"
-				data-search="true" data-show-search-button="true" data-single-select="true"
-				data-toolbar="#toolbar">
+			<div  class="col-sm-10">
 				
-				<thead>
-					<tr>
-						<th data-checkbox="true"></th>
-						<th data-field="rolename" data-halign="center" data-align="center">角色</th>
-						<th data-field="remark" data-halign="center" data-align="center">角色说明</th>
-						<th data-field="account" data-halign="center" data-align="center">用户名</th>
-						<th data-field="nickname" data-halign="center" data-align="center">昵称</th>
-						<th data-field="gender" data-halign="center" data-align="center">性别</th>
-						<th data-field="phone" data-halign="center" data-align="center">手机号</th>
-						<th data-field="email" data-halign="center" data-align="center">邮箱</th>
-						<th data-field="address" data-halign="center" data-align="center">住址</th>
-					</tr>
-				</thead>
-			</table>
-		</div>		
+			</div>
+		</div>	
 	</div>
 	
 </body>

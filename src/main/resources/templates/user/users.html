@@ -27,79 +27,51 @@ function showEditDialog(){
 		$.alert("请选择一条数据");
 	}
 }
+function initOperate(value, row, index){
+	var c = '<a href="#" title="设置角色"  οnclick="info(\''
+		+ row.id
+		+ '\')"><i class="glyphicon glyphicon-cog"></i></a> ';
+	return c;
+}
 </script>
 
-	<div class="container-fluid">		
-		<div class="hidden-xs col-sm-3 col-lg-2" >
-			<ul class="nav nav-pills nav-stacked" style="min-height: 500px; border-radius: 5px; background-color: #f8f8f8;">
-	            <li class="active"><a href="jvascript:">用户管理</a></li>
-				<li><a href="jvascript:">角色管理</a></li>
-	            <li><a href="jvascript:">权限管理</a></li>       
-	        </ul>
-		</div>
-		<div class="col-xs-12 col-sm-9 col-lg-10">
-			<div id="toolbar">
-				<div class="btn-group">
-					<button class="btn btn-default" onclick="showAddDialog()">
-						<i class="glyphicon glyphicon-plus"></i>
-					</button>
-					<button class="btn btn-default">
-						<i class="glyphicon glyphicon-trash"></i>
-					</button>
-					<button class="btn btn-default" onclick="showEditDialog()">
-						<i class="glyphicon glyphicon-edit"></i>
-					</button>
-				</div>
+	<div class="container">		
+		
+		<div id="toolbar">
+			<div class="btn-group">
+				<button class="btn btn-default" onclick="showAddDialog()">
+					<i class="glyphicon glyphicon-plus"></i>
+				</button>
+				<button class="btn btn-default">
+					<i class="glyphicon glyphicon-trash"></i>
+				</button>
+				<button class="btn btn-default" onclick="showEditDialog()">
+					<i class="glyphicon glyphicon-edit"></i>
+				</button>
 			</div>
-			<!-- <table class="table">
-				<thead>
-					<tr>
-						<th>用户名</th>
-						<th>昵称</th>
-						<th>手机号</th>
-						<th>邮箱</th>
-						<th>创建时间</th>
-						<th>状态</th>
-						<th>操作</th>
-					</tr>
-				</thead>
-				<tbody>
-					<tr th:each="user: ${users}">
-						<td th:text="${user.account}">rr</td>
-						<td th:text="${user.nickname}">rr</td>
-						<td th:text="${user.phone}">Mark</td>
-						<td th:text="${user.email}">Otto</td>
-						<td th:text="${#dates.format(user.createTime, 'yyyy-MM-dd')}"></td>
-						<td th:text="${user.status}"></td>
-						<td>
-							<a th:href="@{'javascript:editUser(\''+${user.id}+'\');'}">编辑</a>
-							<a th:href="@{'javascript:deleteUser(\''+${user.id}+'\');'}">删除</a>
-						</td>
-					</tr>
-				</tbody>
-			</table> -->
-
-			<table id="table_users" data-toggle="table" data-url="/user/users" data-method="post"
-				data-pagination="true" data-side-pagination="server" data-page-size="10"
-				data-show-refresh="true" data-show-toggle="true" data-show-columns="true"
-				data-search="true" data-show-search-button="true" data-single-select="true"
-				data-toolbar="#toolbar">
-				
-				<thead>
-					<tr>
-						<th data-checkbox="true"></th>
-						<th data-field="account" data-halign="center" data-align="center">用户名</th>
-						<th data-field="nickname" data-halign="center" data-align="center">昵称</th>
-						<th data-field="gender" data-halign="center" data-align="center">性别</th>
-						<th data-field="phone" data-halign="center" data-align="center">手机号</th>
-						<th data-field="email" data-halign="center" data-align="center">邮箱</th>
-						<th data-field="address" data-halign="center" data-align="center">住址</th>
-						<th data-field="createTime" data-halign="center" data-align="center">注册时间</th>
-						<th data-field="status" data-halign="center" data-align="center">状态</th>
-					</tr>
-				</thead>
-			</table>
-		</div>		
+		</div>
+		
+		<table id="table_users" data-toggle="table" data-url="/user/users" data-method="post"
+			data-pagination="true" data-side-pagination="server" data-page-size="10"
+			data-show-refresh="true" data-show-toggle="true" data-show-columns="true"
+			data-search="true" data-show-search-button="true" data-single-select="true"
+			data-toolbar="#toolbar">
+			
+			<thead>
+				<tr>
+					<th data-checkbox="true"></th>
+					<th data-field="account" data-halign="center" data-align="center">用户名</th>
+					<th data-field="nickname" data-halign="center" data-align="center">昵称</th>
+					<th data-field="gender" data-halign="center" data-align="center">性别</th>
+					<th data-field="phone" data-halign="center" data-align="center">手机号</th>
+					<th data-field="email" data-halign="center" data-align="center">邮箱</th>
+					<th data-field="address" data-halign="center" data-align="center">住址</th>
+					<th data-field="createTime" data-halign="center" data-align="center">注册时间</th>
+					<th data-field="status" data-halign="center" data-align="center">状态</th>
+					<th data-field="operate" data-halign="center" data-align="center" data-formatter="initOperate">角色设置</th>
+				</tr>
+			</thead>
+		</table>	
 	</div>
 	
 </body>

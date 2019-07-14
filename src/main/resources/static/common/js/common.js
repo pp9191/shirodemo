@@ -16,7 +16,6 @@ jconfirm.defaults = {
     },
 };
 
-
 $.extend($.fn.datepicker.defaults, {
 	language: 'zh-CN',
     weekStart: 1,
