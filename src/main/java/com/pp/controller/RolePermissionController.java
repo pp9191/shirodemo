@@ -1,5 +1,6 @@
 package com.pp.controller;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -86,6 +87,28 @@ public class RolePermissionController {
 		Map<String, Object> result = new HashMap<>();
 		result.put("total", total);
 		result.put("rows", roles);
+		return result;
+	}
+	
+	@ResponseBody
+	@RequestMapping("/userRoles/{userId}")
+	public Map<String, Object> getUserRoles(@PathVariable Long userId) {
+		
+		List<Role> owned = roleService.getRoles(userId);
+		List<Role> roles = roleService.selectAll(null);
+		// 除去已拥有的角色
+		for (int i = 0; i < owned.size(); i++) {
+			for (int j = 0; j < roles.size(); j++) {
+				if(roles.get(j).getRolename().equals(owned.get(i).getRolename())) {
+					roles.remove(j);
+					break;
+				}
+			}
+		}
+		
+		Map<String, Object> result = new HashMap<>();
+		result.put("owned", owned);
+		result.put("allRoles", roles);
 		return result;
 	}
 	
