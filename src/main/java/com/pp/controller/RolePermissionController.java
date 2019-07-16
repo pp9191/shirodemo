@@ -108,7 +108,7 @@ public class RolePermissionController {
 		
 		Map<String, Object> result = new HashMap<>();
 		result.put("owned", owned);
-		result.put("allRoles", roles);
+		result.put("notOwned", roles);
 		return result;
 	}
 	
