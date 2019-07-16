@@ -28,10 +28,17 @@ function showEditDialog(){
 	}
 }
 function initOperate(value, row, index){
-	var c = '<a href="#" title="设置角色"  οnclick="info(\''
+	var c = '<a title="设置角色"  href="javascript:showRoleDialog(\''
 		+ row.id
-		+ '\')"><i class="glyphicon glyphicon-cog"></i></a> ';
+		+ '\');"><i class="glyphicon glyphicon-cog"></i></a> ';
 	return c;
+}
+function showRoleDialog(userId){
+	$.dialog({
+		title: "角色设置",
+		content: "url:/perm/dialog_userroles?userId=" + userId,
+		columnClass: "col-sm-8 col-sm-offset-2"
+	});
 }
 </script>
 

@@ -5,40 +5,50 @@
 <title>Insert title here</title>
 </head>
 <body>
-	<script>
+	<script th:inline="javascript">
 		$(function(){
 			$.ajax({
-				url: "",
+				url: "/perm/userRoles/" + [[${param.userId}]],
 				type: "post",
 				dataType: "json",
-				success：function(data){
-					$("#table_rolesNotOwn").bootstrapTable("load",data.notOwned);
-					$("#table_rolesOwn").bootstrapTable("load",data.owned);
+				success: function(data){
+					$("#table_rolesNotOwn").bootstrapTable().bootstrapTable("load", data.notOwned);
+					$("#table_rolesOwn").bootstrapTable().bootstrapTable("load", data.owned);
 				}
 			});
 		});
 	</script>
-	<div style="width:96%;">
-		<div class="col-xs-6">
-			<table id="table_rolesNotOwn" data-toggle="table">
+	<div style="height:600px;">
+		<div class="col-xs-5">
+			<h3>未添加</h3>
+			<table id="table_rolesNotOwn" data-toggle="table" data-url="">
 				<thead>
 					<tr>
 						<th data-checkbox="true"></th>
 						<th data-field="rolename" data-halign="center" data-align="center">角色</th>
 						<th data-field="remark" data-halign="center" data-align="center">角色说明</th>
-						<th data-field="operate" data-halign="center" data-align="center">操作</th>
 					</tr>
 				</thead>
 			</table>
 		</div>
-		<div class="col-xs-6">
-			<table id="table_rolesOwn" data-toggle="table">
+		<div class="col-xs-2" style="height:100%;">
+			<table style="height:100%;">
+				<tr>
+					<td align="center" valign="middle">
+						<div><i class="glyphicon glyphicon-arrow-right"></i></div>
+						<div><i class="glyphicon glyphicon-arrow-left"></i></div>
+					</td>
+				</tr>
+			</table>
+		</div>
+		<div class="col-xs-5">
+			<h3>已添加</h3>
+			<table id="table_rolesOwn" data-toggle="table" data-url="">
 				<thead>
 					<tr>
 						<th data-checkbox="true"></th>
 						<th data-field="rolename" data-halign="center" data-align="center">角色</th>
 						<th data-field="remark" data-halign="center" data-align="center">角色说明</th>
-						<th data-field="operate" data-halign="center" data-align="center">操作</th>
 					</tr>
 				</thead>
 			</table>
