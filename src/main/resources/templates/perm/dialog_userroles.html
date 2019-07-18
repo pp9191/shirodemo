@@ -20,14 +20,13 @@
 		});
 		
 		function setUserRoles(operate){
-			var roles, userRoles;
+			var roles;
 			if(operate == "add"){
 				roles = $("#table_rolesNotOwn").bootstrapTable("getSelections");
 			}else if(operate == "delete"){
 				roles = $("#table_rolesOwn").bootstrapTable("getSelections");
 			}
-			if(roles && roles.length > 0){				
-				userRoles = [];
+			if(roles && roles.length > 0){	
 				var userRoles = $.map(roles, function(role){
 					return {
 						userId: userId,
