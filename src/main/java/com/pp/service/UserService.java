@@ -11,7 +11,8 @@ import com.pp.dao.FileInfoMapper;
 import com.pp.dao.UserMapper;
 import com.pp.entity.FileInfo;
 import com.pp.entity.User;
-import com.pp.shiro.ShiroUtils;
+import com.pp.util.FileUtils;
+import com.pp.util.JsonUtils;
 
 @Repository("userService")
 public class UserService {
@@ -46,12 +47,12 @@ public class UserService {
 	public void setHeadImg(String account, FileInfo fileinfo) {
 		
 		User user = userMapper.selectByAccount(account);		
-		if(user.getHeadImg() != null && !user.getHeadImg().isEmpty()) {
+		if(JsonUtils.isNotEmpty(user.getHeadImg())) {
 			FileInfo old_f = fileMapper.selectByPrimaryKey(user.getHeadImg());
 			// 删除旧的图像文件
 			if(old_f != null) {		
 				fileMapper.deleteByPrimaryKey(old_f.getId());
-				ShiroUtils.deleteFile(old_f);
+				FileUtils.deleteFile(old_f);
 			}
 		}
 		// 更新图像

@@ -4,7 +4,6 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.cache.annotation.CacheEvict;
-import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
 
 import com.pp.entity.User;
@@ -14,7 +13,6 @@ public interface UserMapper {
 
     int insert(User record);
 
-    @CachePut(value="users", key="#record.account")
     int insertSelective(User record);
 
     User selectByPrimaryKey(Long id);

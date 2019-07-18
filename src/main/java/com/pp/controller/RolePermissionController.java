@@ -22,7 +22,7 @@ import com.pp.entity.Role;
 import com.pp.entity.User;
 import com.pp.entity.UserRole;
 import com.pp.service.RoleService;
-import com.pp.shiro.JsonUtils;
+import com.pp.util.JsonUtils;
 
 @Controller
 @RequestMapping("/perm")

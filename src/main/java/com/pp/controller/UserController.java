@@ -37,6 +37,7 @@ import com.pp.entity.FileInfo;
 import com.pp.entity.User;
 import com.pp.service.UserService;
 import com.pp.shiro.ShiroUtils;
+import com.pp.util.FileUtils;
 
 @Controller
 @RequestMapping("/user")
@@ -168,7 +169,7 @@ public class UserController {
 			if (imgType.contains(type)) {
 				Date date = new Date();
 				String uuid = UUID.randomUUID().toString();
-				String filePath = baseUploadPath.concat(ShiroUtils.getDatePath(date));
+				String filePath = baseUploadPath.concat(FileUtils.getDatePath(date));
 				String filename = uuid.concat(type);
 				
 				File dir = new File(filePath);
