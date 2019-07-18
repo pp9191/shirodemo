@@ -34,13 +34,13 @@
 						roleId: role.id
 					};
 				});
-				var data = {};
-				data[operate] = JSON.stringify(userRoles);
+				var params = {};
+				params[operate] = JSON.stringify(userRoles);
 				$.ajax({
 					url: "/perm/setUserRoles/" + operate,
 					type: "post",
 					dataType: "json",
-					data: data,
+					data: params,
 					success: function(data){
 						if(data.result == "true"){							
 							var remove = {
