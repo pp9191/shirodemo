@@ -26,7 +26,7 @@ import com.pp.util.JsonUtils;
 
 @Controller
 @RequestMapping("/perm")
-public class RolePermissionController {
+public class RolePermController {
 	
 	@Autowired
 	private RoleService roleService;
@@ -34,7 +34,7 @@ public class RolePermissionController {
 	private static final String basePath = "perm/";
 	
 	@RequestMapping(value="/{path}", method=RequestMethod.GET)
-	public String urlMapping(@PathVariable String path, Model model) {
+	public String urlMapping(@PathVariable String path) {
 		
 		return basePath.concat(path);
 	}
@@ -121,12 +121,12 @@ public class RolePermissionController {
 		Map<String, Object> result = new HashMap<>();
 		String rolesStr = request.getParameter(operate);
 		if(JsonUtils.isNotEmpty(rolesStr)) {
-			List<UserRole> roles = JsonUtils.toList(rolesStr, UserRole.class);
+			List<UserRole> userroles = JsonUtils.toList(rolesStr, UserRole.class);
 			int count = 0;
 			if(operate.equals("add")) {
-				count = roleService.addUserRole(roles);
+				count = roleService.addUserRole(userroles);
 			}else if(operate.equals("delete")){
-				count = roleService.removeUserRole(roles);
+				count = roleService.removeUserRole(userroles);
 			}
 			result.put("result", "true");
 			result.put("message", count);
