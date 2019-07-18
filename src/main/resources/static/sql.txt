@@ -33,10 +33,10 @@ PRIMARY KEY (`id`)
 DROP TABLE IF EXISTS `t_role_permission`;
 CREATE TABLE `t_role_permission` (
 `role_id`  bigint(20) NOT NULL COMMENT '角色ID' ,
-`permssion_id`  bigint(20) NOT NULL COMMENT '权限ID' ,
+`permission_id`  bigint(20) NOT NULL COMMENT '权限ID' ,
 `create_time`  datetime NULL DEFAULT NULL ,
 `create_by`  varchar(36)  NULL DEFAULT NULL ,
-PRIMARY KEY (`role_id`, `permssion_id`)
+PRIMARY KEY (`role_id`, `permission_id`)
 )
 ;
 

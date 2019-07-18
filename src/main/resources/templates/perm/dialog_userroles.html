@@ -6,9 +6,10 @@
 </head>
 <body>
 	<script th:inline="javascript">
+		var userId = [[${param.userId[0]}]];
 		$(function(){
 			$.ajax({
-				url: "/perm/userRoles/" + [[${param.userId}]],
+				url: "/perm/userRoles/" + userId,
 				type: "post",
 				dataType: "json",
 				success: function(data){
@@ -17,42 +18,84 @@
 				}
 			});
 		});
+		
+		function setUserRoles(operate){
+			var roles, userRoles;
+			if(operate == "add"){
+				roles = $("#table_rolesNotOwn").bootstrapTable("getSelections");
+			}else if(operate == "delete"){
+				roles = $("#table_rolesOwn").bootstrapTable("getSelections");
+			}
+			if(roles && roles.length > 0){				
+				userRoles = [];
+				var userRoles = $.map(roles, function(role){
+					return {
+						userId: userId,
+						roleId: role.id
+					};
+				});
+				var data = {};
+				data[operate] = JSON.stringify(userRoles);
+				$.ajax({
+					url: "/perm/setUserRoles/" + operate,
+					type: "post",
+					dataType: "json",
+					data: data,
+					success: function(data){
+						if(data.result == "true"){							
+							var remove = {
+									field: "rolename",
+									values: $.map(roles, function(role){
+										return role.rolename
+									})
+							};
+							if(operate == "add"){
+								$("#table_rolesNotOwn").bootstrapTable("remove", remove);
+								$("#table_rolesOwn").bootstrapTable("append", roles);
+							}else if(operate == "delete"){
+								$("#table_rolesNotOwn").bootstrapTable("append", roles);
+								$("#table_rolesOwn").bootstrapTable("remove", remove);
+							}
+							$.alert("配置成功");
+						}
+					}
+				});				
+			}
+		}
 	</script>
-	<div style="height:600px;">
-		<div class="col-xs-5">
-			<h3>未添加</h3>
-			<table id="table_rolesNotOwn" data-toggle="table" data-url="">
-				<thead>
-					<tr>
-						<th data-checkbox="true"></th>
-						<th data-field="rolename" data-halign="center" data-align="center">角色</th>
-						<th data-field="remark" data-halign="center" data-align="center">角色说明</th>
-					</tr>
-				</thead>
-			</table>
-		</div>
-		<div class="col-xs-2" style="height:100%;">
-			<table style="height:100%;">
-				<tr>
-					<td align="center" valign="middle">
-						<div><i class="glyphicon glyphicon-arrow-right"></i></div>
-						<div><i class="glyphicon glyphicon-arrow-left"></i></div>
-					</td>
-				</tr>
-			</table>
-		</div>
-		<div class="col-xs-5">
-			<h3>已添加</h3>
-			<table id="table_rolesOwn" data-toggle="table" data-url="">
-				<thead>
-					<tr>
-						<th data-checkbox="true"></th>
-						<th data-field="rolename" data-halign="center" data-align="center">角色</th>
-						<th data-field="remark" data-halign="center" data-align="center">角色说明</th>
-					</tr>
-				</thead>
-			</table>
-		</div>
-	</div>
+	<table border="2" style="height:550px; width:100%;">
+		<tr>
+			<th style="text-align:center;height:30px;width:47%;">未添加</th>
+			<th style="text-align:center;height:30px;" rowspan="2">
+				<div><a class="glyphicon glyphicon-arrow-right" title="添加" href="javascript:setUserRoles('add');"></a></div>
+				<div style="margin-top:20px;"><a class="glyphicon glyphicon-arrow-left" title="删除" href="javascript:setUserRoles('delete');"></a></div>
+			</th>
+			<th style="text-align:center;height:30px;width:47%;">已添加</th>
+		</tr>
+		<tr>
+			<td valign="top">
+				<table id="table_rolesNotOwn" data-toggle="table" >
+					<thead>
+						<tr>
+							<th data-checkbox="true"></th>
+							<th data-field="rolename" data-halign="center" data-align="center">角色</th>
+							<th data-field="remark" data-halign="center" data-align="center">角色说明</th>
+						</tr>
+					</thead>
+				</table>					
+			</td>			
+			<td valign="top">
+				<table id="table_rolesOwn" data-toggle="table" >
+					<thead>
+						<tr>
+							<th data-checkbox="true"></th>
+							<th data-field="rolename" data-halign="center" data-align="center">角色</th>
+							<th data-field="remark" data-halign="center" data-align="center">角色说明</th>
+						</tr>
+					</thead>
+				</table>					
+			</td>
+		</tr>
+	</table>
 </body>
 </html>
