@@ -43,9 +43,9 @@ public class UserService {
 	}
 
 	@Transactional
-	public void setHeadImg(String userId, FileInfo fileinfo) {
+	public void setHeadImg(String account, FileInfo fileinfo) {
 		
-		User user = userMapper.selectByPrimaryKey(Long.decode(userId));		
+		User user = userMapper.selectByAccount(account);		
 		if(user.getHeadImg() != null && !user.getHeadImg().isEmpty()) {
 			FileInfo old_f = fileMapper.selectByPrimaryKey(user.getHeadImg());
 			// 删除旧的图像文件

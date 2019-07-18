@@ -153,8 +153,8 @@ public class UserController {
 	}
 	
 	@ResponseBody
-	@RequestMapping(value="/setHead/{userId}")
-	public Map<String, Object> setHeadImg(@RequestParam("file") MultipartFile file, @PathVariable String userId) {
+	@RequestMapping(value="/setHead/{account}")
+	public Map<String, Object> setHeadImg(@RequestParam("file") MultipartFile file, @PathVariable String account) {
 		Map<String, Object> result = new HashMap<String, Object>();		
 		if (file.isEmpty()) {
 			result.put("result", "false");
@@ -188,7 +188,7 @@ public class UserController {
 
 				try {
 					file.transferTo(new File(dir, filename));
-					userService.setHeadImg(userId, fileinfo);
+					userService.setHeadImg(account, fileinfo);
 					// 更新subject信息
 					curUser.setHeadImg(uuid);
 
