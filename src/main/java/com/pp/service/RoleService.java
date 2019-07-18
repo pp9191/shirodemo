@@ -3,6 +3,7 @@ package com.pp.service;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.shiro.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -11,6 +12,7 @@ import com.pp.dao.RoleMapper;
 import com.pp.dao.RolePermissionMapper;
 import com.pp.dao.UserRoleMapper;
 import com.pp.entity.Role;
+import com.pp.entity.User;
 import com.pp.entity.UserRole;
 
 @Repository("roleService")
@@ -61,7 +63,9 @@ public class RoleService {
 	}
 	
 	public int addUserRole(UserRole record) {
-		if(userRoleMapper.selectByPrimaryKey(record.getUserId(), record.getRoleId()) == null) {			
+		User user = (User) SecurityUtils.getSubject().getPrincipal();		
+		if(userRoleMapper.selectByPrimaryKey(record.getUserId(), record.getRoleId()) == null) {
+			record.setCreateBy(user.getAccount());
 			return userRoleMapper.insert(record);
 		}
 		return 0;
@@ -69,6 +73,24 @@ public class RoleService {
 	
 	public int removeUserRole(UserRole record) {
 		return userRoleMapper.deleteByPrimaryKey(record.getUserId(), record.getRoleId());
+	}
+	
+	@Transactional
+	public int addUserRole(List<UserRole> records) {
+		int r = 0;
+		for (UserRole record : records) {
+			r += addUserRole(record);
+		}
+		return r;
+	}
+	
+	@Transactional
+	public int removeUserRole(List<UserRole> records) {
+		int r = 0;
+		for (UserRole record : records) {
+			r += removeUserRole(record);
+		}
+		return r;
 	}
 	
 }

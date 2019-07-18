@@ -47,11 +47,11 @@ public class UserService {
 		
 		User user = userMapper.selectByPrimaryKey(Long.decode(userId));		
 		if(user.getHeadImg() != null && !user.getHeadImg().isEmpty()) {
-			FileInfo old_ = fileMapper.selectByPrimaryKey(user.getHeadImg());
+			FileInfo old_f = fileMapper.selectByPrimaryKey(user.getHeadImg());
 			// 删除旧的图像文件
-			if(old_ != null) {		
-				fileMapper.deleteByPrimaryKey(old_.getId());
-				ShiroUtils.deleteFile(old_);
+			if(old_f != null) {		
+				fileMapper.deleteByPrimaryKey(old_f.getId());
+				ShiroUtils.deleteFile(old_f);
 			}
 		}
 		// 更新图像

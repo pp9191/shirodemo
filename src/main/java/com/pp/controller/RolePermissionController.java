@@ -1,10 +1,10 @@
 package com.pp.controller;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 import org.apache.shiro.SecurityUtils;
@@ -20,7 +20,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.pp.entity.Role;
 import com.pp.entity.User;
+import com.pp.entity.UserRole;
 import com.pp.service.RoleService;
+import com.pp.shiro.JsonUtils;
 
 @Controller
 @RequestMapping("/perm")
@@ -109,6 +111,29 @@ public class RolePermissionController {
 		Map<String, Object> result = new HashMap<>();
 		result.put("owned", owned);
 		result.put("notOwned", roles);
+		return result;
+	}
+	
+	@ResponseBody
+	@RequestMapping("/setUserRoles/{operate}")
+	public Map<String, Object> setUserRoles(@PathVariable String operate, HttpServletRequest request) {
+		
+		Map<String, Object> result = new HashMap<>();
+		String rolesStr = request.getParameter(operate);
+		if(JsonUtils.isNotEmpty(rolesStr)) {
+			List<UserRole> roles = JsonUtils.toList(rolesStr, UserRole.class);
+			int count = 0;
+			if(operate.equals("add")) {
+				count = roleService.addUserRole(roles);
+			}else if(operate.equals("delete")){
+				count = roleService.removeUserRole(roles);
+			}
+			result.put("result", "true");
+			result.put("message", count);
+		}else {
+			result.put("result", "false");
+			result.put("message", "设置的角色不能为空");
+		}		
 		return result;
 	}
 	
