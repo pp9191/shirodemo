@@ -120,14 +120,23 @@ function deleteRole(){
 		            btnClass: 'btn btn-primary', 
 		            action: function () {
 		            	$.ajax({
-							url: "/perm/deleteRole?id=" + rows[0].id,
+							url: "/perm/deleteRole",
+							data: {
+								id: rows[0].id,
+								rolename: rows[0].rolename
+							},
 							dataType: "json",
 							success: function(data){
 								if(data.result == "true"){
 									$.alert("删除成功");
 									// 刷新表格
-									$("#table_roles").bootstrapTable('refresh');
-								}				
+									$("#table_roles").bootstrapTable('remove',{
+										field: "rolename",
+										values: [rows[0].rolename]
+									});
+								}else{
+									$.alert("删除失败");
+								}
 							}
 						}); 
 		            }
@@ -150,11 +159,11 @@ function deleteRole(){
 				<button class="btn btn-default" onclick="showAddDialog('add')">
 					<i class="glyphicon glyphicon-plus"></i>
 				</button>
-				<button class="btn btn-default" onclick="deleteRole()">
-					<i class="glyphicon glyphicon-trash"></i>
-				</button>
 				<button class="btn btn-default" onclick="showAddDialog('edit')">
 					<i class="glyphicon glyphicon-edit"></i>
+				</button>
+				<button class="btn btn-default" onclick="deleteRole()">
+					<i class="glyphicon glyphicon-trash"></i>
 				</button>
 			</div>
 		</div>

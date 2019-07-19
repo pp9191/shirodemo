@@ -68,7 +68,7 @@ public class RolePermController {
 	@RequestMapping("/deleteRole")
 	public Map<String, Object> deleteRole(@ModelAttribute Role role) {
 		Map<String, Object> map = new HashMap<String, Object>();
-		if(roleService.deleteRole(role) > 0) {			
+		if(!role.getRolename().equals("admin") && roleService.deleteRole(role) > 0) {			
 			map.put("result", "true");
 		}else {
 			map.put("result", "false");
