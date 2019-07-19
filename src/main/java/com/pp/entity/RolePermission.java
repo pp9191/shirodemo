@@ -5,7 +5,7 @@ import java.util.Date;
 public class RolePermission {
     private Long roleId;
 
-    private Long permssionId;
+    private Long permissionId;
 
     private Date createTime;
 
@@ -19,12 +19,12 @@ public class RolePermission {
         this.roleId = roleId;
     }
 
-    public Long getPermssionId() {
-        return permssionId;
+    public Long getPermissionId() {
+        return permissionId;
     }
 
-    public void setPermssionId(Long permssionId) {
-        this.permssionId = permssionId;
+    public void setPermissionId(Long permissionId) {
+        this.permissionId = permissionId;
     }
 
     public Date getCreateTime() {

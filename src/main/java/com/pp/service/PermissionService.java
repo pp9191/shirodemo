@@ -28,14 +28,14 @@ public class PermissionService {
 	}
 	
 	public int addPermToRole(RolePermission record) {
-		if(roelPermissionMapper.selectByPrimaryKey(record.getRoleId(), record.getPermssionId()) == null) {			
+		if(roelPermissionMapper.selectByPrimaryKey(record.getRoleId(), record.getPermissionId()) == null) {			
 			return roelPermissionMapper.insert(record);
 		}
 		return 0;
 	}
 	
 	public int deleteRolePerm(RolePermission record) {
-		return roelPermissionMapper.deleteByPrimaryKey(record.getRoleId(), record.getPermssionId());
+		return roelPermissionMapper.deleteByPrimaryKey(record.getRoleId(), record.getPermissionId());
 	}
 
 }
