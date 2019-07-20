@@ -12,21 +12,25 @@ function showAddDialog(flag){
 	var title = "新增";
 	var row;
 	if(flag == "edit"){
-		if($("#table_roles").bootstrapTable('getSelections').length == 0){
+		if($("#table_perms").bootstrapTable('getSelections').length == 0){
 			$.alert("请选择一条数据");
 			return;
 		}
 		title = "修改";
-		row = $("#table_roles").bootstrapTable('getSelections')[0];
+		row = $("#table_perms").bootstrapTable('getSelections')[0];
 	}
-	var content = '<form id="form_role" action="/perm/addRole" class="form-horizontal" style="width:96%;" role="form" method="post">' +
+	var content = '<form id="form_role" action="/perm/addPermission" class="form-horizontal" style="width:96%;" role="form" method="post">' +
 				  '<input type="hidden" id="id" name="id"/>' +
 				  '<div class="form-group">' +
-				  '<label for="rolename" class="col-md-2 control-label">角色名</label>' +
-				  '<div class="col-md-10"><input type="text" class="form-control" id="rolename" name="rolename"/></div>' +
+				  '<label for="urlMapping" class="col-md-2 control-label">权限点</label>' +
+				  '<div class="col-md-10"><input type="text" class="form-control" id="urlMapping" name="urlMapping"/></div>' +
 			 	  '</div>' +
 			 	  '<div class="form-group">' +
-				  '<label for="remark" class="col-md-2 control-label">角色说明</label>' +
+				  '<label for="pid" class="col-md-2 control-label">上级权限点</label>' +
+				  '<div class="col-md-10"><input type="text" class="form-control" id="pid" name="pid"/></div>' +
+			 	  '</div>' +
+			 	  '<div class="form-group">' +
+				  '<label for="remark" class="col-md-2 control-label">权限说明</label>' +
 				  '<div class="col-md-10"><textarea rows="3" class="form-control" id="remark" name="remark"></textarea></div>' +
 			 	  '</div>' +
 				  '</form>';
@@ -52,7 +56,7 @@ function showAddDialog(flag){
 	    							onClose: function(){	    								
 			    						that.close();
 			    						// 刷新表格
-			    						$("#table_roles").bootstrapTable('refresh');
+			    						$("#table_perms").bootstrapTable('refresh');
 	    							}
 	    						});   						
 	    					}
@@ -68,7 +72,7 @@ function showAddDialog(flag){
 	    onOpen: function () {
 	    	if(flag == "edit"){
 	    		$("#id").val(row.id);
-	    		$("#rolename").val(row.rolename).attr("readonly", "readonly");
+	    		$("#urlMapping").val(row.urlMapping).attr("readonly", "readonly");
 	    		$("#remark").val(row.remark);
 	    	}
 	    	$('#form_role').bootstrapValidator({
@@ -79,15 +83,15 @@ function showAddDialog(flag){
 					validating : 'glyphicon glyphicon-refresh'
 				},
 				fields : {
-					rolename : {
+					urlMapping : {
 						message : '验证失败',
 						validators : {
 							notEmpty : {
-								message : '请输入角色名'
+								message : '请输入权限点'
 							},
-							regexp : {
-								regexp : /^\w{4,20}$/,
-								message : '长度必须在4到18位之间，并且只能包含字母、数字和下划线'
+							stringLength : {
+								max : 200,
+								message : '长度超出最大长度200字符'
 							}
 						}
 					},
@@ -95,7 +99,7 @@ function showAddDialog(flag){
 						message : '验证失败',
 						validators : {
 							notEmpty : {
-								message : '请输入角色说明'
+								message : '请输入权限说明'
 							},
 							stringLength : {
 								max : 100,
@@ -110,7 +114,7 @@ function showAddDialog(flag){
 }
 
 function deleteRole(){
-	var rows = $("#table_roles").bootstrapTable('getSelections');
+	var rows = $("#table_perms").bootstrapTable('getSelections');
 	if(rows.length){
 		$.confirm({
 			content: "删除后不能恢复，确定要删除？",
@@ -120,19 +124,19 @@ function deleteRole(){
 		            btnClass: 'btn btn-primary', 
 		            action: function () {
 		            	$.ajax({
-							url: "/perm/deleteRole",
+							url: "/perm/deletePermission",
 							data: {
 								id: rows[0].id,
-								rolename: rows[0].rolename
+								rolename: rows[0].urlMapping
 							},
 							dataType: "json",
 							success: function(data){
 								if(data.result == "true"){
 									$.alert("删除成功");
 									// 刷新表格
-									$("#table_roles").bootstrapTable('remove',{
-										field: "rolename",
-										values: [rows[0].rolename]
+									$("#table_perms").bootstrapTable("remove", {
+										field: "urlMapping",
+										values: [rows[0].urlMapping]
 									});
 								}else{
 									$.alert("删除失败");
@@ -149,21 +153,6 @@ function deleteRole(){
 	}else{
 		$.alert("请选择一条数据");
 	}
-}
-
-function initOperate(value, row, index){
-	var c = '<a title="设置权限点"  href="javascript:showRoleDialog(\''
-		+ row.id
-		+ '\');"><i class="glyphicon glyphicon-cog"></i></a> ';
-	return c;
-}
-
-function showRoleDialog(roleId){
-	$.dialog({
-		title: "角色设置",
-		content: "url:/perm/dialog_roleperms?roleId=" + roleId,
-		columnClass: "col-sm-8 col-sm-offset-2"
-	});
 }
 </script>
 
@@ -183,7 +172,7 @@ function showRoleDialog(roleId){
 			</div>
 		</div>
 		
-		<table id="table_roles" data-toggle="table" data-url="/perm/allRoles" 
+		<table id="table_perms" data-toggle="table" data-url="/perm/allPermissions" 
 			data-pagination="true" data-side-pagination="server" data-page-size="10"
 			data-show-refresh="true" data-show-toggle="true" data-show-columns="true"
 			data-search="true" data-show-search-button="true" data-single-select="true"
@@ -191,10 +180,9 @@ function showRoleDialog(roleId){
 			<thead>
 				<tr>
 					<th data-checkbox="true"></th>
-					<th data-field="rolename" data-halign="center" data-align="center">角色</th>
-					<th data-field="remark" data-halign="center" data-align="center">角色说明</th>
+					<th data-field="urlMapping" data-halign="center" data-align="center">权限点</th>
+					<th data-field="remark" data-halign="center" data-align="center">权限说明</th>
 					<th data-field="createTime" data-halign="center" data-align="center">创建时间</th>
-					<th data-field="operate" data-halign="center" data-align="center" data-formatter="initOperate">权限点设置</th>
 				</tr>
 			</thead>
 		</table>	

@@ -1,9 +1,13 @@
 package com.pp.service;
 
 import java.util.List;
+import java.util.Map;
+
+import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.pp.dao.PermissionMapper;
 import com.pp.dao.RolePermissionMapper;
@@ -27,7 +31,19 @@ public class PermissionService {
 		return permissionMapper.insertSelective(permission);
 	}
 	
-	public int addPermToRole(RolePermission record) {
+	public int updatePermission(Permission permission) {
+		return permissionMapper.updateByPrimaryKeySelective(permission);
+	}
+	
+	@Transactional
+	public int deletePermission(Permission permission) {
+		// 删除相应角色权限
+		roelPermissionMapper.deleteByPermissionId(permission.getId());
+		int r = permissionMapper.deleteByPrimaryKey(permission.getId());
+		return r;
+	}
+	
+	public int addRolePerm(RolePermission record) {
 		if(roelPermissionMapper.selectByPrimaryKey(record.getRoleId(), record.getPermissionId()) == null) {			
 			return roelPermissionMapper.insert(record);
 		}
@@ -37,5 +53,28 @@ public class PermissionService {
 	public int deleteRolePerm(RolePermission record) {
 		return roelPermissionMapper.deleteByPrimaryKey(record.getRoleId(), record.getPermissionId());
 	}
+	
+	public int addRolePerm(List<RolePermission> records) {
+		int r = 0;
+		for (RolePermission record : records) {
+			r += addRolePerm(record);
+		}
+		return r;
+	}
+	
+	public int deleteRolePerm(List<RolePermission> records) {
+		int r = 0;
+		for (RolePermission record : records) {
+			r += deleteRolePerm(record);
+		}
+		return r;
+	}
 
+	public List<Permission> selectAll(Map<String, Object> params) {
+		return permissionMapper.selectAll(params);
+	}
+
+	public int selectAllCount(Map<String, Object> params) {
+		return permissionMapper.selectAllCount(params);
+	}
 }

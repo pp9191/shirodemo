@@ -11,7 +11,7 @@
 function showAddDialog(){
 	$.dialog({
 		title: "新增用户",
-		content: "url:/user/dialog_adduser",
+		content: "url:/perm/dialog_adduser",
 		columnClass: "col-sm-8 col-sm-offset-2"
 	});
 }
@@ -20,7 +20,7 @@ function showEditDialog(){
 	if(rows.length){		
 		$.dialog({
 			title: "修改用户",
-			content: "url:/user/dialog_edituser/" + rows[0].account,
+			content: "url:/perm/dialog_edituser/" + rows[0].account,
 			columnClass: "col-sm-8 col-sm-offset-2"
 		}); 
 	}else{

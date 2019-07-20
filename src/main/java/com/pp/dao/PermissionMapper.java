@@ -1,6 +1,7 @@
 package com.pp.dao;
 
 import java.util.List;
+import java.util.Map;
 
 import com.pp.entity.Permission;
 
@@ -18,4 +19,8 @@ public interface PermissionMapper {
     int updateByPrimaryKey(Permission record);
     
     List<Permission> getPermissions(Long roleId);
+
+	List<Permission> selectAll(Map<String, Object> params);
+
+	int selectAllCount(Map<String, Object> params);
 }

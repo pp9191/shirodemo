@@ -20,6 +20,18 @@
     )
     order by id
   </select>
+  <select id="selectAll" resultMap="BaseResultMap" parameterType="map" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_permission
+    order by id
+    <if test="offset != null and limit != null" >
+	    limit #{offset} , #{limit}
+    </if>
+  </select>
+  <select id="selectAllCount" resultType="int" parameterType="map" >
+    select count(*) from t_permission
+  </select>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
     select 
     <include refid="Base_Column_List" />

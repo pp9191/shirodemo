@@ -26,6 +26,10 @@
     delete from t_role_permission
     where role_id = #{roleId,jdbcType=BIGINT}
   </delete>
+  <delete id="deleteByPermissionId" parameterType="java.lang.Long" >
+    delete from t_role_permission
+    where permission_id = #{permId,jdbcType=BIGINT}
+  </delete>
   <insert id="insert" parameterType="com.pp.entity.RolePermission" >
     insert into t_role_permission (role_id, permission_id, create_time, 
       create_by)

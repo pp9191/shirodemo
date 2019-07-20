@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" >
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+	<script th:inline="javascript">
+		var roleId = [[${param.roleId[0]}]];
+		$(function(){
+			$.ajax({
+				url: "/perm/rolePerms/" + roleId,
+				type: "post",
+				dataType: "json",
+				success: function(data){
+					$("#table_rolesNotOwn").bootstrapTable().bootstrapTable("load", data.notOwned);
+					$("#table_rolesOwn").bootstrapTable().bootstrapTable("load", data.owned);
+				}
+			});
+		});
+		
+		function setUserRoles(operate){
+			var roles;
+			if(operate == "add"){
+				roles = $("#table_rolesNotOwn").bootstrapTable("getSelections");
+			}else if(operate == "delete"){
+				roles = $("#table_rolesOwn").bootstrapTable("getSelections");
+			}
+			if(roles && roles.length > 0){	
+				var userRoles = $.map(roles, function(role){
+					return {
+						userId: userId,
+						roleId: role.id
+					};
+				});
+				var params = {};
+				params[operate] = JSON.stringify(userRoles);
+				$.ajax({
+					url: "/perm/setRolePerms/" + operate,
+					type: "post",
+					dataType: "json",
+					data: params,
+					success: function(data){
+						if(data.result == "true"){							
+							var remove = {
+									field: "rolename",
+									values: $.map(roles, function(role){
+										return role.rolename
+									})
+							};
+							if(operate == "add"){
+								$("#table_rolesNotOwn").bootstrapTable("remove", remove);
+								$("#table_rolesOwn").bootstrapTable("append", roles);
+							}else if(operate == "delete"){
+								$("#table_rolesNotOwn").bootstrapTable("append", roles);
+								$("#table_rolesOwn").bootstrapTable("remove", remove);
+							}
+							$.alert("配置成功");
+						}
+					}
+				});				
+			}
+		}
+	</script>
+	<table border="2" style="height:550px; width:100%;">
+		<tr>
+			<th style="text-align:center;height:30px;width:47%;">未添加</th>
+			<th style="text-align:center;height:30px;" rowspan="2">
+				<div><a class="glyphicon glyphicon-arrow-right" title="添加" href="javascript:setUserRoles('add');"></a></div>
+				<div style="margin-top:20px;"><a class="glyphicon glyphicon-arrow-left" title="删除" href="javascript:setUserRoles('delete');"></a></div>
+			</th>
+			<th style="text-align:center;height:30px;width:47%;">已添加</th>
+		</tr>
+		<tr>
+			<td valign="top">
+				<table id="table_rolesNotOwn" data-toggle="table" >
+					<thead>
+						<tr>
+							<th data-checkbox="true"></th>
+							<th data-field="urlMapping" data-halign="center" data-align="center">权限点</th>
+							<th data-field="remark" data-halign="center" data-align="center">权限说明</th>
+						</tr>
+					</thead>
+				</table>					
+			</td>			
+			<td valign="top">
+				<table id="table_rolesOwn" data-toggle="table" >
+					<thead>
+						<tr>
+							<th data-checkbox="true"></th>
+							<th data-field="urlMapping" data-halign="center" data-align="center">权限点</th>
+							<th data-field="remark" data-halign="center" data-align="center">权限说明</th>
+						</tr>
+					</thead>
+				</table>					
+			</td>
+		</tr>
+	</table>
+</body>
+</html>
