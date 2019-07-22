@@ -48,10 +48,17 @@ function showEditDialog(){
 		$.alert("请选择一条数据");
 	}
 }
-function initOperate(value, row, index){
-	var c = '<a title="设置角色"  href="javascript:showRoleDialog(\''
-		+ row.id
-		+ '\');"><i class="glyphicon glyphicon-cog"></i></a> ';
+function colFormatter(value, row, index, field){
+	var c = "-";
+	if(field == "operate"){		
+		c = '<a title="设置角色"  href="javascript:showRoleDialog(\''
+			+ row.id
+			+ '\');"><i class="glyphicon glyphicon-cog"></i></a> ';
+	}else if(field == "gender"){
+		if(value){
+			c = value == 1 ? '男' : '女';
+		}
+	}
 	return c;
 }
 function showRoleDialog(userId){
@@ -83,6 +90,7 @@ function showRoleDialog(userId){
 			data-pagination="true" data-side-pagination="server" data-page-size="10"
 			data-show-refresh="true" data-show-toggle="true" data-show-columns="true"
 			data-search="true" data-show-search-button="true" data-single-select="true"
+			data-click-to-select="true" 
 			data-toolbar="#toolbar">
 			
 			<thead>
@@ -90,13 +98,13 @@ function showRoleDialog(userId){
 					<th data-checkbox="true"></th>
 					<th data-field="account" data-halign="center" data-align="center">用户名</th>
 					<th data-field="nickname" data-halign="center" data-align="center">昵称</th>
-					<th data-field="gender" data-halign="center" data-align="center">性别</th>
+					<th data-field="gender" data-halign="center" data-align="center" data-formatter="colFormatter">性别</th>
 					<th data-field="phone" data-halign="center" data-align="center">手机号</th>
 					<th data-field="email" data-halign="center" data-align="center">邮箱</th>
 					<th data-field="address" data-halign="center" data-align="center">住址</th>
 					<th data-field="createTime" data-halign="center" data-align="center">注册时间</th>
 					<th data-field="status" data-halign="center" data-align="center">状态</th>
-					<th data-field="operate" data-halign="center" data-align="center" data-formatter="initOperate">角色设置</th>
+					<th data-field="operate" data-halign="center" data-align="center" data-formatter="colFormatter">角色设置</th>
 				</tr>
 			</thead>
 		</table>	
