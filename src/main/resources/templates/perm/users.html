@@ -12,7 +12,10 @@ function showAddDialog(){
 	$.dialog({
 		title: "新增用户",
 		content: "url:/perm/dialog_adduser",
-		columnClass: "col-sm-8 col-sm-offset-2"
+		columnClass: "col-sm-8 col-sm-offset-2",
+		onClose: function(){	    								
+			$("#table_users").bootstrapTable("refresh");
+		}
 	});
 }
 function showEditDialog(){
@@ -20,8 +23,26 @@ function showEditDialog(){
 	if(rows.length){		
 		$.dialog({
 			title: "修改用户",
-			content: "url:/perm/dialog_edituser/" + rows[0].account,
-			columnClass: "col-sm-8 col-sm-offset-2"
+			content: "url:/perm/dialog_edituser",
+			columnClass: "col-sm-8 col-sm-offset-2",
+			onContentReady: function () {
+	    		$("#id").val(rows[0].id);
+	    		$("#account").val(rows[0].account).attr("readonly", "readonly");
+	    		$("#nickname").val(rows[0].nickname);
+	    		$("#phone").val(rows[0].phone);
+	    		$("#email").val(rows[0].email);
+	    		$("#address").val(rows[0].address);
+	    		$("#remark").val(rows[0].remark); 
+	    		$("#birthday").datepicker().datepicker('update', rows[0].nickname);
+	    		if(rows[0].gender == "1"){
+	    			$("#gender1").click();
+	    		}else if(rows[0].gender == "2"){
+	    			$("#gender2").click();
+	    		}	    		
+		    },
+		    onClose: function(){	    								
+				$("#table_users").bootstrapTable("refresh");
+			}
 		}); 
 	}else{
 		$.alert("请选择一条数据");

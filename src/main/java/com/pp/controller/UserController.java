@@ -54,23 +54,13 @@ public class UserController {
 
 	@RequestMapping(value="/{path}", method=RequestMethod.GET)
 	public String urlMapping(@PathVariable String path, Model model) {
-		if(path.equals("login") || path.equals("signup") || path.equals("dialog_adduser")){
+		if(path.equals("login") || path.equals("signup")){
 			model.addAttribute("user", new User());
 		}else if(path.equals("userinfo")) {
 			User user = (User) SecurityUtils.getSubject().getPrincipal();
 			model.addAttribute("user", userService.selectByAccount(user.getAccount()));
 		} 
 		return basePath.concat(path);
-	}
-	
-	@RequestMapping(value="/dialog_edituser/{account}")
-	public String addUser(@PathVariable String account, Model model) {
-		User user = userService.selectByAccount(account);
-		if(user == null) {
-			user = new User();
-		}
-		model.addAttribute("user", user);
-		return basePath.concat("dialog_edituser");
 	}
 	
 	@RequestMapping(value="/logout")
@@ -88,8 +78,7 @@ public class UserController {
 		Session session = SecurityUtils.getSubject().getSession();
 		String vallidateCode = session.getAttribute("validateCode").toString();
 		if(result.hasErrors()) {
-			// 校验报错
-			
+			// 校验报错			
 		} else if(!codeNo.equals(vallidateCode)) {
 			FieldError error = new FieldError("user", "account", "验证码错误");
 			result.addError(error);	

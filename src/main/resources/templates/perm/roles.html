@@ -65,7 +65,7 @@ function showAddDialog(flag){
 	            text: '取消'
 	        }
 	    },
-	    onOpen: function () {
+	    onContentReady: function () {
 	    	if(flag == "edit"){
 	    		$("#id").val(row.id);
 	    		$("#rolename").val(row.rolename).attr("readonly", "readonly");
