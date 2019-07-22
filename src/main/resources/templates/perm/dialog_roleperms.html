@@ -20,39 +20,39 @@
 		});
 		
 		function setUserRoles(operate){
-			var roles;
+			var perms;
 			if(operate == "add"){
-				roles = $("#table_rolesNotOwn").bootstrapTable("getSelections");
+				perms = $("#table_rolesNotOwn").bootstrapTable("getSelections");
 			}else if(operate == "delete"){
-				roles = $("#table_rolesOwn").bootstrapTable("getSelections");
+				perms = $("#table_rolesOwn").bootstrapTable("getSelections");
 			}
-			if(roles && roles.length > 0){	
-				var userRoles = $.map(roles, function(role){
+			if(perms && perms.length > 0){	
+				var rolePerms = $.map(perms, function(perm){
 					return {
-						userId: userId,
-						roleId: role.id
+						roleId: roleId,
+						permissionId: perm.id
 					};
 				});
 				var params = {};
-				params[operate] = JSON.stringify(userRoles);
+				params[operate] = JSON.stringify(rolePerms);
 				$.ajax({
 					url: "/perm/setRolePerms/" + operate,
 					type: "post",
 					dataType: "json",
 					data: params,
 					success: function(data){
-						if(data.result == "true"){							
+						if(data.result == "true"){						
 							var remove = {
-									field: "rolename",
-									values: $.map(roles, function(role){
-										return role.rolename
+									field: "urlMapping",
+									values: $.map(perms, function(perm){
+										return perm.urlMapping
 									})
 							};
 							if(operate == "add"){
 								$("#table_rolesNotOwn").bootstrapTable("remove", remove);
-								$("#table_rolesOwn").bootstrapTable("append", roles);
+								$("#table_rolesOwn").bootstrapTable("append", perms);
 							}else if(operate == "delete"){
-								$("#table_rolesNotOwn").bootstrapTable("append", roles);
+								$("#table_rolesNotOwn").bootstrapTable("append", perms);
 								$("#table_rolesOwn").bootstrapTable("remove", remove);
 							}
 							$.alert("配置成功");

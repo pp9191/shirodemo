@@ -125,19 +125,21 @@ public class RolePermController {
 		
 		Map<String, Object> result = new HashMap<>();
 		String rolesStr = request.getParameter(operate);
+		int count = 0;
 		if(JsonUtils.isNotEmpty(rolesStr)) {
 			List<UserRole> userroles = JsonUtils.toList(rolesStr, UserRole.class);
-			int count = 0;
 			if(operate.equals("add")) {
 				count = roleService.addUserRole(userroles);
 			}else if(operate.equals("delete")){
 				count = roleService.removeUserRole(userroles);
 			}
+		}
+		if(count > 0) {
 			result.put("result", "true");
-			result.put("message", count);
+			result.put("message", count);			
 		}else {
 			result.put("result", "false");
-			result.put("message", "设置的角色不能为空");
+			result.put("message", "设置失败");
 		}		
 		return result;
 	}
@@ -217,21 +219,23 @@ public class RolePermController {
 	public Map<String, Object> setRolePerms(@PathVariable String operate, HttpServletRequest request) {
 		
 		Map<String, Object> result = new HashMap<>();
-		String rolesStr = request.getParameter(operate);
-		if(JsonUtils.isNotEmpty(rolesStr)) {
-			List<RolePermission> roleperms = JsonUtils.toList(rolesStr, RolePermission.class);
-			int count = 0;
+		String permsStr = request.getParameter(operate);
+		int count = 0;
+		if(JsonUtils.isNotEmpty(permsStr)) {
+			List<RolePermission> roleperms = JsonUtils.toList(permsStr, RolePermission.class);
 			if(operate.equals("add")) {
 				count = permService.addRolePerm(roleperms);
 			}else if(operate.equals("delete")){
 				count = permService.deleteRolePerm(roleperms);
 			}
+		}
+		if (count > 0) {
 			result.put("result", "true");
 			result.put("message", count);
 		}else {
 			result.put("result", "false");
-			result.put("message", "设置的权限点不能为空");
-		}		
+			result.put("message", "设置失败");
+		}
 		return result;
 	}
 }

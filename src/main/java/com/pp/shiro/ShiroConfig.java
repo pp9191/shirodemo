@@ -14,11 +14,16 @@ import org.apache.shiro.mgt.SecurityManager;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Lazy;
+
+import com.pp.entity.Permission;
+import com.pp.service.PermissionService;
 
 import at.pollux.thymeleaf.shiro.dialect.ShiroDialect;
 import net.sf.ehcache.CacheManager;
 
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 
 @Configuration
@@ -110,13 +115,19 @@ public class ShiroConfig {
 	}
 
 	@Bean("shiroFilter")
-	public ShiroFilterFactoryBean shiroFilter(SecurityManager securityManager) {
+	public ShiroFilterFactoryBean shiroFilter(SecurityManager securityManager, @Lazy PermissionService permService) {
 
 		ShiroFilterFactoryBean shiroFilter = new ShiroFilterFactoryBean();
 		// 设置SecurityManager
 		shiroFilter.setSecurityManager(securityManager);
+		
+		List<Permission> perms = permService.selectAll(null);
 		// 设置拦截器
 		Map<String, String> filterMap = new LinkedHashMap<>();
+		
+		for (Permission perm : perms) {
+			filterMap.put(perm.getUrlMapping(), "perms[" + perm.getUrlMapping() + "]");
+		}
 		// 配置不会被拦截的链接 顺序判断
 		filterMap.put("/common/**", "anon"); // 可以匿名访问，公共静态资源
 		filterMap.put("/", "anon");

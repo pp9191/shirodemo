@@ -24,6 +24,13 @@
     select 
     <include refid="Base_Column_List" />
     from t_permission
+    <where>
+	    <if test="roleId != null">
+	    	and id in (
+		    	select permission_id from t_role_permission where role_id = #{roleId,jdbcType=BIGINT}
+		    )
+	    </if>
+    </where>
     order by id
     <if test="offset != null and limit != null" >
 	    limit #{offset} , #{limit}

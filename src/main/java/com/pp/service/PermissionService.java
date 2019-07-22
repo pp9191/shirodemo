@@ -3,8 +3,7 @@ package com.pp.service;
 import java.util.List;
 import java.util.Map;
 
-import javax.validation.Valid;
-
+import org.apache.shiro.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -13,6 +12,7 @@ import com.pp.dao.PermissionMapper;
 import com.pp.dao.RolePermissionMapper;
 import com.pp.entity.Permission;
 import com.pp.entity.RolePermission;
+import com.pp.entity.User;
 
 @Repository("permissionService")
 public class PermissionService {
@@ -44,7 +44,9 @@ public class PermissionService {
 	}
 	
 	public int addRolePerm(RolePermission record) {
-		if(roelPermissionMapper.selectByPrimaryKey(record.getRoleId(), record.getPermissionId()) == null) {			
+		if(roelPermissionMapper.selectByPrimaryKey(record.getRoleId(), record.getPermissionId()) == null) {
+			User user = (User) SecurityUtils.getSubject().getPrincipal();
+			record.setCreateBy(user.getAccount());
 			return roelPermissionMapper.insert(record);
 		}
 		return 0;
@@ -54,6 +56,7 @@ public class PermissionService {
 		return roelPermissionMapper.deleteByPrimaryKey(record.getRoleId(), record.getPermissionId());
 	}
 	
+	@Transactional
 	public int addRolePerm(List<RolePermission> records) {
 		int r = 0;
 		for (RolePermission record : records) {
@@ -62,6 +65,7 @@ public class PermissionService {
 		return r;
 	}
 	
+	@Transactional
 	public int deleteRolePerm(List<RolePermission> records) {
 		int r = 0;
 		for (RolePermission record : records) {

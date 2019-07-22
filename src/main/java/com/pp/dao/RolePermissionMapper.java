@@ -5,13 +5,13 @@ import com.pp.entity.RolePermission;
 import org.apache.ibatis.annotations.Param;
 
 public interface RolePermissionMapper {
-    int deleteByPrimaryKey(@Param("roleId") Long roleId, @Param("permssionId") Long permssionId);
+    int deleteByPrimaryKey(@Param("roleId") Long roleId, @Param("permissionId") Long permissionId);
 
     int insert(RolePermission record);
 
     int insertSelective(RolePermission record);
 
-    RolePermission selectByPrimaryKey(@Param("roleId") Long roleId, @Param("permssionId") Long permssionId);
+    RolePermission selectByPrimaryKey(@Param("roleId") Long roleId, @Param("permissionId") Long permissionId);
 
     int updateByPrimaryKeySelective(RolePermission record);
 
