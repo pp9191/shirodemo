@@ -231,7 +231,7 @@ public class RolePermController {
 			result.put("message", count);
 		}else {
 			result.put("result", "false");
-			result.put("message", "设置的角色不能为空");
+			result.put("message", "设置的权限点不能为空");
 		}		
 		return result;
 	}
