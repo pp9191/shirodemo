@@ -67,7 +67,7 @@ public class UserController {
 	public String logout() {
 		Subject subject = SecurityUtils.getSubject();
 		if (subject.isAuthenticated()) {
-			subject.getSession().removeAttribute("userinfo");
+			// subject.getSession().removeAttribute("userinfo");
 			subject.logout();
 		}
 		return "redirect:/index";
@@ -110,7 +110,7 @@ public class UserController {
 			try{
 				// 调用安全认证框架的登录方法
 				subject.login(new UsernamePasswordToken(user.getAccount(), user.getPassword(), rememberMe));
-				subject.getSession().setAttribute("userinfo", subject.getPrincipal());
+				// subject.getSession().setAttribute("userinfo", subject.getPrincipal());
 				return "redirect:/index";
 			}catch(UnknownAccountException|LockedAccountException|ExcessiveAttemptsException ex){
 				// 用户名不存在 | 账号被锁 | 密码错误次数达到5次
@@ -172,8 +172,7 @@ public class UserController {
 				fileinfo.setFilename(filename);
 				fileinfo.setOriginalname(originalName);
 				fileinfo.setCreateTime(date);
-				Session session = SecurityUtils.getSubject().getSession();
-				User curUser = (User) session.getAttribute("userinfo");
+				User curUser = (User) SecurityUtils.getSubject().getPrincipal();
 				fileinfo.setCreateBy(curUser.getAccount());
 
 				try {
@@ -228,9 +227,8 @@ public class UserController {
 	@RequestMapping(value="/setPassword")
 	public Map<String, Object> setPassword(String password, String password1) {
 		Map<String, Object> result = new HashMap<String, Object>();
-		if(password1.matches("^\\w{6,18}$")) {	
-			Session session = SecurityUtils.getSubject().getSession();
-			User user = (User) session.getAttribute("userinfo");
+		if(password1.matches("^\\w{6,18}$")) {
+			User user = (User) SecurityUtils.getSubject().getPrincipal();
 			if(ShiroUtils.encryptPassword(password, user.getAccount()).equals(user.getPassword())) {
 				user.setPassword(ShiroUtils.encryptPassword(password1, user.getAccount()));
 				userService.setUserinfo(user);
