@@ -19,7 +19,7 @@
 			});
 		});
 		
-		function setUserRoles(operate){
+		function setRolePerms(operate){
 			var perms;
 			if(operate == "add"){
 				perms = $("#table_rolesNotOwn").bootstrapTable("getSelections");
@@ -66,8 +66,8 @@
 		<tr>
 			<th style="text-align:center;height:30px;width:47%;">未添加</th>
 			<th style="text-align:center;height:30px;" rowspan="2">
-				<div><a class="glyphicon glyphicon-arrow-right" title="添加" href="javascript:setUserRoles('add');"></a></div>
-				<div style="margin-top:20px;"><a class="glyphicon glyphicon-arrow-left" title="删除" href="javascript:setUserRoles('delete');"></a></div>
+				<div><a class="glyphicon glyphicon-arrow-right" title="添加" href="javascript:setRolePerms('add');"></a></div>
+				<div style="margin-top:20px;"><a class="glyphicon glyphicon-arrow-left" title="删除" href="javascript:setRolePerms('delete');"></a></div>
 			</th>
 			<th style="text-align:center;height:30px;width:47%;">已添加</th>
 		</tr>

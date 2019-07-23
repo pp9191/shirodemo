@@ -7,6 +7,7 @@ import javax.imageio.ImageIO;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.shiro.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.ResourceUtils;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.pp.entity.FileInfo;
+import com.pp.entity.User;
 import com.pp.service.FileService;
 
 @Controller
@@ -25,8 +27,12 @@ public class FileController {
 	@RequestMapping("/common/headImg/{id}")
 	public void validateCode(@PathVariable String id, HttpServletResponse response) {
 		
-		FileInfo fileInfo = fileService.getFileInfo(id);
+		if(id.equals("0")) {
+			User user = (User) SecurityUtils.getSubject().getPrincipal();
+			id = user.getHeadImg();
+		}
 		
+		FileInfo fileInfo = fileService.getFileInfo(id);		
 		File file = null;
 		String format = null;
 		if(fileInfo != null) {			

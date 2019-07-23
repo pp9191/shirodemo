@@ -14,8 +14,6 @@ import org.apache.shiro.mgt.SecurityManager;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Lazy;
-
 import com.pp.entity.Permission;
 import com.pp.service.PermissionService;
 
@@ -115,7 +113,7 @@ public class ShiroConfig {
 	}
 
 	@Bean("shiroFilter")
-	public ShiroFilterFactoryBean shiroFilter(SecurityManager securityManager, @Lazy PermissionService permService) {
+	public ShiroFilterFactoryBean shiroFilter(SecurityManager securityManager, PermissionService permService) {
 
 		ShiroFilterFactoryBean shiroFilter = new ShiroFilterFactoryBean();
 		// 设置SecurityManager
@@ -126,7 +124,7 @@ public class ShiroConfig {
 		Map<String, String> filterMap = new LinkedHashMap<>();
 		
 		for (Permission perm : perms) {
-			filterMap.put(perm.getUrlMapping(), "perms[" + perm.getUrlMapping() + "]");
+			filterMap.put(perm.getUrlMapping(), "authc,perms[" + perm.getUrlMapping() + "]");
 		}
 		// 配置不会被拦截的链接 顺序判断
 		filterMap.put("/common/**", "anon"); // 可以匿名访问，公共静态资源
