@@ -28,8 +28,8 @@ public class FileController {
 	public void validateCode(@PathVariable String id, HttpServletResponse response) {
 		
 		if(id.equals("0")) {
-			User user = (User) SecurityUtils.getSubject().getPrincipal();
-			id = user.getHeadImg();
+			User user = (User) SecurityUtils.getSubject().getPrincipal();			
+			id = user.getHeadImg() == null ? "" : user.getHeadImg();
 		}
 		
 		FileInfo fileInfo = fileService.getFileInfo(id);		
