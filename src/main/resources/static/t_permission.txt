@@ -1,0 +1,48 @@
+/*
+Navicat MySQL Data Transfer
+
+Source Server         : 虚拟机
+Source Server Version : 50560
+Source Host           : 10.7.129.254:3306
+Source Database       : test
+
+Target Server Type    : MYSQL
+Target Server Version : 50560
+File Encoding         : 65001
+
+Date: 2019-07-23 19:42:21
+*/
+
+SET FOREIGN_KEY_CHECKS=0;
+
+-- ----------------------------
+-- Table structure for t_permission
+-- ----------------------------
+DROP TABLE IF EXISTS `t_permission`;
+CREATE TABLE `t_permission` (
+`id`  bigint(20) NOT NULL AUTO_INCREMENT ,
+`permname`  varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL ,
+`url_mapping`  varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL ,
+`remark`  varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '描述' ,
+`create_by`  varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL ,
+`create_time`  datetime NULL DEFAULT NULL ,
+PRIMARY KEY (`id`)
+)
+ENGINE=InnoDB
+DEFAULT CHARACTER SET=utf8 COLLATE=utf8_general_ci
+AUTO_INCREMENT=4
+
+;
+
+-- ----------------------------
+-- Records of t_permission
+-- ----------------------------
+BEGIN;
+INSERT INTO `t_permission` VALUES ('1', '/perm/permissions', '/perm/permissions;/perm/addPermission;/perm/deletePermission', '权限点管理', null, null), ('2', '/perm/roles', '/perm/roles;/perm/addRole;/perm/deleteRole;/perm/setRolePerms/**', '角色管理', null, null), ('3', '/perm/users', '/perm/users;/perm/dialog_adduser;/perm/dialog_edituser;/perm/setUserRoles/**', '用户管理', null, null);
+COMMIT;
+
+-- ----------------------------
+-- Auto increment value for t_permission
+-- ----------------------------
+ALTER TABLE `t_permission` AUTO_INCREMENT=4;
+SET FOREIGN_KEY_CHECKS=1;
