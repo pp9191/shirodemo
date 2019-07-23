@@ -72,13 +72,13 @@ public class RolePermController {
 	@ResponseBody
 	@RequestMapping("/deleteRole")
 	public Map<String, Object> deleteRole(@ModelAttribute Role role) {
-		Map<String, Object> map = new HashMap<String, Object>();
+		Map<String, Object> result = new HashMap<String, Object>();
 		if(!role.getRolename().equals("admin") && roleService.deleteRole(role) > 0) {			
-			map.put("result", "true");
+			result.put("result", "true");
 		}else {
-			map.put("result", "false");
+			result.put("result", "false");
 		}
-		return map;
+		return result;
 	}
 	
 	@ResponseBody
@@ -170,10 +170,13 @@ public class RolePermController {
 	@ResponseBody
 	@RequestMapping("/deletePermission")
 	public Map<String, Object> deletePermission(@ModelAttribute Permission perm){
-		Map<String, Object> map = new HashMap<String, Object>();
-		permService.deletePermission(perm);
-		map.put("result", "true");
-		return map;
+		Map<String, Object> result = new HashMap<String, Object>();
+		if(permService.deletePermission(perm) > 0){			
+			result.put("result", "true");
+		}else {
+			result.put("result", "false");
+		}
+		return result;
 	}
 	
 	@ResponseBody
