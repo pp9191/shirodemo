@@ -23,4 +23,6 @@ public interface PermissionMapper {
 	List<Permission> selectAll(Map<String, Object> params);
 
 	int selectAllCount(Map<String, Object> params);
+
+	Permission selectByPermname(String permname);
 }

@@ -22,16 +22,16 @@ function showAddDialog(flag){
 	var content = '<form id="form_role" action="/perm/addPermission" class="form-horizontal" style="width:96%;" role="form" method="post">' +
 				  '<input type="hidden" id="id" name="id"/>' +
 				  '<div class="form-group">' +
-				  '<label for="urlMapping" class="col-md-2 control-label">权限点</label>' +
-				  '<div class="col-md-10"><input type="text" class="form-control" id="urlMapping" name="urlMapping"/></div>' +
-			 	  '</div>' +
-			 	  '<div class="form-group">' +
-				  '<label for="pid" class="col-md-2 control-label">上级权限点</label>' +
-				  '<div class="col-md-10"><input type="text" class="form-control" id="pid" name="pid"/></div>' +
-			 	  '</div>' +
+				  '<label for="permname" class="col-md-2 control-label">权限名</label>' +
+				  '<div class="col-md-10"><input type="text" class="form-control" id="permname" name="permname"/></div>' +
+			 	  '</div>' +			 	  
 			 	  '<div class="form-group">' +
 				  '<label for="remark" class="col-md-2 control-label">权限说明</label>' +
-				  '<div class="col-md-10"><textarea rows="3" class="form-control" id="remark" name="remark"></textarea></div>' +
+				  '<div class="col-md-10"><input type="text" class="form-control" id="remark" name="remark"/></div>' +
+			 	  '</div>' +
+				  '<div class="form-group">' +
+				  '<label for="urlMapping" class="col-md-2 control-label">url地址</label>' +
+				  '<div class="col-md-10"><textarea rows="3" class="form-control" id="urlMapping" name="urlMapping"></textarea></div>' +
 			 	  '</div>' +
 				  '</form>';
 	$.confirm({
@@ -72,8 +72,9 @@ function showAddDialog(flag){
 	    onOpen: function () {
 	    	if(flag == "edit"){
 	    		$("#id").val(row.id);
-	    		$("#urlMapping").val(row.urlMapping).attr("readonly", "readonly");
+	    		$("#permname").val(row.permname).attr("readonly", "readonly");
 	    		$("#remark").val(row.remark);
+	    		$("#urlMapping").val(row.urlMapping);
 	    	}
 	    	$('#form_role').bootstrapValidator({
 				message : 'This value is not valid',
@@ -83,11 +84,23 @@ function showAddDialog(flag){
 					validating : 'glyphicon glyphicon-refresh'
 				},
 				fields : {
+					permname : {
+						message : '验证失败',
+						validators : {
+							notEmpty : {
+								message : '请输入权限名'
+							},
+							stringLength : {
+								max : 200,
+								message : '长度超出最大长度200字符'
+							}
+						}
+					},
 					urlMapping : {
 						message : '验证失败',
 						validators : {
 							notEmpty : {
-								message : '请输入权限点'
+								message : '请输入权限控制地址，多个地址以英文分号分开'
 							},
 							stringLength : {
 								max : 200,
@@ -135,8 +148,8 @@ function deleteRole(){
 									$.alert("删除成功");
 									// 刷新表格
 									$("#table_perms").bootstrapTable("remove", {
-										field: "urlMapping",
-										values: [rows[0].urlMapping]
+										field: "permname",
+										values: [rows[0].permname]
 									});
 								}else{
 									$.alert("删除失败");
@@ -180,9 +193,10 @@ function deleteRole(){
 			<thead>
 				<tr>
 					<th data-checkbox="true"></th>
-					<th data-field="urlMapping" data-halign="center" data-align="center">权限点</th>
+					<th data-field="permname" data-halign="center" data-align="center">权限名</th>
 					<th data-field="remark" data-halign="center" data-align="center">权限说明</th>
-					<th data-field="createTime" data-halign="center" data-align="center">创建时间</th>
+					<th data-field="urlMapping" data-halign="center" data-align="center">url地址</th>
+					<!-- <th data-field="operate" data-halign="center" data-align="center">操作</th> -->
 				</tr>
 			</thead>
 		</table>	

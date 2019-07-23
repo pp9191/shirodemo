@@ -18,7 +18,7 @@ public interface RoleMapper {
     
     List<Role> getRoles(Long userId);
     
-    Role selectByName(String rolename);
+    Role selectByRoleName(String rolename);
 
     List<Role> selectAll(Map<String, Object> params);
 

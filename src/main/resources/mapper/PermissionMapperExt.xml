@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.pp.dao.PermissionMapper" >
+  
+  <select id="getPermissions" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_permission
+    where id in (
+    	select permission_id from t_role_permission where role_id = #{roleId,jdbcType=BIGINT}
+    )
+    order by id
+  </select>
+  
+  <select id="selectByPermname" resultMap="BaseResultMap" parameterType="string" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_permission
+    where permname = #{permname,jdbcType=VARCHAR}
+  </select>
+  
+  <select id="selectAll" resultMap="BaseResultMap" parameterType="map" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_permission
+    <where>
+	    <if test="roleId != null">
+	    	and id in (
+		    	select permission_id from t_role_permission where role_id = #{roleId,jdbcType=BIGINT}
+		    )
+	    </if>
+    </where>
+    order by id
+    <if test="offset != null and limit != null" >
+	    limit #{offset} , #{limit}
+    </if>
+  </select>
+  
+  <select id="selectAllCount" resultType="int" parameterType="map" >
+    select count(*) from t_permission
+    <where>
+	    <if test="roleId != null">
+	    	and id in (
+		    	select permission_id from t_role_permission where role_id = #{roleId,jdbcType=BIGINT}
+		    )
+	    </if>
+    </where>
+  </select>
+  
+</mapper>

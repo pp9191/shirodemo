@@ -81,4 +81,8 @@ public class PermissionService {
 	public int selectAllCount(Map<String, Object> params) {
 		return permissionMapper.selectAllCount(params);
 	}
+
+	public Permission getPermByName(String permname) {
+		return permissionMapper.selectByPermname(permname);
+	}
 }

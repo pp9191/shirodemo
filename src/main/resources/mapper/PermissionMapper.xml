@@ -3,42 +3,15 @@
 <mapper namespace="com.pp.dao.PermissionMapper" >
   <resultMap id="BaseResultMap" type="com.pp.entity.Permission" >
     <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="permname" property="permname" jdbcType="VARCHAR" />
     <result column="url_mapping" property="urlMapping" jdbcType="VARCHAR" />
     <result column="remark" property="remark" jdbcType="VARCHAR" />
-    <result column="type" property="type" jdbcType="VARCHAR" />
-    <result column="pid" property="pid" jdbcType="BIGINT" />
+    <result column="create_by" property="createBy" jdbcType="VARCHAR" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
   </resultMap>
   <sql id="Base_Column_List" >
-    id, url_mapping, remark, type, pid
+    id, permname, url_mapping, remark, create_by, create_time
   </sql>
-  <select id="getPermissions" resultMap="BaseResultMap" parameterType="java.lang.Long" >
-    select 
-    <include refid="Base_Column_List" />
-    from t_permission
-    where id in (
-    	select permission_id from t_role_permission where role_id = #{roleId,jdbcType=BIGINT}
-    )
-    order by id
-  </select>
-  <select id="selectAll" resultMap="BaseResultMap" parameterType="map" >
-    select 
-    <include refid="Base_Column_List" />
-    from t_permission
-    <where>
-	    <if test="roleId != null">
-	    	and id in (
-		    	select permission_id from t_role_permission where role_id = #{roleId,jdbcType=BIGINT}
-		    )
-	    </if>
-    </where>
-    order by id
-    <if test="offset != null and limit != null" >
-	    limit #{offset} , #{limit}
-    </if>
-  </select>
-  <select id="selectAllCount" resultType="int" parameterType="map" >
-    select count(*) from t_permission
-  </select>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
     select 
     <include refid="Base_Column_List" />
@@ -50,10 +23,12 @@
     where id = #{id,jdbcType=BIGINT}
   </delete>
   <insert id="insert" parameterType="com.pp.entity.Permission" >
-    insert into t_permission (id, url_mapping, remark, 
-      type, pid)
-    values (#{id,jdbcType=BIGINT}, #{urlMapping,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR}, 
-      #{type,jdbcType=VARCHAR}, #{pid,jdbcType=BIGINT})
+    insert into t_permission (id, permname, url_mapping, 
+      remark, create_by, create_time
+      )
+    values (#{id,jdbcType=BIGINT}, #{permname,jdbcType=VARCHAR}, #{urlMapping,jdbcType=VARCHAR}, 
+      #{remark,jdbcType=VARCHAR}, #{createBy,jdbcType=VARCHAR}, now()
+      )
   </insert>
   <insert id="insertSelective" parameterType="com.pp.entity.Permission" >
     insert into t_permission
@@ -61,22 +36,28 @@
       <if test="id != null" >
         id,
       </if>
+      <if test="permname != null" >
+        permname,
+      </if>
       <if test="urlMapping != null" >
         url_mapping,
       </if>
       <if test="remark != null" >
         remark,
       </if>
-      <if test="type != null" >
-        type,
+      <if test="createBy != null" >
+        create_by,
       </if>
-      <if test="pid != null" >
-        pid,
+      <if test="createTime != null" >
+        create_time,
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="id != null" >
         #{id,jdbcType=BIGINT},
+      </if>
+      <if test="permname != null" >
+        #{permname,jdbcType=VARCHAR},
       </if>
       <if test="urlMapping != null" >
         #{urlMapping,jdbcType=VARCHAR},
@@ -84,38 +65,42 @@
       <if test="remark != null" >
         #{remark,jdbcType=VARCHAR},
       </if>
-      <if test="type != null" >
-        #{type,jdbcType=VARCHAR},
+      <if test="createBy != null" >
+        #{createBy,jdbcType=VARCHAR},
       </if>
-      <if test="pid != null" >
-        #{pid,jdbcType=BIGINT},
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
       </if>
     </trim>
   </insert>
   <update id="updateByPrimaryKeySelective" parameterType="com.pp.entity.Permission" >
     update t_permission
     <set >
+      <if test="permname != null" >
+        permname = #{permname,jdbcType=VARCHAR},
+      </if>
       <if test="urlMapping != null" >
         url_mapping = #{urlMapping,jdbcType=VARCHAR},
       </if>
       <if test="remark != null" >
         remark = #{remark,jdbcType=VARCHAR},
       </if>
-      <if test="type != null" >
-        type = #{type,jdbcType=VARCHAR},
+      <if test="createBy != null" >
+        create_by = #{createBy,jdbcType=VARCHAR},
       </if>
-      <if test="pid != null" >
-        pid = #{pid,jdbcType=BIGINT},
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
       </if>
     </set>
     where id = #{id,jdbcType=BIGINT}
   </update>
   <update id="updateByPrimaryKey" parameterType="com.pp.entity.Permission" >
     update t_permission
-    set url_mapping = #{urlMapping,jdbcType=VARCHAR},
+    set permname = #{permname,jdbcType=VARCHAR},
+      url_mapping = #{urlMapping,jdbcType=VARCHAR},
       remark = #{remark,jdbcType=VARCHAR},
-      type = #{type,jdbcType=VARCHAR},
-      pid = #{pid,jdbcType=BIGINT}
+      create_by = #{createBy,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=BIGINT}
   </update>
 </mapper>

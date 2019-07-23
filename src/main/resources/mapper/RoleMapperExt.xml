@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.pp.dao.RoleMapper" >
+  
+  <select id="getRoles" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_role
+    where id in (
+    	select role_id from t_user_role where user_id = #{userId,jdbcType=BIGINT}
+    )
+    order by id
+  </select>
+  
+  <select id="selectByRoleName" resultMap="BaseResultMap" parameterType="string" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_role
+    where rolename = #{rolename,jdbcType=BIGINT}
+  </select>  
+  
+  <select id="selectAllCount" resultType="int" parameterType="map" >
+    SELECT count(*) FROM t_role
+  </select>
+  
+  <select id="selectAll" resultMap="BaseResultMap" parameterType="map" >
+    SELECT
+		<include refid="Base_Column_List" />
+	FROM t_role
+	ORDER BY id
+	<if test="offset != null and limit != null" >
+	    LIMIT #{offset} , #{limit}
+    </if>
+  </select>
+  
+</mapper>

@@ -153,10 +153,10 @@ public class RolePermController {
 			map.put("errors", bindResult.getAllErrors());
 		}else if(perm.getId() == null) {
 			// 新增
-			if(roleService.getRoleByName(perm.getUrlMapping()) != null){
+			if(permService.getPermByName(perm.getPermname()) != null){
 				map.put("result", "false");
 				map.put("errors", new String[] {"权限点已存在"});
-			}else {			
+			}else {	
 				permService.addPermission(perm);
 				map.put("result", "true");
 			}
@@ -237,5 +237,5 @@ public class RolePermController {
 			result.put("message", "设置失败");
 		}
 		return result;
-	}
+	}	
 }

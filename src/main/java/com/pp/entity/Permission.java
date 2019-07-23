@@ -1,20 +1,19 @@
 package com.pp.entity;
 
-import java.io.Serializable;
+import java.util.Date;
 
-public class Permission implements Serializable{
-    
-	private static final long serialVersionUID = -3125446411610790381L;
+public class Permission {
+    private Long id;
 
-	private Long id;
+    private String permname;
 
     private String urlMapping;
 
     private String remark;
 
-    private String type;
+    private String createBy;
 
-    private Long pid;
+    private Date createTime;
 
     public Long getId() {
         return id;
@@ -24,12 +23,20 @@ public class Permission implements Serializable{
         this.id = id;
     }
 
+    public String getPermname() {
+        return permname;
+    }
+
+    public void setPermname(String permname) {
+        this.permname = permname == null ? null : permname.trim();
+    }
+
     public String getUrlMapping() {
         return urlMapping;
     }
 
     public void setUrlMapping(String urlMapping) {
-        this.urlMapping = urlMapping == null ? null : urlMapping.trim();
+        this.urlMapping = urlMapping == null ? null : urlMapping.trim().replace(",", ";");
     }
 
     public String getRemark() {
@@ -40,19 +47,19 @@ public class Permission implements Serializable{
         this.remark = remark == null ? null : remark.trim();
     }
 
-    public String getType() {
-        return type;
+    public String getCreateBy() {
+        return createBy;
     }
 
-    public void setType(String type) {
-        this.type = type == null ? null : type.trim();
+    public void setCreateBy(String createBy) {
+        this.createBy = createBy == null ? null : createBy.trim();
     }
 
-    public Long getPid() {
-        return pid;
+    public Date getCreateTime() {
+        return createTime;
     }
 
-    public void setPid(Long pid) {
-        this.pid = pid;
+    public void setCreateTime(Date createTime) {
+        this.createTime = createTime;
     }
 }

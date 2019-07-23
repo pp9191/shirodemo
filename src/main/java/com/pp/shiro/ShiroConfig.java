@@ -16,6 +16,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import com.pp.entity.Permission;
 import com.pp.service.PermissionService;
+import com.pp.util.JsonUtils;
 
 import at.pollux.thymeleaf.shiro.dialect.ShiroDialect;
 import net.sf.ehcache.CacheManager;
@@ -124,7 +125,12 @@ public class ShiroConfig {
 		Map<String, String> filterMap = new LinkedHashMap<>();
 		
 		for (Permission perm : perms) {
-			filterMap.put(perm.getUrlMapping(), "authc,perms[" + perm.getUrlMapping() + "]");
+			if(JsonUtils.isNotEmpty(perm.getUrlMapping())) {				
+				String[] urls = perm.getUrlMapping().split(";");
+				for (String url : urls) {				
+					filterMap.put(url, "authc,perms[" + perm.getPermname() + "]");
+				}
+			}
 		}
 		// 配置不会被拦截的链接 顺序判断
 		filterMap.put("/common/**", "anon"); // 可以匿名访问，公共静态资源
@@ -133,7 +139,7 @@ public class ShiroConfig {
 		filterMap.put("/403", "anon");
 		filterMap.put("/user/login", "anon");
 		filterMap.put("/user/signup", "anon");
-		filterMap.put("/user/logout", "logout");
+		// filterMap.put("/user/logout", "logout");
 		// 这句话的意思是除了上面配置的路径，剩下的全部路径都需要认证通过才能访问，所以这句话要放在最后
 		filterMap.put("/**", "authc");
 		// 如果不设置默认会自动寻找Web工程根目录下的"/login.jsp"页面

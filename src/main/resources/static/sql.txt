@@ -5,10 +5,10 @@
 DROP TABLE IF EXISTS `t_permission`;
 CREATE TABLE `t_permission` (
 `id`  bigint(20) NOT NULL AUTO_INCREMENT ,
-`url_mapping`  varchar(256)  NOT NULL COMMENT 'url地址' ,
-`remark`  varchar(256)  NULL DEFAULT NULL COMMENT '描述' ,
-`type`  varchar(20)  NULL DEFAULT NULL ,
-`pid`  bigint(20) NULL DEFAULT NULL ,
+`permname`  varchar(255)  NOT NULL COMMENT 'url地址' ,
+`remark`  varchar(255)  NULL DEFAULT NULL COMMENT '描述' ,
+`create_by`  varchar(100)  NULL DEFAULT NULL ,
+`create_time`  datetime ,
 PRIMARY KEY (`id`)
 )
 ;

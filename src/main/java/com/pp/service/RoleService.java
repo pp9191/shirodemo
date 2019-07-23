@@ -32,7 +32,7 @@ public class RoleService {
 	}
 	
 	public Role getRoleByName(String rolename) {
-		return roleMapper.selectByName(rolename);
+		return roleMapper.selectByRoleName(rolename);
 	}
 	
 	public int addRole(Role role) {

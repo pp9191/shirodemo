@@ -43,9 +43,9 @@
 					success: function(data){
 						if(data.result == "true"){						
 							var remove = {
-									field: "urlMapping",
+									field: "permname",
 									values: $.map(perms, function(perm){
-										return perm.urlMapping
+										return perm.permname
 									})
 							};
 							if(operate == "add"){
@@ -77,7 +77,7 @@
 					<thead>
 						<tr>
 							<th data-checkbox="true"></th>
-							<th data-field="urlMapping" data-halign="center" data-align="center">权限点</th>
+							<th data-field="permname" data-halign="center" data-align="center">权限点</th>
 							<th data-field="remark" data-halign="center" data-align="center">权限说明</th>
 						</tr>
 					</thead>
@@ -88,7 +88,7 @@
 					<thead>
 						<tr>
 							<th data-checkbox="true"></th>
-							<th data-field="urlMapping" data-halign="center" data-align="center">权限点</th>
+							<th data-field="permname" data-halign="center" data-align="center">权限点</th>
 							<th data-field="remark" data-halign="center" data-align="center">权限说明</th>
 						</tr>
 					</thead>
