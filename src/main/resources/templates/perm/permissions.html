@@ -167,6 +167,14 @@ function deleteRole(){
 		$.alert("请选择一条数据");
 	}
 }
+
+function colFormatter(value, row, index, field){
+	var c = "-";
+	if(field == "urlMapping" && value){		
+		c = value.replace(/;/g,"<br/>");
+	}
+	return c;
+}
 </script>
 
 	<div class="container">
@@ -195,8 +203,7 @@ function deleteRole(){
 					<th data-checkbox="true"></th>
 					<th data-field="permname" data-halign="center" data-align="center">权限名</th>
 					<th data-field="remark" data-halign="center" data-align="center">权限说明</th>
-					<th data-field="urlMapping" data-halign="center" data-align="center">url地址</th>
-					<!-- <th data-field="operate" data-halign="center" data-align="center">操作</th> -->
+					<th data-field="urlMapping" data-halign="center" data-align="center" data-formatter="colFormatter">url地址</th>					
 				</tr>
 			</thead>
 		</table>	

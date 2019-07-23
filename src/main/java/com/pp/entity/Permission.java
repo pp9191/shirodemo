@@ -36,7 +36,7 @@ public class Permission {
     }
 
     public void setUrlMapping(String urlMapping) {
-        this.urlMapping = urlMapping == null ? null : urlMapping.trim().replace(",", ";");
+        this.urlMapping = urlMapping == null ? null : urlMapping.trim().replace("；", ";");
     }
 
     public String getRemark() {
