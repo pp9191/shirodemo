@@ -63,8 +63,7 @@ public class ShiroConfig {
 	}
 	
 	@Bean("simpleCookie")
-	public SimpleCookie simpleCookie(){
-	      
+	public SimpleCookie simpleCookie(){	      
 	      // 这个参数是cookie的名称，对应前端的checkbox的name = rememberMe
 	      SimpleCookie simpleCookie = new SimpleCookie("rememberMe");
 	      // 记住我cookie生效时间30天 ,单位秒
@@ -120,10 +119,10 @@ public class ShiroConfig {
 		// 设置SecurityManager
 		shiroFilter.setSecurityManager(securityManager);
 		
-		List<Permission> perms = permService.selectAll(null);
 		// 设置拦截器
 		Map<String, String> filterMap = new LinkedHashMap<>();
 		
+		List<Permission> perms = permService.selectAll(null);
 		for (Permission perm : perms) {
 			if(JsonUtils.isNotEmpty(perm.getUrlMapping())) {				
 				String[] urls = perm.getUrlMapping().split(";");

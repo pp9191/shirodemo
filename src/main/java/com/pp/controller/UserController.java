@@ -202,21 +202,14 @@ public class UserController {
 		if(bindResult.hasErrors()) {
 			result.put("result", "false");
 			result.put("errors", bindResult.getAllErrors());
-		} else if(user.getId() == null) {
-			// 新增用户
-			if(userService.selectByAccount(user.getAccount()) != null) {
-				result.put("result", "false");
-				result.put("errors", new String[] {"用户名已存在"});
-			}else {
-				user.setPassword(ShiroUtils.encryptPassword(user.getPassword(), user.getAccount()));
-				userService.addUser(user);			
-				result.put("result", "true");
-			}
 		} else {
 			if(user.getPassword() != null) {
 				// 不支持修改密码
 				user.setPassword(null);
 			}
+			User curUser = (User) SecurityUtils.getSubject().getPrincipal();
+			user.setId(curUser.getId());
+			user.setAccount(curUser.getAccount());
 			userService.setUserinfo(user);			
 			result.put("result", "true");
 		}
@@ -227,19 +220,20 @@ public class UserController {
 	@RequestMapping(value="/setPassword")
 	public Map<String, Object> setPassword(String password, String password1) {
 		Map<String, Object> result = new HashMap<String, Object>();
+		int r = 0;
 		if(password1.matches("^\\w{6,18}$")) {
-			User user = (User) SecurityUtils.getSubject().getPrincipal();
-			if(ShiroUtils.encryptPassword(password, user.getAccount()).equals(user.getPassword())) {
-				user.setPassword(ShiroUtils.encryptPassword(password1, user.getAccount()));
-				userService.setUserinfo(user);
-				result.put("result", "true");
-			} else {
-				result.put("result", "false");
-				result.put("message", "旧密码输入错误");
+			User curUser = (User) SecurityUtils.getSubject().getPrincipal();
+			if(ShiroUtils.encryptPassword(password, curUser.getAccount()).equals(curUser.getPassword())) {
+				User user = new User();
+				user.setId(curUser.getId());
+				user.setPassword(ShiroUtils.encryptPassword(password1, curUser.getAccount()));
+				r = userService.setUserinfo(user);
 			}
-		} else {
+		}
+		if(r > 0) {
+			result.put("result", "true");			
+		}else {			
 			result.put("result", "false");
-			result.put("message", "新密码格式不对：密码只能由4-18位数字、字母或下划线组成。");
 		}
 		return result;
 	}

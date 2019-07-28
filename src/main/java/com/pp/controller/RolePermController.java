@@ -24,11 +24,16 @@ import com.pp.entity.User;
 import com.pp.entity.UserRole;
 import com.pp.service.PermissionService;
 import com.pp.service.RoleService;
+import com.pp.service.UserService;
+import com.pp.shiro.ShiroUtils;
 import com.pp.util.JsonUtils;
 
 @Controller
 @RequestMapping("/perm")
 public class RolePermController {
+	
+	@Autowired
+	private UserService userService;
 	
 	@Autowired
 	private RoleService roleService;
@@ -42,6 +47,33 @@ public class RolePermController {
 	public String urlMapping(@PathVariable String path) {
 		
 		return basePath.concat(path);
+	}
+	
+	@ResponseBody
+	@RequestMapping(value="/setUserinfo")
+	public Map<String, Object> setUserinfo(@ModelAttribute @Valid User user, BindingResult bindResult) {
+		Map<String, Object> result = new HashMap<String, Object>();
+		if(bindResult.hasErrors()) {
+			result.put("result", "false");
+			result.put("errors", bindResult.getAllErrors());
+		} else if(user.getId() == null) {
+			// 新增用户
+			if(userService.selectByAccount(user.getAccount()) != null) {
+				result.put("result", "false");
+				result.put("errors", new String[] {"用户名已存在"});
+			}else {
+				user.setPassword(ShiroUtils.encryptPassword(user.getPassword(), user.getAccount()));
+				userService.addUser(user);			
+				result.put("result", "true");
+			}
+		} else {
+			if(JsonUtils.isNotEmpty(user.getPassword())) {
+				user.setPassword(ShiroUtils.encryptPassword(user.getPassword(), user.getAccount()));
+			}
+			userService.setUserinfo(user);		
+			result.put("result", "true");
+		}
+		return result;
 	}
 	
 	@ResponseBody
