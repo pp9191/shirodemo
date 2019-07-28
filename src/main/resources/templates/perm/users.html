@@ -11,8 +11,11 @@
 function showAddDialog(){
 	$.dialog({
 		title: "新增用户",
-		content: "url:/perm/dialog_adduser",
+		content: "url:/perm/dialog_edituser",
 		columnClass: "col-sm-8 col-sm-offset-2",
+		onContentReady: function(){
+			$("#birthday").datepicker();
+		},
 		onClose: function(){	    								
 			$("#table_users").bootstrapTable("refresh");
 		}
