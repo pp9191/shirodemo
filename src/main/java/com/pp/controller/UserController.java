@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 import org.apache.shiro.SecurityUtils;
@@ -19,6 +20,8 @@ import org.apache.shiro.authc.UnknownAccountException;
 import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.session.Session;
 import org.apache.shiro.subject.Subject;
+import org.apache.shiro.web.util.SavedRequest;
+import org.apache.shiro.web.util.WebUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
@@ -38,6 +41,7 @@ import com.pp.entity.User;
 import com.pp.service.UserService;
 import com.pp.shiro.ShiroUtils;
 import com.pp.util.FileUtils;
+import com.pp.util.JsonUtils;
 
 @Controller
 @RequestMapping("/user")
@@ -67,7 +71,6 @@ public class UserController {
 	public String logout() {
 		Subject subject = SecurityUtils.getSubject();
 		if (subject.isAuthenticated()) {
-			// subject.getSession().removeAttribute("userinfo");
 			subject.logout();
 		}
 		return "redirect:/index";
@@ -88,7 +91,6 @@ public class UserController {
 		} else {
 			// 密码加密
 			user.setPassword(ShiroUtils.encryptPassword(user.getPassword(), user.getAccount()));
-			System.out.println(user.getPassword() + "|" + user.getPassword().length());
 			if(userService.addUser(user) == 1) {
 				// 注册成功，跳转登录
 				FieldError error = new FieldError("user", "account", "注册成功，请登录");
@@ -100,24 +102,24 @@ public class UserController {
 	}
 		
 	@RequestMapping(value="/login", method=RequestMethod.POST)
-	public String login(@ModelAttribute @Valid User user, BindingResult result, boolean rememberMe) {
+	public String login(@ModelAttribute @Valid User user, BindingResult result, boolean rememberMe, HttpServletRequest request) {
 		System.out.println(user.getAccount() + " || " + user.getPassword());
-		if(result.hasErrors()) {
-			// 校验报错
-			
-		}else {			
+		if(!result.hasErrors()) {			
 			Subject subject = SecurityUtils.getSubject();
 			try{
 				// 调用安全认证框架的登录方法
 				subject.login(new UsernamePasswordToken(user.getAccount(), user.getPassword(), rememberMe));
-				// subject.getSession().setAttribute("userinfo", subject.getPrincipal());
-				return "redirect:/index";
+				String url = "/index";
+				SavedRequest saveRequest = WebUtils.getSavedRequest(request);
+				if(saveRequest != null && saveRequest.getRequestUrl() != null) {
+					url = saveRequest.getRequestUrl();
+				}
+				return "redirect:" + url;
 			}catch(UnknownAccountException|LockedAccountException|ExcessiveAttemptsException ex){
 				// 用户名不存在 | 账号被锁 | 密码错误次数达到5次
 				FieldError error = new FieldError("user", "account", ex.getMessage());
 				result.addError(error);
-			}catch(AuthenticationException ex){
-				
+			}catch(AuthenticationException ex){				
 				FieldError error = new FieldError("user", "account", "密码错误");
 				result.addError(error);
 			}
@@ -210,7 +212,7 @@ public class UserController {
 			User curUser = (User) SecurityUtils.getSubject().getPrincipal();
 			user.setId(curUser.getId());
 			user.setAccount(curUser.getAccount());
-			userService.setUserinfo(user);			
+			userService.setUserinfo(user);
 			result.put("result", "true");
 		}
 		return result;
