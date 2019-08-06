@@ -54,6 +54,15 @@
 		maxElementsInMemory="100"
 		overflowToDisk="false" 
 		timeToIdleSeconds="1800"
+		timeToLiveSeconds="0" />
+		
+	<!-- 认证缓存 -->
+	<cache 
+		name="authenticationCache" 
+		eternal="false" 
+		maxElementsInMemory="100"
+		overflowToDisk="false" 
+		timeToIdleSeconds="1800"
 		timeToLiveSeconds="0" />	
 		
 	<!-- 授权缓存 -->
