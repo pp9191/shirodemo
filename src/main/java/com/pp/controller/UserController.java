@@ -157,7 +157,7 @@ public class UserController {
     	} else {
 			String originalName = file.getOriginalFilename();
 			String type = originalName.substring(originalName.lastIndexOf("."));
-			if (imgType.contains(type)) {
+			if (imgType.contains(type.toLowerCase())) {
 				Date date = new Date();
 				String uuid = UUID.randomUUID().toString();
 				String filePath = baseUploadPath.concat(FileUtils.getDatePath(date));
