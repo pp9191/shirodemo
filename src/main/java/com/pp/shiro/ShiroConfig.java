@@ -13,6 +13,7 @@ import org.crazycake.shiro.RedisCacheManager;
 import org.crazycake.shiro.RedisManager;
 import org.crazycake.shiro.RedisSessionDAO;
 import org.apache.shiro.mgt.SecurityManager;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import com.pp.entity.Permission;
@@ -26,6 +27,12 @@ import java.util.Map;
 
 @Configuration
 public class ShiroConfig {
+	
+	@Value("${spring.redis.host}")
+	private String host;
+	
+	@Value("${spring.redis.port}")
+	private String port;
 
 	@Bean
 	public ShiroDialect shiroDialect() {
@@ -35,8 +42,8 @@ public class ShiroConfig {
 	@Bean("redisManager")
 	public RedisManager redisManager() {
 		RedisManager redisManager = new RedisManager();
-		redisManager.setHost("10.7.135.12:6379");
-		redisManager.setTimeout(0);
+		System.out.println("redisManager.setHost(" + host + ":" + port + ")");
+		redisManager.setHost(host + ":" + port);
 		return redisManager;
 	}
 
@@ -163,7 +170,7 @@ public class ShiroConfig {
 	 * 配置SecurityManager的生命周期处理器
 	 */
 	@Bean("lifecycleBeanPostProcessor")
-	public LifecycleBeanPostProcessor lifecycleBeanPostProcessor() {
+	public static LifecycleBeanPostProcessor lifecycleBeanPostProcessor() {
 		return new LifecycleBeanPostProcessor();
 	}
 

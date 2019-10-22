@@ -14,7 +14,7 @@ public interface FileInfoMapper {
 
     int insertSelective(FileInfo record);
 
-    @Cacheable(value="fileinfo", key="#id")
+    @Cacheable(value="fileinfo", key="#id", unless="#result == null")
     FileInfo selectByPrimaryKey(String id);
 
     int updateByPrimaryKeySelective(FileInfo record);

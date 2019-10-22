@@ -22,7 +22,7 @@ public interface UserMapper {
 
     int updateByPrimaryKey(User record);
 
-    @Cacheable(value="users", key="#account")
+    @Cacheable(value="users", key="#account", unless="#result == null")
 	User selectByAccount(String account);
 
 	List<User> getUsers(Map<String, Object> params);
