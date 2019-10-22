@@ -29,17 +29,22 @@ public class FileController {
 		
 		if(id.equals("0")) {
 			User user = (User) SecurityUtils.getSubject().getPrincipal();			
-			id = user.getHeadImg() == null ? "" : user.getHeadImg();
+			id = user.getHeadImg();
 		}
 		
-		FileInfo fileInfo = fileService.getFileInfo(id);		
+		FileInfo fileInfo = null;
+		if(id != null) {			
+			fileInfo = fileService.getFileInfo(id);
+		}
+		
 		File file = null;
 		String format = null;
 		if(fileInfo != null) {			
 			String fileName = fileInfo.getFilename();
 			file = new File(fileInfo.getPath(), fileName);
 			format = fileName.substring(fileName.lastIndexOf(".") + 1);
-		} 
+		}
+		
 		// 实现文件下载
 		try {
 			if(file == null || !file.exists()) {				
