@@ -39,6 +39,9 @@ spring:
          enabled: false
    cache:
       type: redis #指定缓存类型  
+      redis:
+         time-to-live: 30000 #缓存超时时间ms
+         cache-null-values: false #是否缓存空值
    redis:
       database: 0
       host: 10.7.135.12

@@ -13,7 +13,6 @@ public interface UserMapper {
 
     int insert(User record);
 
-    @CacheEvict(value="users", key="#record.account")
     int insertSelective(User record);
 
     User selectByPrimaryKey(Long id);
