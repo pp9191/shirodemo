@@ -14,7 +14,7 @@ spring:
          max-file-size: 10MB # 最大支持文件大小 
          max-request-size: 50MB # 最大支持请求(总)大小
    datasource:
-      url: jdbc:mysql://10.7.129.254:3306/test
+      url: jdbc:mysql://10.7.135.12:3306/test
       username: root
       password: 123456
       driver-class-name: org.mariadb.jdbc.Driver
@@ -26,11 +26,7 @@ spring:
          idle-timeout: 30000 #最大闲置时间
          max-lifetime: 1800000 #最大生命时间
          connection-timeout: 30000 #连接超时时间
-         connection-test-query: SELECT 1
-   cache:
-      type: ehcache #指定缓存类型
-      ehcache:
-         config: classpath:ehcache.xml #缓存加载配置文件   
+         connection-test-query: SELECT 1   
    thymeleaf:
       prefix: classpath:templates/
       suffix: .html
@@ -41,6 +37,18 @@ spring:
    devtools:
       restart:
          enabled: false
+   cache:
+      type: redis #指定缓存类型  
+   redis:
+      database: 0
+      host: 10.7.135.12
+      port: 6379
+      password: 
+      max-active: 200
+      max-wait: -1
+      max-idle: 10
+      min-idle: 0
+      timeout: 1000
 mybatis:
    mapper-locations: classpath:mapper/*.xml
    type-aliases-package: com.pp.entity
