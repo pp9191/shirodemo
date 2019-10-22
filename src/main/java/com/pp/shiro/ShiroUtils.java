@@ -14,6 +14,6 @@ public class ShiroUtils {
     }
 	
 	public static ByteSource getByteSource(String salt) {
-        return ByteSource.Util.bytes(salt);
+        return new MyByteSource(salt);
     }		
 }

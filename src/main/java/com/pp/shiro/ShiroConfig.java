@@ -42,7 +42,7 @@ public class ShiroConfig {
 	@Bean("redisManager")
 	public RedisManager redisManager() {
 		RedisManager redisManager = new RedisManager();
-		System.out.println("redisManager.setHost(" + host + ":" + port + ")");
+		//System.out.println("redisManager.setHost(" + host + ":" + port + ")");
 		redisManager.setHost(host + ":" + port);
 		return redisManager;
 	}
@@ -53,6 +53,7 @@ public class ShiroConfig {
 		redisCacheManager.setRedisManager(redisManager);
 		// 必须要设置主键名称，shiro-redis 插件用过这个缓存用户信息
 		redisCacheManager.setPrincipalIdFieldName("account");
+		// redisCacheManager.setExpire(300); //单位秒，默认1800
 		return redisCacheManager;
 	}
 
@@ -67,6 +68,7 @@ public class ShiroConfig {
 	public DefaultWebSessionManager sessionManager(RedisSessionDAO sessionDAO) {
 		DefaultWebSessionManager sessionManager = new SessionConfig();
 		sessionManager.setSessionDAO(sessionDAO);
+		sessionManager.setGlobalSessionTimeout(1800000);
 		return sessionManager;
 	}
 
@@ -104,14 +106,15 @@ public class ShiroConfig {
 		shiroRealm.setCredentialsMatcher(matcher);
 		shiroRealm.setCacheManager(redisCacheManager);
 		shiroRealm.setCachingEnabled(true);// 启用身份验证缓存，默认false
-		/**
-		 * shiroRealm.setAuthenticationCachingEnabled(true); //
-		 * 缓存AuthenticationInfo信息的缓存名称
-		 * shiroRealm.setAuthenticationCacheName("authenticationCache"); //
-		 * 启用授权缓存，默认false shiroRealm.setAuthorizationCachingEnabled(true); //
-		 * 缓存AuthorizationInfo信息的缓存名称
-		 * shiroRealm.setAuthorizationCacheName("authorizationCache");
-		 */
+		
+		//启用认证缓存
+		shiroRealm.setAuthenticationCachingEnabled(true); 
+		//缓存AuthenticationInfo信息的缓存名称
+		shiroRealm.setAuthenticationCacheName("authenticationCache"); 
+		//启用授权缓存，默认false 
+		shiroRealm.setAuthorizationCachingEnabled(true); 
+		//缓存AuthorizationInfo信息的缓存名称
+		shiroRealm.setAuthorizationCacheName("authorizationCache");
 
 		return shiroRealm;
 	}
