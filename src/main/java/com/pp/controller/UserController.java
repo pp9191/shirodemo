@@ -61,8 +61,8 @@ public class UserController {
 		if(path.equals("login") || path.equals("signup")){
 			model.addAttribute("user", new User());
 		}else if(path.equals("userinfo")) {
-			User user = (User) SecurityUtils.getSubject().getPrincipal();
-			model.addAttribute("user", userService.selectByAccount(user.getAccount()));
+			String account = SecurityUtils.getSubject().getPrincipal().toString();
+			model.addAttribute("user", userService.selectByAccount(account));
 		} 
 		return basePath.concat(path);
 	}
@@ -174,15 +174,13 @@ public class UserController {
 				fileinfo.setFilename(filename);
 				fileinfo.setOriginalname(originalName);
 				fileinfo.setCreateTime(date);
-				User curUser = (User) SecurityUtils.getSubject().getPrincipal();
-				fileinfo.setCreateBy(curUser.getAccount());
+				String curAccount = SecurityUtils.getSubject().getPrincipal().toString();
+				fileinfo.setCreateBy(curAccount);
 
 				try {
 					file.transferTo(new File(dir, filename));
 					userService.setHeadImg(account, fileinfo);
-					// 更新subject信息
-					curUser.setHeadImg(uuid);
-
+					
 					result.put("result", "true");
 					result.put("headImg", uuid);
 				} catch (IOException e) {
@@ -209,9 +207,11 @@ public class UserController {
 				// 不支持修改密码
 				user.setPassword(null);
 			}
-			User curUser = (User) SecurityUtils.getSubject().getPrincipal();
-			user.setId(curUser.getId());
-			user.setAccount(curUser.getAccount());
+			
+			String curAccount = SecurityUtils.getSubject().getPrincipal().toString();
+//			User curUser = userService.selectByAccount(curAccount);			
+//			user.setId(curUser.getId());
+			user.setAccount(curAccount);
 			userService.setUserinfo(user);
 			result.put("result", "true");
 		}
@@ -224,7 +224,8 @@ public class UserController {
 		Map<String, Object> result = new HashMap<String, Object>();
 		int r = 0;
 		if(password1.matches("^\\w{6,18}$")) {
-			User curUser = (User) SecurityUtils.getSubject().getPrincipal();
+			String curAccount = SecurityUtils.getSubject().getPrincipal().toString();
+			User curUser = userService.selectByAccount(curAccount);	
 			if(ShiroUtils.encryptPassword(password, curUser.getAccount()).equals(curUser.getPassword())) {
 				User user = new User();
 				user.setId(curUser.getId());

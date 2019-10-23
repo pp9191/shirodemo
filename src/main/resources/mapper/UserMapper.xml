@@ -183,7 +183,14 @@
         remark = #{remark,jdbcType=VARCHAR},
       </if>
     </set>
-    where id = #{id,jdbcType=BIGINT}
+    <where>
+      <if test="id == null" >
+        account = #{account,jdbcType=VARCHAR},
+      </if>
+      <if test="id != null" >
+        id = #{id,jdbcType=BIGINT}
+      </if>
+    </where>
   </update>
   <update id="updateByPrimaryKey" parameterType="com.pp.entity.User" >
     update t_user

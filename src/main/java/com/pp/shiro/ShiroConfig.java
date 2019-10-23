@@ -33,6 +33,9 @@ public class ShiroConfig {
 	
 	@Value("${spring.redis.port}")
 	private String port;
+	
+	@Value("${spring.redis.password}")
+	private String password;
 
 	@Bean
 	public ShiroDialect shiroDialect() {
@@ -44,6 +47,7 @@ public class ShiroConfig {
 		RedisManager redisManager = new RedisManager();
 		//System.out.println("redisManager.setHost(" + host + ":" + port + ")");
 		redisManager.setHost(host + ":" + port);
+		redisManager.setPassword(password);
 		return redisManager;
 	}
 
@@ -109,13 +113,9 @@ public class ShiroConfig {
 		
 		//启用认证缓存
 		shiroRealm.setAuthenticationCachingEnabled(true); 
-		//缓存AuthenticationInfo信息的缓存名称
-		shiroRealm.setAuthenticationCacheName("authenticationCache"); 
 		//启用授权缓存，默认false 
 		shiroRealm.setAuthorizationCachingEnabled(true); 
-		//缓存AuthorizationInfo信息的缓存名称
-		shiroRealm.setAuthorizationCacheName("authorizationCache");
-
+		
 		return shiroRealm;
 	}
 

@@ -1,5 +1,8 @@
 package com.pp.shiro;
 
+import java.util.Collection;
+
+import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.AuthenticationInfo;
 import org.apache.shiro.authc.AuthenticationToken;
@@ -10,6 +13,8 @@ import org.apache.shiro.authz.AuthorizationInfo;
 import org.apache.shiro.authz.SimpleAuthorizationInfo;
 import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.subject.PrincipalCollection;
+import org.apache.shiro.subject.SimplePrincipalCollection;
+import org.apache.shiro.util.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 
@@ -39,8 +44,9 @@ public class ShiroRealm extends AuthorizingRealm {
 	 */
 	@Override
 	protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principals) {
-		// 1. 从 PrincipalCollection 中来获取登录用户的信息		
-		User user = (User) principals.getPrimaryPrincipal();
+		// 1. 从 PrincipalCollection 中来获取登录用户的信息
+		String account = principals.getPrimaryPrincipal().toString();
+		User user = userService.selectByAccount(account);
 		// 2.添加角色和权限
 		SimpleAuthorizationInfo simpleAuthorizationInfo = new SimpleAuthorizationInfo();
 		for (Role role : roleService.getRoles(user.getId())) {
@@ -59,6 +65,7 @@ public class ShiroRealm extends AuthorizingRealm {
 	 */
 	@Override
 	protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken token) throws AuthenticationException {
+		
 		// 获得登录账号
 		String account = (String) token.getPrincipal();
 		// 查询用户
@@ -72,8 +79,11 @@ public class ShiroRealm extends AuthorizingRealm {
 			throw new LockedAccountException("账号已被锁定,请联系管理员");
 		}
 		// 根据用户的情况, 来构建 AuthenticationInfo 对象并返回. 通常使用的实现类为: SimpleAuthenticationInfo		
-		SimpleAuthenticationInfo info = new SimpleAuthenticationInfo(user, user.getPassword(),
-				ShiroUtils.getByteSource(user.getAccount()), this.getName());
+		SimpleAuthenticationInfo info = new SimpleAuthenticationInfo(
+				account,
+				user.getPassword(),
+				ShiroUtils.getByteSource(account),
+				this.getName());
 
 		return info;
 	}
