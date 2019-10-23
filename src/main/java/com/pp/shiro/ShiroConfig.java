@@ -53,7 +53,7 @@ public class ShiroConfig {
 		redisCacheManager.setRedisManager(redisManager);
 		// 必须要设置主键名称，shiro-redis 插件用过这个缓存用户信息
 		redisCacheManager.setPrincipalIdFieldName("account");
-		// redisCacheManager.setExpire(300); //单位秒，默认1800
+		redisCacheManager.setExpire(300); //单位秒
 		return redisCacheManager;
 	}
 

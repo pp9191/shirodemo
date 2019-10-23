@@ -12,11 +12,15 @@ public class MyByteSource implements ByteSource,Serializable {
 	
 	private static final long serialVersionUID = -6455383276748050912L;
 	
-	private final byte[] bytes;
+	private byte[] bytes;
     private String cachedHex;
-    private String cachedBase64;
+    private String cachedBase64;       
     
-    public MyByteSource(byte[] bytes) {
+    public MyByteSource() {
+    	this.bytes = null;
+	}
+
+	public MyByteSource(byte[] bytes) {
         this.bytes = bytes;
     }
 
@@ -35,6 +39,10 @@ public class MyByteSource implements ByteSource,Serializable {
     public static boolean isCompatible(Object o) {
         return o instanceof byte[] || o instanceof char[] || o instanceof String ||
                 o instanceof ByteSource;
+    }
+    
+    public void setBytes(byte[] bytes) {
+        this.bytes = bytes;
     }
 
     public byte[] getBytes() {
