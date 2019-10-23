@@ -109,10 +109,10 @@ public class UserController {
 				// 调用安全认证框架的登录方法
 				subject.login(new UsernamePasswordToken(user.getAccount(), user.getPassword(), rememberMe));
 				String url = "/index";
-				SavedRequest saveRequest = WebUtils.getSavedRequest(request);
-				if(saveRequest != null && saveRequest.getRequestUrl() != null) {
-					url = saveRequest.getRequestUrl();
-				}
+//				SavedRequest saveRequest = WebUtils.getSavedRequest(request);
+//				if(saveRequest != null && saveRequest.getRequestUrl() != null) {
+//					url = saveRequest.getRequestUrl();
+//				}
 				return "redirect:" + url;
 			}catch(UnknownAccountException|LockedAccountException|ExcessiveAttemptsException ex){
 				// 用户名不存在 | 账号被锁 | 密码错误次数达到5次
