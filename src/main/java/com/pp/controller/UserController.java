@@ -41,7 +41,6 @@ import com.pp.entity.User;
 import com.pp.service.UserService;
 import com.pp.shiro.ShiroUtils;
 import com.pp.util.FileUtils;
-import com.pp.util.JsonUtils;
 
 @Controller
 @RequestMapping("/user")
